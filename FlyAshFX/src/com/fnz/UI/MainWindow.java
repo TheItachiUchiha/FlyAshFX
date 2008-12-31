@@ -14,11 +14,17 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Tooltip;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -42,6 +48,7 @@ public class MainWindow extends Application
 	private Scene scene;
 	static DropShadow effect2 = new DropShadow();
 	static DropShadow effect1 = new DropShadow();
+	static DropShadow effect3 = new DropShadow();
 	public boolean flag;
     /**
      * @param args the command line arguments
@@ -64,7 +71,7 @@ public class MainWindow extends Application
 // Use a border pane as the root for scene
     	new DBInteraction().createDB();
         border = new BorderPane();
-        border.setTop(addHBox());
+        border.setTop(upperPart());
         border.setLeft(addVBox());
         border.setCenter(addGridPane());
         border.setRight(addVBox());
@@ -103,7 +110,7 @@ public class MainWindow extends Application
        
         Button upload = new Button();
         upload.setId("upload");
-        Image img1 = new Image(getClass().getResourceAsStream("upload.png"),40,40,false,false);
+        Image img1 = new Image("upload.png");
         upload.setGraphic(new ImageView(img1));
         upload.setContentDisplay(ContentDisplay.TOP);
         hbox.getChildren().add(upload);
@@ -124,108 +131,106 @@ public class MainWindow extends Application
 	 * <Date> <Name> <Comments>
 	 * 
 	 */    
-    private HBox addHBox() 
+    private BorderPane upperPart() 
     {
 
-    	javafx.scene.layout.
-        HBox hbox = new HBox();
-        hbox.setPadding(new Insets(15, 12, 15, 12));
-        hbox.setSpacing(10);   // Gap between nodes
-       // hbox.setStyle("-fx-background-color: #336699;");
-        hbox.getStyleClass().add("styleBg");
+    	BorderPane upperBorder = new BorderPane();
+        
+    	
+    	HBox leftHbox = new HBox();
+    	HBox centerHbox = new HBox();
+    	HBox rightHbox = new HBox();
+    	
+    	leftHbox.setPadding(new Insets(15, 12, 15, 12));
+    	leftHbox.setSpacing(10);   // Gap between nodes
+        // hbox.setStyle("-fx-background-color: #336699;");
+    	upperBorder.getStyleClass().add("styleBg");
+    	
+    	centerHbox.setPadding(new Insets(15, 12, 15, 250));
+    	centerHbox.setSpacing(10);   // Gap between nodes
+        // hbox.setStyle("-fx-background-color: #336699;");
+    	//centerHbox.getStyleClass().add("styleBg");
+    	
+    	rightHbox.setPadding(new Insets(50, 12, 15, 12));
+    	rightHbox.setSpacing(10);   // Gap between nodes
+        // hbox.setStyle("-fx-background-color: #336699;");
+    	//rightHbox.getStyleClass().add("styleBg");
+        
+        
         effect2.setColor(Color.DARKGOLDENROD);
         effect2.setBlurType(BlurType.GAUSSIAN);
-          effect2.setSpread(0.8);
-          effect2.setRadius(12);
+        effect2.setSpread(0.8);
+        effect2.setRadius(12);
       
-          effect1.setColor(Color.DARKCYAN);
-          effect1.setBlurType(BlurType.GAUSSIAN);
-            effect1.setSpread(0.8);
-            effect1.setRadius(12);
+        effect1.setColor(Color.DARKCYAN);
+        effect1.setBlurType(BlurType.GAUSSIAN);
+        effect1.setSpread(0.8);
+        effect1.setRadius(12);
        
-      flag=false;
+        flag=false;
         
-       
+       ToggleGroup g1 = new ToggleGroup();
         
-        final Button inventoryButton = new Button("Inventory");
+        final ToggleButton inventoryButton = new ToggleButton();
+        inventoryButton.setToggleGroup(g1);
+        final Tooltip tooltip = new Tooltip();
+        tooltip.setText("Inventory\n");
+        inventoryButton.setTooltip(tooltip);
         inventoryButton.setId("inventoryButton");
-        inventoryButton.setEffect(effect1);   
-        Image img1 = new Image(getClass().getResourceAsStream("icon_inventory.png"),72,72,false,false);
+        //inventoryButton.setEffect(effect1);   
+        Image img1 = new Image("icon_inventory.png",40,40,false,false);
         inventoryButton.setGraphic(new ImageView(img1));
         inventoryButton.setContentDisplay(ContentDisplay.TOP);
         inventoryButton.setMaxSize(5, 5);
         changeBackgroundOnHoverUsingEventsInven(inventoryButton);
 
-        final Button ordersButton = new Button("Orders");
+        final ToggleButton ordersButton = new ToggleButton();
+        ordersButton.setToggleGroup(g1);
         ordersButton.setId("ordersButton");
         ordersButton.setEffect(effect1);
-        Image img3 = new Image(getClass().getResourceAsStream("Rupee_Order.png"),72,72,false,false);
+        Image img3 = new Image("icon-leadsbox.png",40,40,false,false);
         ordersButton.setGraphic(new ImageView(img3));
         ordersButton.setContentDisplay(ContentDisplay.TOP);
         ordersButton.setMaxSize(5, 5);
-       changeBackgroundOnHoverUsingEventsOrder(ordersButton);
+        changeBackgroundOnHoverUsingEventsOrder(ordersButton);
         
         
-        final Button accountButton = new Button("Accounts");
+        final ToggleButton accountButton = new ToggleButton();
+        accountButton.setToggleGroup(g1);
         accountButton.setId("accountButton");
         accountButton.setEffect(effect1);
-        Image img2 = new Image(getClass().getResourceAsStream("icon-leadsbox.png"),72,72,false,false);
+        Image img2 = new Image("Rupee_Order.png",40,40,false,false);
         accountButton.setGraphic(new ImageView(img2));
         accountButton.setContentDisplay(ContentDisplay.TOP);
         accountButton.setMaxSize(5, 5);
-       // changeBackgroundOnHoverUsingEvents(accountButton);
+        //changeBackgroundOnHoverUsingEvents(accountButton);
         
         //DropShadow effect
         DropShadow dropShadow = new DropShadow();
         dropShadow.setOffsetX(5);
         dropShadow.setOffsetY(5);
-       
-        //Adding text and DropShadow effect to it
-        Text text = new Text("               FlyAsh Corp.\n             	 Cuttack");
-        text.setFont(Font.font("Courier New", FontWeight.BOLD, 28));
-        text.setEffect(dropShadow);
-        text.setX(600); //useless
-        
-        hbox.getChildren().addAll(inventoryButton, ordersButton, accountButton,text);
         
         ordersButton.setOnAction(new EventHandler<ActionEvent>() {
 			
 			@Override
 			public void handle(ActionEvent e) 
 			{
-				
-		        
 				inventoryButton.setEffect(effect1);
-				   accountButton.setEffect(effect1);
-				   ordersButton.setEffect(effect2);
+				accountButton.setEffect(effect1);
+				ordersButton.setEffect(effect2);
 				border.setLeft(new Orders().addVBox(border));
 				border.setRight(null);
 			}
 		});
-        ordersButton.setOnAction(new EventHandler<ActionEvent>() {
-			
-			@Override
-			public void handle(ActionEvent e) 
-			{
-				
-		        
-				inventoryButton.setEffect(effect1);
-				   accountButton.setEffect(effect1);
-				   ordersButton.setEffect(effect2);
-				border.setLeft(new Orders().addVBox(border));
-				border.setRight(null);
-			}
-		});
+        
         
         inventoryButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) 
 			{
-				
-			        
-				   inventoryButton.setEffect(effect2);
-				   accountButton.setEffect(effect1);
-				   ordersButton.setEffect(effect1);
+				inventoryButton.setEffect(effect2);
+				accountButton.setEffect(effect1);
+				ordersButton.setEffect(effect1);
 				border.setLeft(new Inventory().addVBox(border));
 				border.setRight(null);
 			}
@@ -245,9 +250,32 @@ public class MainWindow extends Application
 			
 			}
 		});
-      
         
-        return hbox;
+        leftHbox.getChildren().addAll(inventoryButton, ordersButton, accountButton);
+        upperBorder.setLeft(leftHbox);
+        
+      
+        //Adding text and DropShadow effect to it
+        Text text = new Text("FlyAsh Corp.\nCuttack");
+        text.setFont(Font.font("Courier New", 28));
+        text.setEffect(dropShadow);
+        text.setX(600); //useless
+        
+        
+        centerHbox.setAlignment(Pos.CENTER_LEFT);
+        centerHbox.getChildren().addAll(text);
+        upperBorder.setCenter(centerHbox);
+        
+        MenuButton setting = new MenuButton();
+        Image settingImage = new Image("setting.png",30,30,false,false);
+        setting.setGraphic(new ImageView(settingImage));
+        setting.setPrefSize(50, 50);
+        MenuItem restore = new MenuItem("Backup/Restore");
+        setting.getItems().add(restore);
+        rightHbox.getChildren().addAll(setting);
+        upperBorder.setRight(rightHbox);
+        
+        return upperBorder;
     }
         
         
@@ -309,7 +337,7 @@ public class MainWindow extends Application
               	
               }
             });
-        }    
+        }       
 
 	/*Create Method <function name><return type><comments>
 	 * <Creator Name><Date Of Creation MM-dd-yyyy>
