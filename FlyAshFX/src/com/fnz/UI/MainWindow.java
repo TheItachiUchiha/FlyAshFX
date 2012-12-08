@@ -16,11 +16,14 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class MainWindow extends Application 
 {
-	BorderPane border;
+	private BorderPane border;
+	private Stage stage;
+	private Scene scene;
 
     /**
      * @param args the command line arguments
@@ -40,8 +43,12 @@ public class MainWindow extends Application
         border.setTop(addHBox());
         border.setLeft(addVBox());
         border.setCenter(addGridPane());
-        Scene scene = new Scene(border);
-        stage.setScene(scene);
+        scene = new Scene(border);
+        stage.setX(0);
+	    stage.setY(0);
+	    stage.setWidth(Screen.getPrimary().getVisualBounds().getWidth());
+	    stage.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
+	    stage.setScene(this.scene);
         stage.setTitle("FlyAsh Automation");
         stage.show();
     }
