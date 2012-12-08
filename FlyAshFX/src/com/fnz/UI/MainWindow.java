@@ -1,6 +1,8 @@
 package com.fnz.UI;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -16,8 +18,9 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class MainWindow extends Application {
-    
+public class MainWindow extends Application 
+{
+	BorderPane border;
 
     /**
      * @param args the command line arguments
@@ -32,7 +35,7 @@ public class MainWindow extends Application {
 
 
 // Use a border pane as the root for scene
-        BorderPane border = new BorderPane();
+        border = new BorderPane();
         
         border.setTop(addHBox());
         border.setLeft(addVBox());
@@ -66,50 +69,44 @@ public class MainWindow extends Application {
             
             hbox.getChildren().addAll(inventoryButton, ordersButton, accountButton);
             
+            ordersButton.setOnAction(new EventHandler<ActionEvent>() {
+				
+				@Override
+				public void handle(ActionEvent e) {
+					
+					border.setLeft(new Orders().addVBox(border));
+					//border.setCenter(new Orders().addGridPane());
+				}
+			});
+            
+            inventoryButton.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent arg0) {
+					border.setLeft(new Inventory().addVBox(border));
+				}
+			});
+            
             return hbox;
         }
+        
+        
         
         /*
          * Creates a VBox with a list of links for the left region
          */
             private VBox addVBox() 
             {
-                
                 VBox vbox = new VBox();
                 vbox.setPadding(new Insets(10)); // Set all sides to 10
                 vbox.setSpacing(8);              // Gap between nodes
-
-                
-                /*TreeItem<String> inventoryRM = new TreeItem<String> ("Raw Materials");
-                inventoryRM.setExpanded(true);
-               
-                TreeItem<String> itemRM1 = new TreeItem<String> ("Add Raw Material");            
-                inventoryRM.getChildren().add(itemRM1);
-                TreeItem<String> itemRM2 = new TreeItem<String> ("Edit Raw Material");            
-                inventoryRM.getChildren().add(itemRM2);
-                TreeItem<String> itemRM3 = new TreeItem<String> ("Delete Raw Material");            
-                inventoryRM.getChildren().add(itemRM3);
-                
-                TreeItem<String> inventoryFinished = new TreeItem<String> ("Finished Product");
-                inventoryFinished.setExpanded(true);
-               
-                TreeItem<String> itemF1 = new TreeItem<String> ("Add");            
-                inventoryFinished.getChildren().add(itemF1);
-                
-      
-                TreeView<String> treeRM = new TreeView<String> (inventoryRM);
-                TreeView<String> treeFinished = new TreeView<String> (inventoryFinished);
-                
-                vbox.getChildren().addAll(treeRM,treeFinished);*/
-
                 return vbox;
             }
             
             /*
              * Creates a grid for the center region with four columns and three rows
              */
-                private GridPane addGridPane() {
-
+                private GridPane addGridPane() 
+                {
                     GridPane grid = new GridPane();
                     grid.setHgap(10);
                     grid.setVgap(10);
