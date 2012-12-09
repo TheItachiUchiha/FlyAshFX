@@ -41,11 +41,11 @@ public class Orders
         TreeItem<String> itemClient = new TreeItem<String> ("Client");
         itemClient.setExpanded(false);
        
-        TreeItem<String> itemClient1 = new TreeItem<String> ("Place Order");            
+        final TreeItem<String> itemClient1 = new TreeItem<String> ("Place Order");            
         itemClient.getChildren().add(itemClient1);
-        TreeItem<String> itemClient2 = new TreeItem<String> ("Edit Order");            
+        final TreeItem<String> itemClient2 = new TreeItem<String> ("Edit Order");            
         itemClient.getChildren().add(itemClient2);
-        TreeItem<String> itemClient3 = new TreeItem<String> ("Cancel Order");            
+        final TreeItem<String> itemClient3 = new TreeItem<String> ("Cancel Order");            
         itemClient.getChildren().add(itemClient3);
         
         final TreeItem<String> itemVendor = new TreeItem<String> ("Vendor");
@@ -53,9 +53,9 @@ public class Orders
        
         final TreeItem<String> itemVendor1 = new TreeItem<String> ("Place Order");            
         itemVendor.getChildren().add(itemVendor1);
-        TreeItem<String> itemVendor2 = new TreeItem<String> ("Edit Order");            
+        final TreeItem<String> itemVendor2 = new TreeItem<String> ("Edit Order");            
         itemVendor.getChildren().add(itemVendor2);
-        TreeItem<String> itemVendor3 = new TreeItem<String> ("Cancel Order");            
+        final TreeItem<String> itemVendor3 = new TreeItem<String> ("Cancel Order");            
         itemVendor.getChildren().add(itemVendor3);
         
 
@@ -71,57 +71,39 @@ public class Orders
         
         
         tree.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        tree.setCellFactory(new Callback<TreeView<String>, TreeCell<String>>() {
-     	   @Override
-     	   public TreeCell<String> call(TreeView<String> paramP) {
-     		return new TreeCell<String>(){
-     			@Override
-     			protected void updateItem(String paramT, boolean paramBoolean) {
-     				super.updateItem(paramT, paramBoolean);
-     				if(!isEmpty()){
-     					setGraphic(new Label(paramT));
-     					final TreeCell<String> this$ = this;
-     					
-     					//if(this$.getParent().equals(itemVendor1.getParent()))
-     					//{
-	     					if(this$.getItem()=="Place Order")
-	     					{
-	     						this.setOnMouseClicked(new EventHandler<MouseEvent>(){
-		     						@Override
-		     						public void handle(MouseEvent event) 
-		     						{
-		     								border.setCenter(VendorPlaceOrder());
-		     						}
-	     						});
-	     					}
-	     					else if(this$.getItem()=="Edit Order")
-	     					{
-	     						this.setOnMouseClicked(new EventHandler<MouseEvent>(){
-		     						@Override
-		     						public void handle(MouseEvent event) 
-		     						{
-		     								border.setCenter(VendorEditOrder());
-		     						}
-	     						});
-	     					}
-	     					else if(this$.getItem()=="Cancel Order")
-	     					{
-	     						this.setOnMouseClicked(new EventHandler<MouseEvent>(){
-		     						@Override
-		     						public void handle(MouseEvent event) 
-		     						{
-		     								border.setCenter(VendorCancelOrder());
-		     						}
-	     						});
-	     					}
-     					//}
-     				}
-     			}
-     		};
-     		
-     	   }
-     	  
-     	});
+        
+        
+        tree.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TreeItem<String>>() {
+        	   @Override
+        	   public void changed(ObservableValue<? extends TreeItem<String>> observable, TreeItem<String> oldValue, TreeItem<String> newValue) {
+        	      System.out.println("Selection: " + newValue);
+        	      // Add your stuff here
+        	      if(newValue.equals(itemClient1))
+				  {
+        	    	  border.setCenter(ClientPlaceOrder());
+				  }
+        	      else if(newValue.equals(itemClient2))
+				  {
+        	    	  border.setCenter(ClientEditOrder());
+				  }
+        	      else if(newValue.equals(itemClient3))
+				  {
+        	    	  border.setCenter(ClientCancelOrder());
+				  }
+        	      else if(newValue.equals(itemVendor1))
+				  {
+        	    	  border.setCenter(VendorPlaceOrder());
+				  }
+        	      else if(newValue.equals(itemVendor2))
+				  {
+        	    	  border.setCenter(VendorEditOrder());
+				  }
+        	      else if(newValue.equals(itemVendor3))
+				  {
+        	    	  border.setCenter(VendorCancelOrder());
+				  }
+        	   }
+        	});
         
         
 
