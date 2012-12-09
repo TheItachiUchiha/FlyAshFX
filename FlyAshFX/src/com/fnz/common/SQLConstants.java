@@ -10,4 +10,6 @@ public class SQLConstants
 	public static final String INSERT_DB_RAW_MATERIALS = "INSERT INTO RAW_MATERIALS values (?)";
 	
 	public static final String FETCH_DB_RAW_MATERIALS = "SELECT RAW_MATERIALS_NAME FROM RAW_MATERIALS";
+	
+	
 }
