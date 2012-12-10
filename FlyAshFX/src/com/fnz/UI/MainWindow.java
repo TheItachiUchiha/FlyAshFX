@@ -44,6 +44,7 @@ public class MainWindow extends Application
         border.setCenter(addGridPane());
         scene = new Scene(border);
         scene.getStylesheets().add(FXCalendarDemo.class.getResource("/com/fnz/styles/calendar_styles.css").toExternalForm());
+        scene.getStylesheets().add(FXCalendarDemo.class.getResource("/com/fnz/styles/gui.css").toExternalForm());
         stage.setX(0);
 	    stage.setY(0);
 	    stage.setWidth(Screen.getPrimary().getVisualBounds().getWidth());

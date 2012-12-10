@@ -37,6 +37,7 @@ import javafx.util.Callback;
 
 public class Inventory 
 {
+	 
 	GridPane grid;
 	InventoryService inventoryService;
 	public Inventory()
@@ -163,6 +164,7 @@ public class Inventory
 	 */
 	 public GridPane AddRawMaterial() throws Exception
 		{
+		
 		 try
 		 {
 			grid = new GridPane();
@@ -192,8 +194,13 @@ public class Inventory
 				{
 					try
 					{
+						
+						 String strmsg;
+						
 						if("".equals(rawMaterialName.getText())||rawMaterialName.getText().equals(null))
 						{
+							//strmsg=new String("Cannot be empty");
+							//grid=addError(grid,"Cannot be empty",4,1);
 							Label msg = new Label("Cannot be Empty");
 							msg.setTextFill(Color.RED);
 							grid.add(msg,4,1);
@@ -207,10 +214,15 @@ public class Inventory
 						else
 						{
 							inventoryService.insertRawMaterials(rawMaterialName.getText(), cb.getValue());
+							//strmsg=new String("Cannot be empty");
+							//grid=addError(grid,"Cannot be empty",2,7);
 							Label msg = new Label("Successfully Added !!!");
 							msg.setTextFill(Color.RED);
 							grid.add(msg,2,7);
 						}
+						
+						
+						
 					} catch (Exception e) 
 					{
 						e.printStackTrace();
@@ -225,9 +237,11 @@ public class Inventory
 		 {
 			 e.printStackTrace();
 		 }
+		
 		    return grid;
 		}
 	 
+	
 	 
 	 /*Create Method <function name><return type><comments>
 		 * <Creator Name><Date Of Creation MM-dd-yyyy>
@@ -305,33 +319,37 @@ public class Inventory
 		 */
 	 	public GridPane AddFinishedProduct()
 		{
+	 		
 			grid = new GridPane();
 			grid.setHgap(10);
             grid.setVgap(8);
             grid.setPadding(new Insets(30));
 			
-            Label labelProduct = new Label("Bricks Produced");
-			grid.add(labelProduct,1,1);
+            final Label labelProduct = new Label("Bricks Produced");
+			grid.add(labelProduct,1,2);
 			
 			final TextField bricksProduced = new TextField();
-			grid.add(bricksProduced,3,1);
+			grid.add(bricksProduced,3,2);
 			
 			Label labelLocation = new Label("Enter Storage Location");
-			grid.add(labelLocation,1,2);
+			grid.add(labelLocation,1,3);
 			
 			final TextField storageLocation = new TextField();
-			grid.add(storageLocation,3,2);
+			grid.add(storageLocation,3,3);
 			
 			Label labelDate = new Label("Date of Production");
-			grid.add(labelDate,1,3);
+			grid.add(labelDate,1,4);
 			
 			final FXCalendar dateProduction = new FXCalendar(); 
-			grid.add(dateProduction,3,3);
+			grid.add(dateProduction,3,4);
 			//dateProduction.getStylesheets().add(FXCalendarDemo.class.getResource("/com/fnz/styles/calendar_styles.css").toExternalForm());
 			
 			Button submit = new Button("Add");
-			grid.add(submit, 2, 5);
+			grid.add(submit, 2, 6);
 			
+			final Label LabelMessage = new Label("lllllllllllllllllllllllllll");
+			grid.add(LabelMessage, 2, 1);
+			LabelMessage.setVisible(false);
 			
 			submit.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
@@ -342,28 +360,52 @@ public class Inventory
 					{
 						if("".equals(bricksProduced.getText())||bricksProduced.getText().equals(null))
 						{
-							msg = new Label("Cannot be Empty");
-							msg.setTextFill(Color.RED);
-							grid.add(msg,4,1);
+							
+							
+						//	msg = new Label("Cannot be Empty");
+						//	msg.setTextFill(Color.RED);
+							
+							bricksProduced.getStyleClass().add("error");
+							LabelMessage.setVisible(true);
+							LabelMessage.setText("Cannot be Empty");
+							
+							
+						//	grid.add(msg,4,1);
+							
 						}
 						else if("".equals(storageLocation.getText())||storageLocation.getText().equals(null))
 						{
-							msg = new Label("Cannot be Empty");
-							msg.setTextFill(Color.RED);
-							grid.add(msg,4,2);
+							
+							//msg = new Label("Cannot be Empty");
+							//msg.setTextFill(Color.RED);
+							LabelMessage.setVisible(true);
+							LabelMessage.setText("Cannot be Empty");
+							bricksProduced.getStyleClass().remove("error");
+							storageLocation.getStyleClass().add("error");
+							//grid.add(msg,4,2);
+							
 						}
 						else if("".equals(dateProduction.getTextField().getText())||dateProduction.getTextField().getText().equals(null))
 						{
-							msg = new Label("Cannot be Empty");
-							msg.setTextFill(Color.RED);
-							grid.add(msg,4,3);
+							//msg = new Label("Cannot be Empty");
+							//msg.setTextFill(Color.RED);
+							//grid.add(msg,4,3);
+							LabelMessage.setVisible(true);
+							LabelMessage.setText("Cannot be Empty");
+							storageLocation.getStyleClass().remove("error");
+							dateProduction.getStyleClass().add("error");
 						}
 						else
 						{
-							inventoryService.addProduction(Integer.parseInt(bricksProduced.getText()),storageLocation.getText(),dateProduction.getTextField().getText());
-							msg = new Label("Production Added Successfully !!!");
-							msg.setTextFill(Color.RED);
-							grid.add(msg,2,7);
+							LabelMessage.setVisible(true);
+							//inventoryService.addProduction(Integer.parseInt(bricksProduced.getText()),storageLocation.getText(),dateProduction.getTextField().getText());
+							LabelMessage.setText("Production Added Successfully !!!");
+							//msg = new Label("Production Added Successfully !!!");
+							//msg.setTextFill(Color.RED);
+							//grid.add(msg,2,7);
+							bricksProduced.getStyleClass().remove("error");
+							storageLocation.getStyleClass().remove("error");
+							dateProduction.getStyleClass().remove("error");
 						}
 						
 					}
@@ -453,4 +495,7 @@ public class Inventory
 		 	
 		 	return grid;
 		}
-}
+
+
+
+};
