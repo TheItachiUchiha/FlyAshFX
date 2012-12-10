@@ -114,7 +114,7 @@ public class MainWindow extends Application
 			public void handle(ActionEvent arg0) 
 			{
 				try {
-					System.out.println(new InventoryDAO().fetchProduction().get(1));
+					//System.out.println(new InventoryDAO().fetchProduction().get(1));
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
