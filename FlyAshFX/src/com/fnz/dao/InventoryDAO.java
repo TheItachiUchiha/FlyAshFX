@@ -15,6 +15,21 @@ import com.fnz.exception.DataAlreadyExistException;
 
 public class InventoryDAO 
 {
+	
+	/*Create Method 
+	 * <function name><return type><comments>
+	 * <Creator Name><Date Of Creation MM-dd-yyyy>
+	 * 
+	 * <insertRawMaterials(String, String)><void><insert rawMaterial to DB>
+	 * <Abhinay Agarwal><12-10-2012>
+	 * 
+	 * */
+	
+	/**Modification Log
+	 * 
+	 * <Date> <Name> <Comments>
+	 * 
+	 */
 	public void insertRawMaterials(String rawMaterial,String unit) throws Exception
 	{
 		Connection conn = null;
@@ -53,194 +68,245 @@ public class InventoryDAO
 	}
 		
 
-		public ObservableList<String> fetchRawMaterials() throws Exception
-		{
-			Connection conn = null;
-			PreparedStatement pstmt = null;
-			ResultSet resultSet = null;
-			ObservableList<String> list = FXCollections.observableArrayList();
-			
-			
-			Class.forName(CommonConstants.DRIVERNAME);
-			
-			String sDbUrl = CommonConstants.sJdbc + ":" + CommonConstants.DB_LOCATION + CommonConstants.sTempDb;
-			
-			try 
-			{
-				conn = DriverManager.getConnection(sDbUrl);
-				pstmt = conn.prepareStatement(SQLConstants.FETCH_DB_RAW_MATERIALS);
-				
-				pstmt.setQueryTimeout(CommonConstants.TIMEOUT);
-				resultSet = pstmt.executeQuery();
-				
-				while(resultSet.next())
-				{
-					list.add(resultSet.getString(1));
-				}
-			}
-			catch (Exception e) 
-			{
-				e.printStackTrace();
-			}
-			finally
-			{
-				if(conn !=null )
-				{
-					conn.close();
-				}
-				if(pstmt != null )
-				{
-					pstmt.close();
-				}
-				if(resultSet != null)
-				{
-					resultSet.close();
-				}
-			}
-			return list;
-		}
+	/*Create Method <function name><return type><comments>
+	 * <Creator Name><Date Of Creation MM-dd-yyyy>
+	 * 
+	 * <fetchRawMaterials()><ObservableList<String>><fetch rawMaterial from DB>
+	 * <Abhinay Agarwal><12-10-2012>
+	 * 
+	 * */
+	
+	/**Modification Log
+	 * 
+	 * <Date> <Name> <Comments>
+	 * 
+	 */
+	public ObservableList<String> fetchRawMaterials() throws Exception
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet resultSet = null;
+		ObservableList<String> list = FXCollections.observableArrayList();
 		
 		
-		public void deleteRawMaterials(String rawMaterial) throws Exception
-		{
-			Connection conn = null;
-			PreparedStatement pstmt = null;
-			ResultSet resultSet = null;
-			
-			
-			Class.forName(CommonConstants.DRIVERNAME);
-			
-			String sDbUrl = CommonConstants.sJdbc + ":" + CommonConstants.DB_LOCATION + CommonConstants.sTempDb;
-			
-			try 
-			{
-				conn = DriverManager.getConnection(sDbUrl);
-				pstmt = conn.prepareStatement(SQLConstants.DELETE_RAW_MATERIALS);
-				
-				pstmt.setQueryTimeout(CommonConstants.TIMEOUT);
-				
-				pstmt.setString(1, rawMaterial);
-				pstmt.execute();
-			}
-			catch (Exception e) 
-			{
-				e.printStackTrace();
-			}
-			finally
-			{
-				if(conn !=null )
-				{
-					conn.close();
-				}
-				if(pstmt != null )
-				{
-					pstmt.close();
-				}
-				if(resultSet != null)
-				{
-					resultSet.close();
-				}
-			}
-		}
-		public void addProduction(int bricksProduced, String storageLocation,String dateProduction) throws Exception 
-		{
-			Connection conn = null;
-			PreparedStatement pstmt = null;
-			ResultSet resultSet = null;
-			ObservableList<String> list = FXCollections.observableArrayList();
-			
-			
-			Class.forName(CommonConstants.DRIVERNAME);
-			
-			String sDbUrl = CommonConstants.sJdbc + ":" + CommonConstants.DB_LOCATION + CommonConstants.sTempDb;
-			
-			try 
-			{
-				conn = DriverManager.getConnection(sDbUrl);
-				pstmt = conn.prepareStatement(SQLConstants.INSERT_PRODUCTION_INVENTORY);
-				
-				pstmt.setQueryTimeout(CommonConstants.TIMEOUT);
-				
-				pstmt.setString(1, dateProduction);
-				pstmt.setInt(2, bricksProduced);
-				pstmt.setString(3, "");
-				pstmt.setString(4, storageLocation);
-				pstmt.setString(5, "Available");
-				
-				pstmt.execute();
-			}
-			catch (Exception e) 
-			{
-				e.printStackTrace();
-			}
-			finally
-			{
-				if(conn !=null )
-				{
-					conn.close();
-				}
-				if(pstmt != null )
-				{
-					pstmt.close();
-				}
-				if(resultSet != null)
-				{
-					resultSet.close();
-				}
-			}
-		}
+		Class.forName(CommonConstants.DRIVERNAME);
 		
-		public ObservableList<FinshedProductVO> fetchProduction() throws Exception
+		String sDbUrl = CommonConstants.sJdbc + ":" + CommonConstants.DB_LOCATION + CommonConstants.sTempDb;
+		
+		try 
 		{
-			Connection conn = null;
-			PreparedStatement pstmt = null;
-			ResultSet resultSet = null;
-			ObservableList<FinshedProductVO> list = FXCollections.observableArrayList();
-			FinshedProductVO finshedProductVO = new FinshedProductVO();
+			conn = DriverManager.getConnection(sDbUrl);
+			pstmt = conn.prepareStatement(SQLConstants.FETCH_DB_RAW_MATERIALS);
 			
+			pstmt.setQueryTimeout(CommonConstants.TIMEOUT);
+			resultSet = pstmt.executeQuery();
 			
-			Class.forName(CommonConstants.DRIVERNAME);
-			
-			String sDbUrl = CommonConstants.sJdbc + ":" + CommonConstants.DB_LOCATION + CommonConstants.sTempDb;
-			
-			try 
+			while(resultSet.next())
 			{
-				conn = DriverManager.getConnection(sDbUrl);
-				pstmt = conn.prepareStatement(SQLConstants.FETCH_PRODUCTION_INVENTORY);
-				
-				pstmt.setQueryTimeout(CommonConstants.TIMEOUT);
-				resultSet = pstmt.executeQuery();
-				
-				while(resultSet.next())
-				{
-					finshedProductVO = new FinshedProductVO();
-					finshedProductVO.setDateOfProduction(resultSet.getString(2));
-					finshedProductVO.setBricksProduced(resultSet.getInt(3));
-					finshedProductVO.setDaysCured(resultSet.getString(4));
-					finshedProductVO.setStorageSection(resultSet.getString(5));
-					finshedProductVO.setStatus(resultSet.getString(6));
-					list.add(finshedProductVO);
-				}
+				list.add(resultSet.getString(1));
 			}
-			catch (Exception e) 
-			{
-				e.printStackTrace();
-			}
-			finally
-			{
-				if(conn !=null )
-				{
-					conn.close();
-				}
-				if(pstmt != null )
-				{
-					pstmt.close();
-				}
-				if(resultSet != null)
-				{
-					resultSet.close();
-				}
-			}
-			return list;
 		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			if(conn !=null )
+			{
+				conn.close();
+			}
+			if(pstmt != null )
+			{
+				pstmt.close();
+			}
+			if(resultSet != null)
+			{
+				resultSet.close();
+			}
+		}
+		return list;
+	}
+		
+	/*Create Method <function name><return type><comments>
+	 * <Creator Name><Date Of Creation MM-dd-yyyy>
+	 * 
+	 * <deleteRawMaterials(String)><void><delete rawMaterial from DB>
+	 * <Abhinay Agarwal><12-10-2012>
+	 * 
+	 * */
+	/**Modification Log
+	 * 
+	 * <Date> <Name> <Comments>
+	 * 
+	 */
+	public void deleteRawMaterials(String rawMaterial) throws Exception
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet resultSet = null;
+		
+		
+		Class.forName(CommonConstants.DRIVERNAME);
+		
+		String sDbUrl = CommonConstants.sJdbc + ":" + CommonConstants.DB_LOCATION + CommonConstants.sTempDb;
+		
+		try 
+		{
+			conn = DriverManager.getConnection(sDbUrl);
+			pstmt = conn.prepareStatement(SQLConstants.DELETE_RAW_MATERIALS);
+			
+			pstmt.setQueryTimeout(CommonConstants.TIMEOUT);
+			
+			pstmt.setString(1, rawMaterial);
+			pstmt.execute();
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			if(conn !=null )
+			{
+				conn.close();
+			}
+			if(pstmt != null )
+			{
+				pstmt.close();
+			}
+			if(resultSet != null)
+			{
+				resultSet.close();
+			}
+		}
+	}
+	
+	
+	/*Create Method <function name><return type><comments>
+	 * <Creator Name><Date Of Creation MM-dd-yyyy>
+	 * 
+	 * <addProduction()><void><add production to DB>
+	 * <Abhinay Agarwal><12-10-2012>
+	 * 
+	 * */
+	/**Modification Log
+	 * 
+	 * <Date> <Name> <Comments>
+	 * 
+	 */
+	public void addProduction(int bricksProduced, String storageLocation,String dateProduction) throws Exception 
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet resultSet = null;
+		ObservableList<String> list = FXCollections.observableArrayList();
+		
+		
+		Class.forName(CommonConstants.DRIVERNAME);
+		
+		String sDbUrl = CommonConstants.sJdbc + ":" + CommonConstants.DB_LOCATION + CommonConstants.sTempDb;
+		
+		try 
+		{
+			conn = DriverManager.getConnection(sDbUrl);
+			pstmt = conn.prepareStatement(SQLConstants.INSERT_PRODUCTION_INVENTORY);
+			
+			pstmt.setQueryTimeout(CommonConstants.TIMEOUT);
+			
+			pstmt.setString(1, dateProduction);
+			pstmt.setInt(2, bricksProduced);
+			pstmt.setString(3, "");
+			pstmt.setString(4, storageLocation);
+			pstmt.setString(5, "Available");
+			
+			pstmt.execute();
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			if(conn !=null )
+			{
+				conn.close();
+			}
+			if(pstmt != null )
+			{
+				pstmt.close();
+			}
+			if(resultSet != null)
+			{
+				resultSet.close();
+			}
+		}
+	}
+	
+	
+	/*Create Method <function name><return type><comments>
+	 * <Creator Name><Date Of Creation MM-dd-yyyy>
+	 * 
+	 * <fetchProduction()><ObservableList<FinshedProductVO>><view production from DB>
+	 * <Abhinay Agarwal><12-10-2012>
+	 * 
+	 * */
+	/**Modification Log
+	 * 
+	 * <Date> <Name> <Comments>
+	 * 
+	 */
+	public ObservableList<FinshedProductVO> fetchProduction() throws Exception
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet resultSet = null;
+		ObservableList<FinshedProductVO> list = FXCollections.observableArrayList();
+		FinshedProductVO finshedProductVO = new FinshedProductVO();
+		
+		
+		Class.forName(CommonConstants.DRIVERNAME);
+		
+		String sDbUrl = CommonConstants.sJdbc + ":" + CommonConstants.DB_LOCATION + CommonConstants.sTempDb;
+		
+		try 
+		{
+			conn = DriverManager.getConnection(sDbUrl);
+			pstmt = conn.prepareStatement(SQLConstants.FETCH_PRODUCTION_INVENTORY);
+			
+			pstmt.setQueryTimeout(CommonConstants.TIMEOUT);
+			resultSet = pstmt.executeQuery();
+			
+			while(resultSet.next())
+			{
+				finshedProductVO = new FinshedProductVO();
+				finshedProductVO.setDateOfProduction(resultSet.getString(2));
+				finshedProductVO.setBricksProduced(resultSet.getInt(3));
+				finshedProductVO.setDaysCured(resultSet.getString(4));
+				finshedProductVO.setStorageSection(resultSet.getString(5));
+				finshedProductVO.setStatus(resultSet.getString(6));
+				list.add(finshedProductVO);
+			}
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			if(conn !=null )
+			{
+				conn.close();
+			}
+			if(pstmt != null )
+			{
+				pstmt.close();
+			}
+			if(resultSet != null)
+			{
+				resultSet.close();
+			}
+		}
+		return list;
+	}
 }

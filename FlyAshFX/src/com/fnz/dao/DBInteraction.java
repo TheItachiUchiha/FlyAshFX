@@ -21,6 +21,18 @@ import com.fnz.common.SQLConstants;
 
 public class DBInteraction 
 {
+	/*Create Method <function name><return type><comments>
+	 * <Creator Name><Date Of Creation MM-dd-yyyy>
+	 * 
+	 * <createDB()><void><creates a new DB and creates all the Table>
+	 * <Abhinay Agarwal><12-10-2012>
+	 * 
+	 * */
+	/**Modification Log
+	 * 
+	 * <Date> <Name> <Comments>
+	 * 
+	 */
 	public void createDB() throws Exception
 	{
 		Connection conn = null;
@@ -73,51 +85,62 @@ public class DBInteraction
 	
 		
 		
+	/*Create Method <function name><return type><comments>
+	 * <Creator Name><Date Of Creation MM-dd-yyyy>
+	 * 
+	 * <fetchUnit()><ObservableList<String>><fetches UNIT from DB>
+	 * <Abhinay Agarwal><12-10-2012>
+	 * 
+	 * */
+	/**Modification Log
+	 * 
+	 * <Date> <Name> <Comments>
+	 * 
+	 */
+	public ObservableList<String> fetchUnit() throws Exception
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet resultSet = null;
+		ObservableList<String> list = FXCollections.observableArrayList();
 		
-		public ObservableList<String> fetchUnit() throws Exception
+		
+		Class.forName(CommonConstants.DRIVERNAME);
+		
+		String sDbUrl = CommonConstants.sJdbc + ":" + CommonConstants.DB_LOCATION + CommonConstants.sTempDb;
+		
+		try 
 		{
-			Connection conn = null;
-			PreparedStatement pstmt = null;
-			ResultSet resultSet = null;
-			ObservableList<String> list = FXCollections.observableArrayList();
+			conn = DriverManager.getConnection(sDbUrl);
+			pstmt = conn.prepareStatement(SQLConstants.FETCH_STATIC_UNIT);
 			
+			pstmt.setQueryTimeout(CommonConstants.TIMEOUT);
+			resultSet = pstmt.executeQuery();
 			
-			Class.forName(CommonConstants.DRIVERNAME);
-			
-			String sDbUrl = CommonConstants.sJdbc + ":" + CommonConstants.DB_LOCATION + CommonConstants.sTempDb;
-			
-			try 
+			while(resultSet.next())
 			{
-				conn = DriverManager.getConnection(sDbUrl);
-				pstmt = conn.prepareStatement(SQLConstants.FETCH_STATIC_UNIT);
-				
-				pstmt.setQueryTimeout(CommonConstants.TIMEOUT);
-				resultSet = pstmt.executeQuery();
-				
-				while(resultSet.next())
-				{
-					list.add(resultSet.getString(1));
-				}
+				list.add(resultSet.getString(1));
 			}
-			catch (Exception e) 
-			{
-				e.printStackTrace();
-			}
-			finally
-			{
-				if(conn !=null )
-				{
-					conn.close();
-				}
-				if(pstmt != null )
-				{
-					pstmt.close();
-				}
-				if(resultSet != null)
-				{
-					resultSet.close();
-				}
-			}
-			return list;
 		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			if(conn !=null )
+			{
+				conn.close();
+			}
+			if(pstmt != null )
+			{
+				pstmt.close();
+			}
+			if(resultSet != null)
+			{
+				resultSet.close();
+			}
+		}
+		return list;
 	}
+}

@@ -58,84 +58,112 @@ public class MainWindow extends Application
     	}
     }
     
-    /*
-     * Creates an HBox with two buttons for the top region
-     */
-        
-        private HBox addHBox() {
+    
+    /*Create Method <function name><return type><comments>
+	 * <Creator Name><Date Of Creation MM-dd-yyyy>
+	 * 
+	 * <addHBox()><HBox><Horizontal pane to be placed on the top>
+	 * <Abhinay Agarwal><12-10-2012>
+	 * 
+	 * */
+	/**Modification Log
+	 * 
+	 * <Date> <Name> <Comments>
+	 * 
+	 */    
+    private HBox addHBox() 
+    {
 
-        	javafx.scene.layout.
-            HBox hbox = new HBox();
-            hbox.setPadding(new Insets(15, 12, 15, 12));
-            hbox.setSpacing(10);   // Gap between nodes
-            hbox.setStyle("-fx-background-color: #336699;");
+    	javafx.scene.layout.
+        HBox hbox = new HBox();
+        hbox.setPadding(new Insets(15, 12, 15, 12));
+        hbox.setSpacing(10);   // Gap between nodes
+        hbox.setStyle("-fx-background-color: #336699;");
 
-            Button inventoryButton = new Button("Inventory");
-            inventoryButton.setPrefSize(100, 50);
+        Button inventoryButton = new Button("Inventory");
+        inventoryButton.setPrefSize(100, 50);
 
-            Button ordersButton = new Button("Orders");
-            ordersButton.setPrefSize(100, 50);
-            
-            Button accountButton = new Button("Accounts");
-            accountButton.setPrefSize(100, 50);
-            
-            hbox.getChildren().addAll(inventoryButton, ordersButton, accountButton);
-            
-            ordersButton.setOnAction(new EventHandler<ActionEvent>() {
-				
-				@Override
-				public void handle(ActionEvent e) 
-				{
-					border.setLeft(new Orders().addVBox(border));
+        Button ordersButton = new Button("Orders");
+        ordersButton.setPrefSize(100, 50);
+        
+        Button accountButton = new Button("Accounts");
+        accountButton.setPrefSize(100, 50);
+        
+        hbox.getChildren().addAll(inventoryButton, ordersButton, accountButton);
+        
+        ordersButton.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent e) 
+			{
+				border.setLeft(new Orders().addVBox(border));
+			}
+		});
+        
+        inventoryButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) 
+			{
+				border.setLeft(new Inventory().addVBox(border));
+			}
+		});
+        
+        accountButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) 
+			{
+				try {
+					System.out.println(new InventoryDAO().fetchProduction().get(1));
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-			});
-            
-            inventoryButton.setOnAction(new EventHandler<ActionEvent>() {
-				@Override
-				public void handle(ActionEvent arg0) 
-				{
-					border.setLeft(new Inventory().addVBox(border));
-				}
-			});
-            
-            accountButton.setOnAction(new EventHandler<ActionEvent>() {
-				@Override
-				public void handle(ActionEvent arg0) 
-				{
-					try {
-						System.out.println(new InventoryDAO().fetchProduction().get(1));
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			});
-            
-            return hbox;
-        }
+			}
+		});
+        
+        return hbox;
+    }
         
         
         
-        /*
-         * Creates a VBox with a list of links for the left region
-         */
-            private VBox addVBox() 
-            {
-                VBox vbox = new VBox();
-                vbox.setPadding(new Insets(10)); // Set all sides to 10
-                vbox.setSpacing(8);              // Gap between nodes
-                return vbox;
-            }
-            
-            /*
-             * Creates a grid for the center region with four columns and three rows
-             */
-                private GridPane addGridPane() 
-                {
-                    GridPane grid = new GridPane();
-                    grid.setHgap(10);
-                    grid.setVgap(10);
-                    grid.setPadding(new Insets(300));
-                    return grid;
-                }
+    /*Create Method <function name><return type><comments>
+	 * <Creator Name><Date Of Creation MM-dd-yyyy>
+	 * 
+	 * <addVBox()><VBox><Vertical pane to be placed on the left>
+	 * <Abhinay Agarwal><12-10-2012>
+	 * 
+	 * */
+	/**Modification Log
+	 * 
+	 * <Date> <Name> <Comments>
+	 * 
+	 */    
+    private VBox addVBox() 
+    {
+        VBox vbox = new VBox();
+        vbox.setPadding(new Insets(10)); // Set all sides to 10
+        vbox.setSpacing(8);              // Gap between nodes
+        return vbox;
+    }
+        
+    /*Create Method <function name><return type><comments>
+  	 * <Creator Name><Date Of Creation MM-dd-yyyy>
+  	 * 
+  	 * <addGridPane()><GridPane><Grid pane to be placed on the center>
+  	 * <Abhinay Agarwal><12-10-2012>
+  	 * 
+  	 * */
+  	/**Modification Log
+  	 * 
+  	 * <Date> <Name> <Comments>
+  	 * 
+  	 */    
+    private GridPane addGridPane() 
+    {
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(300));
+        return grid;
+    }
 }

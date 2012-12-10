@@ -43,7 +43,21 @@ public class Inventory
 	{
 		inventoryService = new InventoryService();
 	}
-	 @SuppressWarnings("unchecked")
+	
+	
+	/*Create Method <function name><return type><comments>
+	 * <Creator Name><Date Of Creation MM-dd-yyyy>
+	 * 
+	 * <addVBox(BorderPane)><VBox><Vertical pane to be placed on the LHS>
+	 * <Abhinay Agarwal><12-10-2012>
+	 * 
+	 * */
+	/**Modification Log
+	 * 
+	 * <Date> <Name> <Comments>
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
 	public VBox addVBox(final BorderPane border) 
      {
 		 VBox vbox = new VBox();;
@@ -134,6 +148,19 @@ public class Inventory
          return vbox;
      }
 	 
+	
+	/*Create Method <function name><return type><comments>
+	 * <Creator Name><Date Of Creation MM-dd-yyyy>
+	 * 
+	 * <AddRawMaterial()><GridPane><Grid pane to be placed on the center for adding raw materials>
+	 * <Abhinay Agarwal><12-10-2012>
+	 * 
+	 * */
+	/**Modification Log
+	 * 
+	 * <Date> <Name> <Comments>
+	 * 
+	 */
 	 public GridPane AddRawMaterial() throws Exception
 		{
 		 try
@@ -202,6 +229,18 @@ public class Inventory
 		}
 	 
 	 
+	 /*Create Method <function name><return type><comments>
+		 * <Creator Name><Date Of Creation MM-dd-yyyy>
+		 * 
+		 * <DeleteRawMaterial()><GridPane><Grid pane to be placed on the center for deleting raw materials>
+		 * <Abhinay Agarwal><12-10-2012>
+		 * 
+		 * */
+		/**Modification Log
+		 * 
+		 * <Date> <Name> <Comments>
+		 * 
+		 */
 	 	public GridPane DeleteRawMaterial() throws Exception
 		{
 	 		try
@@ -251,6 +290,19 @@ public class Inventory
 		    return grid;
 		}
 	 	
+	 	
+	 	/*Create Method <function name><return type><comments>
+		 * <Creator Name><Date Of Creation MM-dd-yyyy>
+		 * 
+		 * <AddFinishedProduct()><GridPane><Grid pane to be placed on the center for adding finished products>
+		 * <Abhinay Agarwal><12-10-2012>
+		 * 
+		 * */
+		/**Modification Log
+		 * 
+		 * <Date> <Name> <Comments>
+		 * 
+		 */
 	 	public GridPane AddFinishedProduct()
 		{
 			grid = new GridPane();
@@ -330,6 +382,19 @@ public class Inventory
 		    return grid;
 		}
 	 	
+	 	
+	 	/*Create Method <function name><return type><comments>
+		 * <Creator Name><Date Of Creation MM-dd-yyyy>
+		 * 
+		 * <viewFinishedProduct()><GridPane><Grid pane/ Table to be placed on the center for viewing finished products>
+		 * <Abhinay Agarwal><12-10-2012>
+		 * 
+		 * */
+		/**Modification Log
+		 * 
+		 * <Date> <Name> <Comments>
+		 * 
+		 */
 	 	@SuppressWarnings("unchecked")
 		public GridPane viewFinishedProduct()
 		{

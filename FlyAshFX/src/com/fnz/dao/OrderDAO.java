@@ -17,6 +17,19 @@ import com.fnz.common.SQLConstants;
 
 public class OrderDAO 
 {
+	
+	/*Create Method <function name><return type><comments>
+	 * <Creator Name><Date Of Creation MM-dd-yyyy>
+	 * 
+	 * <addOrder(CustomerVO, OrderVO)><void><add an client order to DB>
+	 * <Abhinay Agarwal><12-10-2012>
+	 * 
+	 * */
+	/**Modification Log
+	 * 
+	 * <Date> <Name> <Comments>
+	 * 
+	 */
 	public void addOrder(CustomerVO customerVO, OrderVO orderVO) throws Exception 
 	{
 		Connection conn = null;
@@ -78,6 +91,18 @@ public class OrderDAO
 		}
 	}
 
+	/*Create Method <function name><return type><comments>
+	 * <Creator Name><Date Of Creation MM-dd-yyyy>
+	 * 
+	 * <viewOrder()><ObservableList<OrderVO>><view an client order from DB>
+	 * <Abhinay Agarwal><12-10-2012>
+	 * 
+	 * */
+	/**Modification Log
+	 * 
+	 * <Date> <Name> <Comments>
+	 * 
+	 */
 	public ObservableList<OrderVO> viewOrder() throws Exception
 	{
 		Connection conn = null;

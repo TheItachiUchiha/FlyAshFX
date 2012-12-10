@@ -48,6 +48,20 @@ public class Orders
 	{
 		orderService = new OrderService();
 	}
+	
+	
+	/*Create Method <function name><return type><comments>
+	 * <Creator Name><Date Of Creation MM-dd-yyyy>
+	 * 
+	 * <addVBox()><VBox><Vertical pane to be placed on the LHS>
+	 * <Abhinay Agarwal><12-10-2012>
+	 * 
+	 * */
+	/**Modification Log
+	 * 
+	 * <Date> <Name> <Comments>
+	 * 
+	 */
 	@SuppressWarnings("unchecked")
 	public VBox addVBox(final BorderPane border) 
     {
@@ -138,7 +152,18 @@ public class Orders
 	    return grid;
 	}
 	
-	
+	/*Create Method <function name><return type><comments>
+	 * <Creator Name><Date Of Creation MM-dd-yyyy>
+	 * 
+	 * <ClientPlaceOrder()><GridPane><Grid to place client Order>
+	 * <Abhinay Agarwal><12-10-2012>
+	 * 
+	 * */
+	/**Modification Log
+	 * 
+	 * <Date> <Name> <Comments>
+	 * 
+	 */
 	public GridPane ClientPlaceOrder()
 	{
 		grid = new GridPane();
@@ -298,6 +323,19 @@ public class Orders
 	    return grid;
 	}
 	
+	
+	/*Create Method <function name><return type><comments>
+	 * <Creator Name><Date Of Creation MM-dd-yyyy>
+	 * 
+	 * <ClientEditOrder()><GridPane><Grid to edit client Order>
+	 * <Abhinay Agarwal><12-10-2012>
+	 * 
+	 * */
+	/**Modification Log
+	 * 
+	 * <Date> <Name> <Comments>
+	 * 
+	 */
 	public GridPane ClientEditOrder()
 	{
 		grid = new GridPane();
@@ -321,6 +359,19 @@ public class Orders
 	    return grid;
 	}
 	
+	
+	/*Create Method <function name><return type><comments>
+	 * <Creator Name><Date Of Creation MM-dd-yyyy>
+	 * 
+	 * <ClientCancelOrder()><GridPane><Grid to cancel client Order>
+	 * <Abhinay Agarwal><12-10-2012>
+	 * 
+	 * */
+	/**Modification Log
+	 * 
+	 * <Date> <Name> <Comments>
+	 * 
+	 */
 	public GridPane ClientCancelOrder()
 	{
 		grid = new GridPane();
@@ -345,7 +396,18 @@ public class Orders
 	}
 	
 	
-	
+	/*Create Method <function name><return type><comments>
+	 * <Creator Name><Date Of Creation MM-dd-yyyy>
+	 * 
+	 * <VendorPlaceOrder()><GridPane><Grid to add vendor Order>
+	 * <Abhinay Agarwal><12-10-2012>
+	 * 
+	 * */
+	/**Modification Log
+	 * 
+	 * <Date> <Name> <Comments>
+	 * 
+	 */
 	public GridPane VendorPlaceOrder()
 	{
 		grid = new GridPane();
@@ -440,6 +502,19 @@ public class Orders
 	    return grid;
 	}
 	
+	
+	/*Create Method <function name><return type><comments>
+	 * <Creator Name><Date Of Creation MM-dd-yyyy>
+	 * 
+	 * <VendorEditOrder()><GridPane><Grid to edit Order>
+	 * <Abhinay Agarwal><12-10-2012>
+	 * 
+	 * */
+	/**Modification Log
+	 * 
+	 * <Date> <Name> <Comments>
+	 * 
+	 */
 	public GridPane VendorEditOrder()
 	{
 		grid = new GridPane();
@@ -463,6 +538,18 @@ public class Orders
 	    return grid;
 	}
 	
+	/*Create Method <function name><return type><comments>
+	 * <Creator Name><Date Of Creation MM-dd-yyyy>
+	 * 
+	 * <VendorCancelOrder()><GridPane><Grid to view cancel Order>
+	 * <Abhinay Agarwal><12-10-2012>
+	 * 
+	 * */
+	/**Modification Log
+	 * 
+	 * <Date> <Name> <Comments>
+	 * 
+	 */
 	public GridPane VendorCancelOrder()
 	{
 		grid = new GridPane();
@@ -486,7 +573,18 @@ public class Orders
 	    return grid;
 	}
 	
-	
+	/*Create Method <function name><return type><comments>
+	 * <Creator Name><Date Of Creation MM-dd-yyyy>
+	 * 
+	 * <viewOrder()><GridPane><Table to view Client Order>
+	 * <Abhinay Agarwal><12-10-2012>
+	 * 
+	 * */
+	/**Modification Log
+	 * 
+	 * <Date> <Name> <Comments>
+	 * 
+	 */
 	public GridPane viewOrder()
 	{
  		ObservableList<OrderVO> dataTable;
