@@ -6,11 +6,8 @@ public class VendorVO
 	private String vendorAddress;
 	private String vendorPhone;
 	private String vendorEmail;
-	private String quantity;
-	private String amount;
-	private String advance;
-	private String deliveryDate;
-	private String status;
+	
+	
 	public String getVendorName() {
 		return vendorName;
 	}
@@ -35,36 +32,5 @@ public class VendorVO
 	public void setVendorEmail(String vendorEmail) {
 		this.vendorEmail = vendorEmail;
 	}
-	public String getQuantity() {
-		return quantity;
-	}
-	public void setQuantity(String quantity) {
-		this.quantity = quantity;
-	}
-	public String getAmount() {
-		return amount;
-	}
-	public void setAmount(String amount) {
-		this.amount = amount;
-	}
-	public String getAdvance() {
-		return advance;
-	}
-	public void setAdvance(String advance) {
-		this.advance = advance;
-	}
-	public String getDeliveryDate() {
-		return deliveryDate;
-	}
-	public void setDeliveryDate(String deliveryDate) {
-		this.deliveryDate = deliveryDate;
-	}
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
-	}
-	
 	
 }

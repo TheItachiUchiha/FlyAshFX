@@ -1,11 +1,18 @@
 package com.fnz.UI;
 
 
+import com.fnz.VO.CustomerVO;
+import com.fnz.VO.FinshedProductVO;
+import com.fnz.VO.OrderVO;
+import com.fnz.service.InventoryService;
+import com.fnz.service.OrderService;
+import com.sai.javafx.calendar.FXCalendar;
 import com.sun.javafx.scene.layout.region.Border;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -13,15 +20,21 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.util.Callback;
@@ -29,6 +42,12 @@ import javafx.util.Callback;
 public class Orders 
 {
 	GridPane grid;
+	OrderService orderService;
+	
+	public Orders()
+	{
+		orderService = new OrderService();
+	}
 	@SuppressWarnings("unchecked")
 	public VBox addVBox(final BorderPane border) 
     {
@@ -38,7 +57,7 @@ public class Orders
         vbox.setSpacing(8);              // Gap between nodes
 
         
-        TreeItem<String> itemClient = new TreeItem<String> ("Client");
+        final TreeItem<String> itemClient = new TreeItem<String> ("Client");
         itemClient.setExpanded(false);
        
         final TreeItem<String> itemClient1 = new TreeItem<String> ("Place Order");            
@@ -78,7 +97,11 @@ public class Orders
         	   public void changed(ObservableValue<? extends TreeItem<String>> observable, TreeItem<String> oldValue, TreeItem<String> newValue) {
         	      System.out.println("Selection: " + newValue);
         	      // Add your stuff here
-        	      if(newValue.equals(itemClient1))
+        	      if (newValue.equals(itemClient))
+        	      {
+        	    	  border.setCenter(viewOrder());
+        	      }
+        	      else if(newValue.equals(itemClient1))
 				  {
         	    	  border.setCenter(ClientPlaceOrder());
 				  }
@@ -129,7 +152,7 @@ public class Orders
 	    grid.add(nameLabel, 1, 2); 
 
 	    
-	    TextField nameText = new TextField();
+	    final TextField nameText = new TextField();
 	    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    grid.add(nameText, 2, 2);
 	    
@@ -138,7 +161,7 @@ public class Orders
 	    grid.add(addressLabel, 1, 3); 
 
 	    
-	    TextField addText = new TextField();
+	    final TextField addText = new TextField();
 	    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    grid.add(addText, 2, 3);
 	    
@@ -147,7 +170,7 @@ public class Orders
 	    grid.add(phoneLabel, 1, 4); 
 
 	    
-	    TextField phoneText = new TextField();
+	    final TextField phoneText = new TextField();
 	    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    grid.add(phoneText, 2, 4);
 	    
@@ -156,7 +179,7 @@ public class Orders
 	    grid.add(emailLabel, 1, 5); 
 
 	    
-	    TextField emailText = new TextField();
+	    final TextField emailText = new TextField();
 	    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    grid.add(emailText, 2, 5);
 	    
@@ -165,7 +188,7 @@ public class Orders
 	    grid.add(quantityLabel, 1, 6); 
 
 	    
-	    TextField quantityText = new TextField();
+	    final TextField quantityText = new TextField();
 	    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    grid.add(quantityText, 2, 6);
 	    
@@ -174,16 +197,16 @@ public class Orders
 	    grid.add(amountLabel, 1, 7); 
 
 	    
-	    TextField amountText = new TextField();
+	    final TextField amountText = new TextField();
 	    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    grid.add(amountText, 2, 7);
 	    
-	    Label advanceLabel = new Label("Adavance Received");
+	    Label advanceLabel = new Label("Advance Received");
 	    //advanceLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    grid.add(advanceLabel, 1, 8); 
 
 	    
-	    TextField advText = new TextField();
+	    final TextField advText = new TextField();
 	    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    grid.add(advText, 2, 8);
 	     	 	
@@ -192,20 +215,85 @@ public class Orders
 	    grid.add(eddLabel, 1, 9); 
 
 	    
-	    TextField eddText = new TextField();
+	    final FXCalendar eddText = new FXCalendar();
 	    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    grid.add(eddText, 2, 9);
+	    
+	    Label statusLabel = new Label("Status");
+	    //eddLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+	    grid.add(statusLabel, 1, 10); 
+
+	    
+	    final ToggleGroup group = new ToggleGroup();
+	    RadioButton rb1 = new RadioButton("Pending");
+	    rb1.setUserData("Pending");
+	    rb1.setToggleGroup(group);
+	    rb1.setSelected(true);
+	    RadioButton rb2 = new RadioButton("Partially Delivered");
+	    rb1.setUserData("Partially Delivered");
+	    rb2.setToggleGroup(group);
+	    RadioButton rb3 = new RadioButton("Delivered");
+	    rb1.setUserData("Delivered");
+	    rb3.setToggleGroup(group);
+	    grid.add(rb1, 2, 10);
+	    grid.add(rb2, 3, 10);
+	    grid.add(rb3, 4, 10);
 	    
 	    Button submit = new Button("Accept Order");
 	    grid.add(submit,1,11);
 
 	    Button cancel = new Button("Cancel");
 	    grid.add(cancel,2,11);
-
-	    // Right label in column 4 (top), row 3
-	    //Text servicesPercent = new Text("Services\n20%");
+	    
 	    grid.setAlignment(Pos.CENTER);
 	    //grid.add(servicesPercent, 3, 2);
+	    
+	    submit.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0)
+			{
+				try
+				{
+					CustomerVO customerVO = new CustomerVO();
+					customerVO.setCustomerName(nameText.getText());
+					customerVO.setCustomerAddress(addText.getText());
+					customerVO.setCustomerPhone(phoneText.getText());
+					customerVO.setCustomerEmail(emailText.getText());
+					
+					OrderVO orderVO = new OrderVO();
+					orderVO.setCustomerName(nameText.getText());
+					orderVO.setOrderQuantity(quantityText.getText());
+					orderVO.setAmount(amountText.getText());
+					orderVO.setAdvance(advText.getText());
+					orderVO.setDod(eddText.getTextField().getText());
+					orderVO.setStatus(group.getSelectedToggle().getUserData().toString());
+					
+					
+					/*if("".equals(rawMaterialName.getText())||rawMaterialName.getText().equals(null))
+					{
+						Label msg = new Label("Cannot be Empty");
+						msg.setTextFill(Color.RED);
+						grid.add(msg,4,1);
+					}*/
+					/*else if("".equals(cb.getValue())||cb.getValue().equals(null))
+					{
+						Label msg = new Label("Please select one Unit");
+						msg.setTextFill(Color.RED);
+						grid.add(msg,4,2);
+					}*/
+					//else
+					//{
+						orderService.addOrder(customerVO, orderVO);
+						Label msg = new Label("Successfully Added !!!");
+						msg.setTextFill(Color.RED);
+						grid.add(msg,2,13);
+					//}
+				} catch (Exception e) 
+				{
+					e.printStackTrace();
+				}
+			}
+		});
 	    
 	    return grid;
 	}
@@ -220,7 +308,7 @@ public class Orders
 		Label selectOrder = new Label("Select Order");
 		grid.add(selectOrder,1,1);
 		
-		ChoiceBox cb = new ChoiceBox(FXCollections.observableArrayList(
+		ChoiceBox<String> cb = new ChoiceBox<String>(FXCollections.observableArrayList(
 				"First", "Second", "Third")
 				);
 		grid.add(cb,3,1);
@@ -243,7 +331,7 @@ public class Orders
 		Label selectOrder = new Label("Select Order");
 		grid.add(selectOrder,1,1);
 		
-		ChoiceBox cb = new ChoiceBox(FXCollections.observableArrayList(
+		ChoiceBox<String> cb = new ChoiceBox<String>(FXCollections.observableArrayList(
 				"First", "Second", "Third")
 				);
 		grid.add(cb,3,1);
@@ -255,11 +343,6 @@ public class Orders
 	    
 	    return grid;
 	}
-	
-	
-	
-	
-	
 	
 	
 	
@@ -339,7 +422,7 @@ public class Orders
 	    grid.add(eddLabel, 1, 9); 
 
 	    
-	    TextField eddText = new TextField();
+	    FXCalendar eddText = new FXCalendar();
 	    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    grid.add(eddText, 2, 9);
 	    
@@ -367,7 +450,7 @@ public class Orders
 		Label selectOrder = new Label("Select Order");
 		grid.add(selectOrder,1,1);
 		
-		ChoiceBox cb = new ChoiceBox(FXCollections.observableArrayList(
+		ChoiceBox<String> cb = new ChoiceBox<String>(FXCollections.observableArrayList(
 				"First", "Second", "Third")
 				);
 		grid.add(cb,3,1);
@@ -404,7 +487,71 @@ public class Orders
 	}
 	
 	
-	
+	public GridPane viewOrder()
+	{
+ 		ObservableList<OrderVO> dataTable;
+ 				
+		grid = new GridPane();
+		grid.setHgap(10);
+        grid.setVgap(8);
+        grid.setPadding(new Insets(30));
+ 	
+        try
+        {
+        	dataTable = FXCollections.observableArrayList();
+        	dataTable = orderService.viewOrder();
+    
+		 	final Label label = new Label("Client Orders");
+		 	label.setFont(new Font("Arial", 20));
+		 	grid.add(label,1,1);
+		 	
+		 	TableView<OrderVO> table = new TableView<OrderVO>();
+		 	table.setEditable(false);
+		 	//table.setPrefSize(1000, 1000);
+		 	
+		 	TableColumn dateOfOrder = new TableColumn("Date Of Order");
+		 	dateOfOrder.setMinWidth(150);
+		 	dateOfOrder.setCellValueFactory(
+		 			new PropertyValueFactory<FinshedProductVO, String>("date"));
+		 	TableColumn customerName = new TableColumn("Customer Name");
+		 	customerName.setMinWidth(150);
+		 	customerName.setCellValueFactory(
+		 			new PropertyValueFactory<FinshedProductVO, String>("customerName"));
+		 	TableColumn orderQuantity = new TableColumn("Order Quantity");
+		 	orderQuantity.setMinWidth(150);
+		 	orderQuantity.setCellValueFactory(
+		 			new PropertyValueFactory<FinshedProductVO, String>("orderQuantity"));
+		 	TableColumn amount = new TableColumn("Amount Received");
+		 	amount.setMinWidth(150);
+		 	amount.setCellValueFactory(
+		 			new PropertyValueFactory<FinshedProductVO, String>("amount"));
+		 	TableColumn advance = new TableColumn("Advance Received");
+		 	advance.setMinWidth(150);
+		 	advance.setCellValueFactory(
+		 			new PropertyValueFactory<FinshedProductVO, String>("advance"));
+		 	TableColumn dod = new TableColumn("Date Of Delivery");
+		 	dod.setMinWidth(150);
+		 	dod.setCellValueFactory(
+		 			new PropertyValueFactory<FinshedProductVO, String>("dod"));
+		 	TableColumn status = new TableColumn("Status");
+		 	status.setMinWidth(150);
+		 	status.setCellValueFactory(
+		 			new PropertyValueFactory<FinshedProductVO, String>("status"));
+		 	
+		 	table.setItems(dataTable);
+		 	table.getColumns().addAll(dateOfOrder, customerName, orderQuantity, amount, advance, dod, status);
+		 	
+		 	grid.setAlignment(Pos.TOP_LEFT);
+		 	
+		 	grid.add(table,1,3);
+        }
+        catch(Exception e)
+        {
+        	e.printStackTrace();
+        }
+	 	
+	 	return grid;
+	}
 	
 	
 	

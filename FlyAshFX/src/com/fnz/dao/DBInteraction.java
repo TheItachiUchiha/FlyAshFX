@@ -5,10 +5,17 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.ChoiceBox;
+
 import com.fnz.exception.DataAlreadyExistException;
+import com.fnz.VO.FinshedProductVO;
 import com.fnz.common.CommonConstants;
 import com.fnz.common.SQLConstants;
 
@@ -37,9 +44,13 @@ public class DBInteraction
 			stmt = conn.createStatement();
 			
 				stmt.setQueryTimeout(CommonConstants.TIMEOUT);
-				//stmt.execute("drop table RAW_MATERIALS");
+				stmt.execute(SQLConstants.CREATE_STATIC_UNIT);
 				stmt.executeUpdate( SQLConstants.CREATE_DB_RAW_MATERIALS );
 				stmt.executeUpdate( SQLConstants.CREATE_DB_RAW_MATERIALS_INVENTORY );
+				stmt.execute(SQLConstants.INSERT_STATIC_UNIT);
+				stmt.execute(SQLConstants.CREATE_PRODUCTION_INVENTORY);
+				stmt.execute(SQLConstants.CREATE_CUSTOMER);
+				stmt.execute(SQLConstants.CREATE_CLIENT_ORDER);
 		}
 		catch (Exception e) 
 		{
@@ -59,49 +70,16 @@ public class DBInteraction
 		}
 	}	
 	
-	public void insertRawMaterials(String rawMaterial) throws Exception
-	{
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		Class.forName(CommonConstants.DRIVERNAME);
+	
 		
-		String sDbUrl = CommonConstants.sJdbc + ":" + CommonConstants.DB_LOCATION + CommonConstants.sTempDb;
 		
-		try 
-		{
-			conn = DriverManager.getConnection(sDbUrl);
-			pstmt = conn.prepareStatement(SQLConstants.INSERT_DB_RAW_MATERIALS);
-			
-			pstmt.setQueryTimeout(CommonConstants.TIMEOUT);
-				
-			pstmt.setString(1, rawMaterial);
-			pstmt.execute();
-		}
-		catch (Exception e) 
-		{
-			throw new DataAlreadyExistException();
-		}
-		finally
-		{
-			if(conn !=null )
-			{
-				conn.close();
-			}
-			if(pstmt != null )
-			{
-				pstmt.close();
-			}
 		
-		}
-	}
-		
-		@SuppressWarnings("finally")
-		public List<String> fetchRawMaterials() throws Exception
+		public ObservableList<String> fetchUnit() throws Exception
 		{
 			Connection conn = null;
 			PreparedStatement pstmt = null;
 			ResultSet resultSet = null;
-			List<String> list = new ArrayList<String>();
+			ObservableList<String> list = FXCollections.observableArrayList();
 			
 			
 			Class.forName(CommonConstants.DRIVERNAME);
@@ -111,7 +89,7 @@ public class DBInteraction
 			try 
 			{
 				conn = DriverManager.getConnection(sDbUrl);
-				pstmt = conn.prepareStatement(SQLConstants.FETCH_DB_RAW_MATERIALS);
+				pstmt = conn.prepareStatement(SQLConstants.FETCH_STATIC_UNIT);
 				
 				pstmt.setQueryTimeout(CommonConstants.TIMEOUT);
 				resultSet = pstmt.executeQuery();
@@ -139,7 +117,7 @@ public class DBInteraction
 				{
 					resultSet.close();
 				}
-				return list;
 			}
+			return list;
 		}
 	}

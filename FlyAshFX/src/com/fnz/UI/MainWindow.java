@@ -1,21 +1,19 @@
 package com.fnz.UI;
 
+import com.fnz.dao.DBInteraction;
+import com.fnz.dao.InventoryDAO;
+import com.sai.javafx.calendar.demo.FXCalendarDemo;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -34,16 +32,18 @@ public class MainWindow extends Application
     }
     
     @Override
-    public void start(Stage stage) {
-
+    public void start(Stage stage)
+    {
+    	try{
 
 // Use a border pane as the root for scene
+    	new DBInteraction().createDB();
         border = new BorderPane();
-        
         border.setTop(addHBox());
         border.setLeft(addVBox());
         border.setCenter(addGridPane());
         scene = new Scene(border);
+        scene.getStylesheets().add(FXCalendarDemo.class.getResource("/com/fnz/styles/calendar_styles.css").toExternalForm());
         stage.setX(0);
 	    stage.setY(0);
 	    stage.setWidth(Screen.getPrimary().getVisualBounds().getWidth());
@@ -51,6 +51,11 @@ public class MainWindow extends Application
 	    stage.setScene(this.scene);
         stage.setTitle("FlyAsh Automation");
         stage.show();
+    	}
+    	catch(Exception e)
+    	{
+    		e.printStackTrace();
+    	}
     }
     
     /*
@@ -79,17 +84,30 @@ public class MainWindow extends Application
             ordersButton.setOnAction(new EventHandler<ActionEvent>() {
 				
 				@Override
-				public void handle(ActionEvent e) {
-					
+				public void handle(ActionEvent e) 
+				{
 					border.setLeft(new Orders().addVBox(border));
-					//border.setCenter(new Orders().addGridPane());
 				}
 			});
             
             inventoryButton.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
-				public void handle(ActionEvent arg0) {
+				public void handle(ActionEvent arg0) 
+				{
 					border.setLeft(new Inventory().addVBox(border));
+				}
+			});
+            
+            accountButton.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent arg0) 
+				{
+					try {
+						System.out.println(new InventoryDAO().fetchProduction().get(1));
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			});
             
