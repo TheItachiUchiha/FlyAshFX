@@ -14,6 +14,7 @@ public class InventoryService
 	public InventoryService()
 	{
 		inventoryDAO = new InventoryDAO();
+		dbInteraction = new DBInteraction();
 	}
 	public void deleteRawMaterial(String rawMaterial)
 	{
@@ -33,6 +34,7 @@ public class InventoryService
 		try
 		{
 			list = dbInteraction.fetchUnit();
+			System.out.println("new "+ list);
 		}
 		catch (Exception e)
 		{

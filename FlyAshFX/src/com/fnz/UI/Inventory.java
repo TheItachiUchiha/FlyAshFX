@@ -40,9 +40,15 @@ public class Inventory
 	 
 	GridPane grid;
 	InventoryService inventoryService;
+	Label msg = new Label("Cannot be Empty");
+	Label successMsg = new Label("Added Successfully !");
 	public Inventory()
 	{
 		inventoryService = new InventoryService();
+		msg.setVisible(false);
+		successMsg.setVisible(false);
+		msg.setTextFill(Color.RED);
+		successMsg.setTextFill(Color.BLUE);
 	}
 	
 	
@@ -164,13 +170,15 @@ public class Inventory
 	 */
 	 public GridPane AddRawMaterial() throws Exception
 		{
-		
 		 try
 		 {
+			 msg.setVisible(false);
+			successMsg.setVisible(false);
 			grid = new GridPane();
 			grid.setHgap(10);
             grid.setVgap(8);
             grid.setPadding(new Insets(30));
+            
 			Label selectOrder = new Label("Enter Name of Raw Material");
 			grid.add(selectOrder,1,1);
 			
@@ -186,7 +194,10 @@ public class Inventory
 			
 			Button submit = new Button("Add");
 			grid.add(submit, 2, 5);
-		    
+			
+
+			grid.add(msg,2,7);
+			grid.add(successMsg,2,7);
 		    
 		    submit.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
@@ -194,31 +205,26 @@ public class Inventory
 				{
 					try
 					{
-						
-						 String strmsg;
+						System.out.println(cb.getValue());
 						
 						if("".equals(rawMaterialName.getText())||rawMaterialName.getText().equals(null))
 						{
-							//strmsg=new String("Cannot be empty");
-							//grid=addError(grid,"Cannot be empty",4,1);
-							Label msg = new Label("Cannot be Empty");
-							msg.setTextFill(Color.RED);
-							grid.add(msg,4,1);
+							msg.setVisible(true);
+							rawMaterialName.getStyleClass().add("error");
 						}
-						/*else if("".equals(cb.getValue())||cb.getValue().equals(null))
+						else if("".equals(cb.getValue())||cb.getValue()==null)
 						{
-							Label msg = new Label("Please select one Unit");
-							msg.setTextFill(Color.RED);
-							grid.add(msg,4,2);
-						}*/
+							msg.setVisible(true);
+							rawMaterialName.getStyleClass().remove("error");
+							cb.getStyleClass().add("error");
+						}
 						else
 						{
 							inventoryService.insertRawMaterials(rawMaterialName.getText(), cb.getValue());
-							//strmsg=new String("Cannot be empty");
-							//grid=addError(grid,"Cannot be empty",2,7);
-							Label msg = new Label("Successfully Added !!!");
-							msg.setTextFill(Color.RED);
-							grid.add(msg,2,7);
+							msg.setVisible(false);
+							successMsg.setVisible(true);
+							rawMaterialName.getStyleClass().remove("error");
+							cb.getStyleClass().remove("error");
 						}
 						
 						
@@ -259,43 +265,57 @@ public class Inventory
 		{
 	 		try
 	 		{
+	 			msg.setVisible(false);
+	 			successMsg.setVisible(false);
 	 			
-			grid = new GridPane();
-			grid.setHgap(10);
-			grid.setVgap(8);
-			grid.setPadding(new Insets(30));
-			
-			
-			
-			Label selectUnit = new Label("Select Raw Material");
-			grid.add(selectUnit,1,1);
-			
-			final ChoiceBox<String> cb = new ChoiceBox<String>(inventoryService.fetchRawMaterials());
-			grid.add(cb,3,1);
-			
-			Button submit = new Button("Delete");
-			grid.add(submit, 2, 5);
-			
-			submit.setOnAction(new EventHandler<ActionEvent>() {
-				@Override
-				public void handle(ActionEvent arg0)
-				{
-					try
+				grid = new GridPane();
+				grid.setHgap(10);
+				grid.setVgap(8);
+				grid.setPadding(new Insets(30));
+				
+				
+				
+				Label selectUnit = new Label("Select Raw Material");
+				grid.add(selectUnit,1,1);
+				
+				final ChoiceBox<String> cb = new ChoiceBox<String>(inventoryService.fetchRawMaterials());
+				grid.add(cb,3,1);
+				
+				Button submit = new Button("Delete");
+				grid.add(submit, 2, 5);
+				
+				grid.add(msg,2,7);
+				grid.add(successMsg, 2, 7);
+				
+				submit.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent arg0)
 					{
-						inventoryService.deleteRawMaterial(cb.getValue());
-						Label msg = new Label("Raw Material Deleted Added !!!");
-						msg.setTextFill(Color.RED);
-						grid.add(msg,2,7);
-					} catch (Exception e) 
-					{
-						e.printStackTrace();
+						try
+						{
+							if("".equals(cb.getValue())||cb.getValue()==null)
+							{
+								msg.setVisible(true);
+								cb.getStyleClass().add("error");
+							}
+							else
+							{
+								inventoryService.deleteRawMaterial(cb.getValue());
+								msg.setVisible(false);
+								cb.getStyleClass().remove("error");
+								successMsg.setText("Deleted Successfully !");
+								successMsg.setVisible(true);
+							}
+							
+						} catch (Exception e) 
+						{
+							e.printStackTrace();
+						}
 					}
-				}
-			});
-			
-		    grid.setAlignment(Pos.CENTER);
-		    //grid.add(servicesPercent, 3, 2);
-		    
+				});
+				
+			    grid.setAlignment(Pos.CENTER);
+			    
 	 		}
 	 		catch(Exception e)
 	 		{
@@ -319,7 +339,8 @@ public class Inventory
 		 */
 	 	public GridPane AddFinishedProduct()
 		{
-	 		
+	 		msg.setVisible(false);
+			successMsg.setVisible(false);
 			grid = new GridPane();
 			grid.setHgap(10);
             grid.setVgap(8);
@@ -342,67 +363,46 @@ public class Inventory
 			
 			final FXCalendar dateProduction = new FXCalendar(); 
 			grid.add(dateProduction,3,4);
-			//dateProduction.getStylesheets().add(FXCalendarDemo.class.getResource("/com/fnz/styles/calendar_styles.css").toExternalForm());
 			
 			Button submit = new Button("Add");
 			grid.add(submit, 2, 6);
 			
-			final Label LabelMessage = new Label("lllllllllllllllllllllllllll");
-			grid.add(LabelMessage, 2, 1);
-			LabelMessage.setVisible(false);
+			grid.add(msg, 2, 8);
+			grid.add(successMsg, 2, 8);
+
 			
 			submit.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent arg0)
 				{
-					Label msg=null;
+					//Label msg=null;
 					try
 					{
 						if("".equals(bricksProduced.getText())||bricksProduced.getText().equals(null))
 						{
-							
-							
-						//	msg = new Label("Cannot be Empty");
-						//	msg.setTextFill(Color.RED);
-							
 							bricksProduced.getStyleClass().add("error");
-							LabelMessage.setVisible(true);
-							LabelMessage.setText("Cannot be Empty");
-							
-							
-						//	grid.add(msg,4,1);
-							
+							msg.setVisible(true);
+							msg.setText("Cannot be Empty");
 						}
 						else if("".equals(storageLocation.getText())||storageLocation.getText().equals(null))
 						{
-							
-							//msg = new Label("Cannot be Empty");
-							//msg.setTextFill(Color.RED);
-							LabelMessage.setVisible(true);
-							LabelMessage.setText("Cannot be Empty");
+							msg.setVisible(true);
+							msg.setText("Cannot be Empty");
 							bricksProduced.getStyleClass().remove("error");
 							storageLocation.getStyleClass().add("error");
-							//grid.add(msg,4,2);
-							
 						}
 						else if("".equals(dateProduction.getTextField().getText())||dateProduction.getTextField().getText().equals(null))
 						{
-							//msg = new Label("Cannot be Empty");
-							//msg.setTextFill(Color.RED);
-							//grid.add(msg,4,3);
-							LabelMessage.setVisible(true);
-							LabelMessage.setText("Cannot be Empty");
+							msg.setVisible(true);
+							msg.setText("Cannot be Empty");
 							storageLocation.getStyleClass().remove("error");
 							dateProduction.getStyleClass().add("error");
 						}
 						else
 						{
-							LabelMessage.setVisible(true);
-							//inventoryService.addProduction(Integer.parseInt(bricksProduced.getText()),storageLocation.getText(),dateProduction.getTextField().getText());
-							LabelMessage.setText("Production Added Successfully !!!");
-							//msg = new Label("Production Added Successfully !!!");
-							//msg.setTextFill(Color.RED);
-							//grid.add(msg,2,7);
+							msg.setVisible(false);
+							successMsg.setVisible(true);
+							inventoryService.addProduction(Integer.parseInt(bricksProduced.getText()),storageLocation.getText(),dateProduction.getTextField().getText());
 							bricksProduced.getStyleClass().remove("error");
 							storageLocation.getStyleClass().remove("error");
 							dateProduction.getStyleClass().remove("error");
@@ -419,7 +419,6 @@ public class Inventory
 			
 			
 		    grid.setAlignment(Pos.CENTER);
-		    //grid.add(servicesPercent, 3, 2);
 		    
 		    return grid;
 		}
