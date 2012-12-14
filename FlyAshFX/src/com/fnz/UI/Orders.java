@@ -2,8 +2,9 @@ package com.fnz.UI;
 
 
 import com.fnz.VO.CustomerVO;
-import com.fnz.VO.FinshedProductVO;
 import com.fnz.VO.OrderVO;
+import com.fnz.VO.VendorVO;
+import com.fnz.common.CommonConstants;
 import com.fnz.service.InventoryService;
 import com.fnz.service.OrderService;
 import com.sai.javafx.calendar.FXCalendar;
@@ -126,6 +127,10 @@ public class Orders
         	      else if(newValue.equals(itemClient3))
 				  {
         	    	  border.setCenter(ClientCancelOrder());
+				  }
+        	      else if(newValue.equals(itemVendor))
+				  {
+        	    	  border.setCenter(viewVendorOrder());
 				  }
         	      else if(newValue.equals(itemVendor1))
 				  {
@@ -255,10 +260,10 @@ public class Orders
 	    rb1.setToggleGroup(group);
 	    rb1.setSelected(true);
 	    RadioButton rb2 = new RadioButton("Partially Delivered");
-	    rb1.setUserData("Partially Delivered");
+	    rb2.setUserData("Partially Delivered");
 	    rb2.setToggleGroup(group);
 	    RadioButton rb3 = new RadioButton("Delivered");
-	    rb1.setUserData("Delivered");
+	    rb3.setUserData("Delivered");
 	    rb3.setToggleGroup(group);
 	    grid.add(rb1, 2, 10);
 	    grid.add(rb2, 3, 10);
@@ -287,32 +292,19 @@ public class Orders
 					
 					OrderVO orderVO = new OrderVO();
 					orderVO.setCustomerName(nameText.getText());
-					orderVO.setOrderQuantity(quantityText.getText());
-					orderVO.setAmount(amountText.getText());
-					orderVO.setAdvance(advText.getText());
+					orderVO.setOrderQuantity(Integer.parseInt(quantityText.getText()));
+					orderVO.setOrderDelivered(CommonConstants.ZERO);
+					orderVO.setAmount(Double.parseDouble(amountText.getText()));
+					orderVO.setAdvance(Double.parseDouble(advText.getText()));
 					orderVO.setDod(eddText.getTextField().getText());
 					orderVO.setStatus(group.getSelectedToggle().getUserData().toString());
 					
 					
-					/*if("".equals(rawMaterialName.getText())||rawMaterialName.getText().equals(null))
-					{
-						Label msg = new Label("Cannot be Empty");
-						msg.setTextFill(Color.RED);
-						grid.add(msg,4,1);
-					}*/
-					/*else if("".equals(cb.getValue())||cb.getValue().equals(null))
-					{
-						Label msg = new Label("Please select one Unit");
-						msg.setTextFill(Color.RED);
-						grid.add(msg,4,2);
-					}*/
-					//else
-					//{
 						orderService.addOrder(customerVO, orderVO);
 						Label msg = new Label("Successfully Added !!!");
 						msg.setTextFill(Color.RED);
 						grid.add(msg,2,13);
-					//}
+					
 				} catch (Exception e) 
 				{
 					e.printStackTrace();
@@ -421,7 +413,7 @@ public class Orders
 	    grid.add(nameLabel, 1, 2); 
 
 	    
-	    TextField nameText = new TextField();
+	    final TextField nameText = new TextField();
 	    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    grid.add(nameText, 2, 2);
 	    
@@ -430,7 +422,7 @@ public class Orders
 	    grid.add(addressLabel, 1, 3); 
 
 	    
-	    TextField addText = new TextField();
+	    final TextField addText = new TextField();
 	    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    grid.add(addText, 2, 3);
 	    
@@ -439,7 +431,7 @@ public class Orders
 	    grid.add(phoneLabel, 1, 4); 
 
 	    
-	    TextField phoneText = new TextField();
+	    final TextField phoneText = new TextField();
 	    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    grid.add(phoneText, 2, 4);
 	    
@@ -448,7 +440,7 @@ public class Orders
 	    grid.add(emailLabel, 1, 5); 
 
 	    
-	    TextField emailText = new TextField();
+	    final TextField emailText = new TextField();
 	    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    grid.add(emailText, 2, 5);
 	    
@@ -457,7 +449,7 @@ public class Orders
 	    grid.add(quantityLabel, 1, 6); 
 
 	    
-	    TextField quantityText = new TextField();
+	    final TextField quantityText = new TextField();
 	    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    grid.add(quantityText, 2, 6);
 	    
@@ -466,7 +458,7 @@ public class Orders
 	    grid.add(amountLabel, 1, 7); 
 
 	    
-	    TextField amountText = new TextField();
+	    final TextField amountText = new TextField();
 	    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    grid.add(amountText, 2, 7);
 	    
@@ -475,7 +467,7 @@ public class Orders
 	    grid.add(advanceLabel, 1, 8); 
 
 	    
-	    TextField advText = new TextField();
+	    final TextField advText = new TextField();
 	    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    grid.add(advText, 2, 8);
 	     	 	
@@ -484,9 +476,25 @@ public class Orders
 	    grid.add(eddLabel, 1, 9); 
 
 	    
-	    FXCalendar eddText = new FXCalendar();
+	    final FXCalendar eddText = new FXCalendar();
 	    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    grid.add(eddText, 2, 9);
+	    
+	    
+	    final ToggleGroup group = new ToggleGroup();
+	    RadioButton rb1 = new RadioButton("Pending");
+	    rb1.setUserData("Pending");
+	    rb1.setToggleGroup(group);
+	    rb1.setSelected(true);
+	    RadioButton rb2 = new RadioButton("Partially Received");
+	    rb2.setUserData("Partially Received");
+	    rb2.setToggleGroup(group);
+	    RadioButton rb3 = new RadioButton("Received");
+	    rb3.setUserData("Received");
+	    rb3.setToggleGroup(group);
+	    grid.add(rb1, 2, 10);
+	    grid.add(rb2, 3, 10);
+	    grid.add(rb3, 4, 10);
 	    
 	    Button submit = new Button("Place Order");
 	    grid.add(submit,1,11);
@@ -499,6 +507,54 @@ public class Orders
 	    grid.setAlignment(Pos.CENTER);
 	    //grid.add(servicesPercent, 3, 2);
 	    
+	    
+	    submit.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0)
+			{
+				try
+				{
+					VendorVO vendorVO = new VendorVO();
+					vendorVO.setVendorName(nameText.getText());
+					vendorVO.setVendorAddress(addText.getText());
+					vendorVO.setVendorPhone(phoneText.getText());
+					vendorVO.setVendorEmail(emailText.getText());
+					
+					OrderVO orderVO = new OrderVO();
+					orderVO.setCustomerName(nameText.getText());
+					orderVO.setOrderQuantity(Integer.parseInt(quantityText.getText()));
+					orderVO.setOrderDelivered(CommonConstants.ZERO);
+					orderVO.setAmount(Double.parseDouble(amountText.getText()));
+					orderVO.setAdvance(Double.parseDouble(advText.getText()));
+					orderVO.setDod(eddText.getTextField().getText());
+					orderVO.setStatus(group.getSelectedToggle().getUserData().toString());
+					
+					
+					/*if("".equals(rawMaterialName.getText())||rawMaterialName.getText().equals(null))
+					{
+						Label msg = new Label("Cannot be Empty");
+						msg.setTextFill(Color.RED);
+						grid.add(msg,4,1);
+					}*/
+					/*else if("".equals(cb.getValue())||cb.getValue().equals(null))
+					{
+						Label msg = new Label("Please select one Unit");
+						msg.setTextFill(Color.RED);
+						grid.add(msg,4,2);
+					}*/
+					//else
+					//{
+						orderService.addVendorOrder(vendorVO, orderVO);
+						Label msg = new Label("Successfully Added !!!");
+						msg.setTextFill(Color.RED);
+						grid.add(msg,2,13);
+					//}
+				} catch (Exception e) 
+				{
+					e.printStackTrace();
+				}
+			}
+		});
 	    return grid;
 	}
 	
@@ -534,6 +590,8 @@ public class Orders
 		grid.add(submit, 2, 5);
 	    grid.setAlignment(Pos.CENTER);
 	    //grid.add(servicesPercent, 3, 2);
+	    
+	    
 	    
 	    return grid;
 	}
@@ -605,39 +663,53 @@ public class Orders
 		 	
 		 	TableView<OrderVO> table = new TableView<OrderVO>();
 		 	table.setEditable(false);
-		 	//table.setPrefSize(1000, 1000);
+		 	//table.setPrefSize(1250, 1250);
 		 	
 		 	TableColumn dateOfOrder = new TableColumn("Date Of Order");
-		 	dateOfOrder.setMinWidth(150);
+		 	dateOfOrder.setMinWidth(125);
 		 	dateOfOrder.setCellValueFactory(
-		 			new PropertyValueFactory<FinshedProductVO, String>("date"));
+		 			new PropertyValueFactory<OrderVO, String>("date"));
+		 	TableColumn orderNo = new TableColumn("Order No");
+		 	orderNo.setMinWidth(125);
+		 	orderNo.setCellValueFactory(
+		 			new PropertyValueFactory<OrderVO, String>("orderNo"));
 		 	TableColumn customerName = new TableColumn("Customer Name");
-		 	customerName.setMinWidth(150);
+		 	customerName.setMinWidth(125);
 		 	customerName.setCellValueFactory(
-		 			new PropertyValueFactory<FinshedProductVO, String>("customerName"));
+		 			new PropertyValueFactory<OrderVO, String>("customerName"));
 		 	TableColumn orderQuantity = new TableColumn("Order Quantity");
-		 	orderQuantity.setMinWidth(150);
+		 	orderQuantity.setMinWidth(125);
 		 	orderQuantity.setCellValueFactory(
-		 			new PropertyValueFactory<FinshedProductVO, String>("orderQuantity"));
+		 			new PropertyValueFactory<OrderVO, Integer>("orderQuantity"));
+		 	
+		 	TableColumn orderDelivered = new TableColumn("Order Delivered");
+		 	orderDelivered.setMinWidth(125);
+		 	orderDelivered.setCellValueFactory(
+		 			new PropertyValueFactory<OrderVO, Integer>("orderDelivered"));
+		 	
+		 	TableColumn orderPending = new TableColumn("Order Pending");
+		 	orderPending.setMinWidth(125);
+		 	orderPending.setCellValueFactory(
+		 			new PropertyValueFactory<OrderVO, Integer>("orderPending"));
 		 	TableColumn amount = new TableColumn("Amount Received");
-		 	amount.setMinWidth(150);
+		 	amount.setMinWidth(125);
 		 	amount.setCellValueFactory(
-		 			new PropertyValueFactory<FinshedProductVO, String>("amount"));
+		 			new PropertyValueFactory<OrderVO, Double>("amount"));
 		 	TableColumn advance = new TableColumn("Advance Received");
-		 	advance.setMinWidth(150);
+		 	advance.setMinWidth(125);
 		 	advance.setCellValueFactory(
-		 			new PropertyValueFactory<FinshedProductVO, String>("advance"));
+		 			new PropertyValueFactory<OrderVO, Double>("advance"));
 		 	TableColumn dod = new TableColumn("Date Of Delivery");
-		 	dod.setMinWidth(150);
+		 	dod.setMinWidth(125);
 		 	dod.setCellValueFactory(
-		 			new PropertyValueFactory<FinshedProductVO, String>("dod"));
+		 			new PropertyValueFactory<OrderVO, String>("dod"));
 		 	TableColumn status = new TableColumn("Status");
-		 	status.setMinWidth(150);
+		 	status.setMinWidth(125);
 		 	status.setCellValueFactory(
-		 			new PropertyValueFactory<FinshedProductVO, String>("status"));
+		 			new PropertyValueFactory<OrderVO, String>("status"));
 		 	
 		 	table.setItems(dataTable);
-		 	table.getColumns().addAll(dateOfOrder, customerName, orderQuantity, amount, advance, dod, status);
+		 	table.getColumns().addAll(dateOfOrder,orderNo, customerName, orderQuantity,orderDelivered,orderPending,amount, advance, dod, status);
 		 	
 		 	grid.setAlignment(Pos.TOP_LEFT);
 		 	
@@ -651,7 +723,95 @@ public class Orders
 	 	return grid;
 	}
 	
-	
+	/*Create Method <function name><return type><comments>
+	 * <Creator Name><Date Of Creation MM-dd-yyyy>
+	 * 
+	 * <viewOrder()><GridPane><Table to view Client Order>
+	 * <Abhinay Agarwal><12-10-2012>
+	 * 
+	 * */
+	/**Modification Log
+	 * 
+	 * <Date> <Name> <Comments>
+	 * 
+	 */
+	public GridPane viewVendorOrder()
+	{
+ 		ObservableList<OrderVO> dataTable;
+ 				
+		grid = new GridPane();
+		grid.setHgap(10);
+        grid.setVgap(8);
+        grid.setPadding(new Insets(30));
+ 	
+        try
+        {
+        	dataTable = FXCollections.observableArrayList();
+        	dataTable = orderService.viewVendorOrder();
+    
+		 	final Label label = new Label("Vendor Orders");
+		 	label.setFont(new Font("Arial", 20));
+		 	grid.add(label,1,1);
+		 	
+		 	TableView<OrderVO> table = new TableView<OrderVO>();
+		 	table.setEditable(false);
+		 	//table.setPrefSize(1250, 1250);
+		 	
+		 	TableColumn dateOfOrder = new TableColumn("Date Of Order");
+		 	dateOfOrder.setMinWidth(125);
+		 	dateOfOrder.setCellValueFactory(
+		 			new PropertyValueFactory<OrderVO, String>("date"));
+		 	TableColumn orderNo = new TableColumn("Purchase No");
+		 	orderNo.setMinWidth(125);
+		 	orderNo.setCellValueFactory(
+		 			new PropertyValueFactory<OrderVO, String>("orderNo"));
+		 	TableColumn customerName = new TableColumn("Vendor Name");
+		 	customerName.setMinWidth(125);
+		 	customerName.setCellValueFactory(
+		 			new PropertyValueFactory<OrderVO, String>("customerName"));
+		 	TableColumn orderQuantity = new TableColumn("Order Quantity");
+		 	orderQuantity.setMinWidth(125);
+		 	orderQuantity.setCellValueFactory(
+		 			new PropertyValueFactory<OrderVO, String>("orderQuantity"));
+		 	TableColumn orderDelivered = new TableColumn("Order Delivered");
+		 	orderDelivered.setMinWidth(125);
+		 	orderDelivered.setCellValueFactory(
+		 			new PropertyValueFactory<OrderVO, String>("orderDelivered"));
+		 	TableColumn orderPending = new TableColumn("Order Pending");
+		 	orderPending.setMinWidth(125);
+		 	orderPending.setCellValueFactory(
+		 			new PropertyValueFactory<OrderVO, String>("orderPending"));
+		 	TableColumn amount = new TableColumn("Amount Paid");
+		 	amount.setMinWidth(125);
+		 	amount.setCellValueFactory(
+		 			new PropertyValueFactory<OrderVO, String>("amount"));
+		 	TableColumn advance = new TableColumn("Advance Paid");
+		 	advance.setMinWidth(125);
+		 	advance.setCellValueFactory(
+		 			new PropertyValueFactory<OrderVO, String>("advance"));
+		 	TableColumn dod = new TableColumn("Date Of Delivery");
+		 	dod.setMinWidth(125);
+		 	dod.setCellValueFactory(
+		 			new PropertyValueFactory<OrderVO, String>("dod"));
+		 	TableColumn status = new TableColumn("Status");
+		 	status.setMinWidth(125);
+		 	status.setCellValueFactory(
+		 			new PropertyValueFactory<OrderVO, String>("status"));
+		 	
+		 	table.setItems(dataTable);
+		 	table.getColumns().addAll(dateOfOrder,orderNo, customerName, orderQuantity,orderDelivered,orderPending, amount, advance, dod, status);
+		 	
+		 	grid.setAlignment(Pos.TOP_LEFT);
+		 	
+		 	grid.add(table,1,3);
+        }
+        catch(Exception e)
+        {
+        	e.printStackTrace();
+        }
+	 	
+	 	return grid;
+	}
 	
 	
 	

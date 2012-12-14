@@ -5,12 +5,13 @@ public class OrderVO
 	private String orderNo;
 	private String date;
 	private String customerName;
-	private String orderQuantity;
-	private String amount;
-	private String advance;
+	private int orderQuantity;
+	private int orderDelivered;
+	private int orderPending;
+	private double amount;
+	private double advance;
 	private String dod;
 	private String status;
-	
 	public String getOrderNo() {
 		return orderNo;
 	}
@@ -29,22 +30,34 @@ public class OrderVO
 	public void setCustomerName(String customerName) {
 		this.customerName = customerName;
 	}
-	public String getOrderQuantity() {
+	public int getOrderQuantity() {
 		return orderQuantity;
 	}
-	public void setOrderQuantity(String orderQuantity) {
+	public void setOrderQuantity(int orderQuantity) {
 		this.orderQuantity = orderQuantity;
 	}
-	public String getAmount() {
+	public int getOrderDelivered() {
+		return orderDelivered;
+	}
+	public void setOrderDelivered(int orderDelivered) {
+		this.orderDelivered = orderDelivered;
+	}
+	public int getOrderPending() {
+		return orderPending;
+	}
+	public void setOrderPending(int orderPending) {
+		this.orderPending = orderPending;
+	}
+	public double getAmount() {
 		return amount;
 	}
-	public void setAmount(String amount) {
+	public void setAmount(double amount) {
 		this.amount = amount;
 	}
-	public String getAdvance() {
+	public double getAdvance() {
 		return advance;
 	}
-	public void setAdvance(String advance) {
+	public void setAdvance(double advance) {
 		this.advance = advance;
 	}
 	public String getDod() {
@@ -59,6 +72,7 @@ public class OrderVO
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	
 	
 	
 	

@@ -2,12 +2,20 @@ package com.fnz.VO;
 
 public class VendorVO 
 {
+	private String vendorNumber;
 	private String vendorName;
 	private String vendorAddress;
 	private String vendorPhone;
 	private String vendorEmail;
 	
 	
+	
+	public String getVendorNumber() {
+		return vendorNumber;
+	}
+	public void setVendorNumber(String vendorNumber) {
+		this.vendorNumber = vendorNumber;
+	}
 	public String getVendorName() {
 		return vendorName;
 	}

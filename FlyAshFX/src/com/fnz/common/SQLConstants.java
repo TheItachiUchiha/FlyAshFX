@@ -32,16 +32,37 @@ public class SQLConstants
 	public static final String FETCH_PRODUCTION_INVENTORY = "SELECT * FROM PRODUCTION_INVENTORY ";
 	
 	
-	public static final String CREATE_CUSTOMER = "CREATE TABLE if not exists CUSTOMER (cust_id INTEGER PRIMARY KEY AUTOINCREMENT,CUST_NAME text NOT NULL," +
+	public static final String CREATE_CUSTOMER = "CREATE TABLE if not exists CUSTOMER (CUST_ID text PRIMARY KEY,CUST_NAME text NOT NULL," +
 			"CUST_ADD text, CUST_PHONE text, CUST_EMAIL text)";
 	
-	public static final String INSERT_CUSTOMER = "INSERT INTO CUSTOMER values (NULL,?,?,?,?)";
+	public static final String INSERT_CUSTOMER = "INSERT INTO CUSTOMER values (?,?,?,?,?)";
 	
-	public static final String CREATE_CLIENT_ORDER = "CREATE TABLE if not exists CLIENT_ORDER (order_id INTEGER PRIMARY KEY AUTOINCREMENT,DATE_OF_ORDER text NOT NULL," +
-			"CUST_NAME text, ORDER_A text, AMOUNT text, ADVANCE text, DATE_OF_DELIVERY text, STATUS text)";
-			//"FOREIGN KEY (CUST_NAME) REFERENCES CUSTOMER(CUST_NAME))";
+	public static final String CREATE_CLIENT_ORDER = "CREATE TABLE if not exists CLIENT_ORDER (ORDER_ID text PRIMARY KEY,DATE_OF_ORDER text NOT NULL," +
+			"CUST_NAME text, ORDER_A INTEGER,ORDER_D INTEGER,AMOUNT REAL, ADVANCE REAL, DATE_OF_DELIVERY text, STATUS text,"+
+			"FOREIGN KEY (CUST_NAME) REFERENCES CUSTOMER(CUST_NAME))";
 	
-	public static final String INSERT_CLIENT_ORDER = "INSERT INTO CLIENT_ORDER values (NULL,?,?,?,?,?,?,?)";
+	public static final String INSERT_CLIENT_ORDER = "INSERT INTO CLIENT_ORDER values (?,?,?,?,?,?,?,?,?)";
 	
 	public static final String FETCH_CLIENT_ORDER = "SELECT * FROM CLIENT_ORDER ";
+	
+	public static final String FETCH_LATEST_ORDER = "SELECT max(rowid) as row from CLIENT_ORDER";
+	
+	public static final String FETCH_LATEST_CUST = "SELECT max(rowid) as row from CUSTOMER";
+	
+	public static final String CREATE_VENDOR = "CREATE TABLE if not exists VENDOR (VENDOR_ID text PRIMARY KEY,VENDOR_NAME text NOT NULL," +
+			"VENDOR_ADD text, VENDOR_PHONE text, VENDOR_EMAIL text)";
+	
+	public static final String INSERT_VENDOR = "INSERT INTO VENDOR values (?,?,?,?,?)";
+	
+	public static final String CREATE_VENDOR_ORDER = "CREATE TABLE if not exists VENDOR_ORDER (PURCHASE_ID text PRIMARY KEY,DATE_OF_ORDER text NOT NULL," +
+			"VENDOR_NAME text, ORDER_A INTEGER,ORDER_D INTEGER, AMOUNT REAL, ADVANCE REAL, DATE_OF_DELIVERY text, STATUS text,"+
+			"FOREIGN KEY (VENDOR_NAME) REFERENCES VENDOR(VENDOR_NAME))";
+	
+	public static final String INSERT_VENDOR_ORDER = "INSERT INTO VENDOR_ORDER values (?,?,?,?,?,?,?,?,?)";
+	
+	public static final String FETCH_VENDOR_ORDER = "SELECT * FROM VENDOR_ORDER ";
+	
+	public static final String FETCH_LATEST_VENDOR_ORDER = "SELECT max(rowid) as row from VENDOR_ORDER";
+	
+	public static final String FETCH_LATEST_VENDOR = "SELECT max(rowid) as row from VENDOR";
 }
