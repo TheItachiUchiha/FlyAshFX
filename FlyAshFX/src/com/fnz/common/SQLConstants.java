@@ -66,11 +66,11 @@ public class SQLConstants
 	
 	public static final String FETCH_LATEST_VENDOR = "SELECT max(rowid) as row from VENDOR";
 	
-	public static final String FETCH_VENDORS = "SELECT VENDOR_NAME from VENDOR";
+	public static final String FETCH_VENDORS = "SELECT VENDOR_NAME from VENDOR_ORDER where STATUS <> '"+CommonConstants.STATUS_RECEIVED+"' AND STATUS <> '"+CommonConstants.STATUS_CANCELLED+"'";
 	
 	public static final String FETCH_VENDOR_PURCHASES = "SELECT PURCHASE_ID from VENDOR_ORDER where VENDOR_NAME = ? AND STATUS <> '"+CommonConstants.STATUS_RECEIVED+"' AND STATUS <> '"+CommonConstants.STATUS_CANCELLED+"'";
 	
-	public static final String FETCH_CLIENTS = "SELECT CUST_NAME from CUSTOMER";
+	public static final String FETCH_CLIENTS = "SELECT CUST_NAME from CLIENT_ORDER where STATUS <> '"+CommonConstants.STATUS_DELIVERED+"' AND STATUS <> '"+CommonConstants.STATUS_CANCELLED+"'";
 	
 	public static final String FETCH_CLIENT_ORDERS = "SELECT ORDER_ID from CLIENT_ORDER where CUST_NAME = ? AND STATUS <> '"+CommonConstants.STATUS_DELIVERED+"' AND STATUS <> '"+CommonConstants.STATUS_CANCELLED+"'";
 	

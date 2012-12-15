@@ -1,6 +1,7 @@
 package com.fnz.UI;
 
 import com.fnz.Validation.Validation;
+import com.fnz.Validation.CssValidation;
 import com.fnz.VO.CustomerVO;
 import com.fnz.VO.OrderVO;
 import com.fnz.VO.VendorVO;
@@ -45,6 +46,7 @@ public class Orders
 	GridPane grid;
 	OrderService orderService;
 	Validation tempvalidator;
+	CssValidation tempCssValidator;
 	Label msg = new Label("Cannot be Empty");
 	Label successMsg = new Label("Added Successfully !");
 	public Orders()
@@ -54,8 +56,9 @@ public class Orders
 		successMsg.setVisible(false);
 		msg.setTextFill(Color.RED);
 		successMsg.setTextFill(Color.BLUE);
-		
+		tempCssValidator=new CssValidation();
 		tempvalidator = new Validation();
+		
 	}
 	
 	
@@ -258,6 +261,7 @@ public class Orders
 	    final TextField advText = new TextField();
 	    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    grid.add(advText, 2, 8);
+	    advText.setText("0000.00");
 	    tempvalidator.allowAsAmount(advText); 
 	    
 	    Label eddLabel = new Label("Expected Delivery Date");
@@ -307,8 +311,9 @@ public class Orders
 			{
 				try
 				{
-					nameText.getStyleClass().remove("error");
-					quantityText.getStyleClass().remove("error");
+					
+					tempCssValidator.removeCssErrorStyle(nameText,quantityText,advText);
+					
 					msg.setVisible(false);
 					
 					if (tempvalidator.isEmpty(nameText.getText())){
@@ -319,10 +324,11 @@ public class Orders
 						msg.setVisible(true);
 						quantityText.getStyleClass().add("error");
 					}
-					else if(tempvalidator.isEmpty(eddText.getTextField().getText())){
+					else if(tempvalidator.isEmpty(advText.getText())){
 						msg.setVisible(true);
-						eddText.getStyleClass().add("error");
+						advText.getStyleClass().add("error");
 					}
+					
 					else
 					{
 						CustomerVO customerVO = new CustomerVO();
@@ -418,7 +424,7 @@ public class Orders
 		Label selectVendor = new Label("Select Client");
 		grid.add(selectVendor,1,1);
 		
-		ChoiceBox<String> cbClient = new ChoiceBox<String>(clientList);
+		final ChoiceBox<String> cbClient = new ChoiceBox<String>(clientList);
 		grid.add(cbClient,3,1);
 		
 		cbClient.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
@@ -447,7 +453,7 @@ public class Orders
 	    successMsg.setVisible(false);
 	    successMsg.setText("Cancelled Successfully !");
 	    grid.add(successMsg,2,7);
-	    
+	    grid.add(msg,2,7);
 
 	    
 	    submit.setOnAction(new EventHandler<ActionEvent>() {
@@ -456,8 +462,22 @@ public class Orders
 			{
 				try
 				{
+					msg.setVisible(false);
+					if(cbClient.getValue()==null){
+						cbClient.getStyleClass().add("error");
+						msg.setVisible(true);
+					}
+					else if(cbOrder.getValue()==null){
+						cbClient.getStyleClass().remove("error");
+						cbOrder.getStyleClass().add("error");
+						msg.setVisible(true);
+					}
+					else{
 					orderService.cancelClientOrder(cbOrder.getValue());
+					cbClient.getStyleClass().remove("error");
+					cbOrder.getStyleClass().remove("error");
 					successMsg.setVisible(true);
+					}
 				}
 				catch(Exception e)
 				{
@@ -563,6 +583,7 @@ public class Orders
 	    final TextField advText = new TextField();
 	    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    grid.add(advText, 2, 8);
+	    advText.setText("0000.00");
 	    tempvalidator.allowAsAmount(advText); 
 	    
 	    Label eddLabel = new Label("Expected Delivery Date");
@@ -610,8 +631,9 @@ public class Orders
 			{
 				try
 				{
-					nameText.getStyleClass().remove("error");
-					quantityText.getStyleClass().remove("error");
+					/*nameText.getStyleClass().remove("error");
+					quantityText.getStyleClass().remove("error");*/
+					tempCssValidator.removeCssErrorStyle(nameText,quantityText,advText);
 					msg.setVisible(false);
 					
 					if (tempvalidator.isEmpty(nameText.getText())){
@@ -622,11 +644,16 @@ public class Orders
 						msg.setVisible(true);
 						quantityText.getStyleClass().add("error");
 					}
-					else if(tempvalidator.isEmpty(eddText.getTextField().getText())){
+					else if(tempvalidator.isEmpty(amountText.getText())){
 						msg.setVisible(true);
-						eddText.getStyleClass().add("error");
+						amountText.getStyleClass().add("error");
+					}
+					else if(tempvalidator.isEmpty(advText.getText())){
+						msg.setVisible(true);
+						advText.getStyleClass().add("error");
 					}
 					else{
+						msg.setVisible(false);
 						VendorVO vendorVO = new VendorVO();
 						vendorVO.setVendorName(nameText.getText());
 						vendorVO.setVendorAddress(addText.getText());
@@ -708,6 +735,9 @@ public class Orders
 	 */
 		public GridPane VendorCancelOrder()
 		{
+			msg.setVisible(false);
+			successMsg.setVisible(false);
+			
 			grid = new GridPane();
 			grid.setHgap(10);
 	        grid.setVgap(8);
@@ -721,7 +751,7 @@ public class Orders
 			Label selectVendor = new Label("Select Vendor");
 			grid.add(selectVendor,1,1);
 			
-			ChoiceBox<String> cbVendor = new ChoiceBox<String>(vendorList);
+			final ChoiceBox<String> cbVendor = new ChoiceBox<String>(vendorList);
 					
 			grid.add(cbVendor,3,1);
 			
@@ -748,12 +778,10 @@ public class Orders
 			grid.add(submit, 2, 5);
 		    grid.setAlignment(Pos.CENTER);
 		    //grid.add(servicesPercent, 3, 2);
-		    
-		    successMsg.setVisible(false);
+		  
+		    grid.add(msg, 2, 7);
+		    grid.add(successMsg, 2, 7);
 		    successMsg.setText("Cancelled Successfully !");
-		    grid.add(successMsg,2,7);
-		    
-		    
 		    
 		    submit.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
@@ -761,8 +789,27 @@ public class Orders
 				{
 					try
 					{
-						orderService.cancelVendorOrder(cbOrder.getValue());
+						msg.setVisible(false);
+						if(cbVendor.getValue()==null){
+							cbVendor.getStyleClass().add("error");
+							msg.setVisible(true);
+						}
+						else if(cbOrder.getValue()==null){
+							cbVendor.getStyleClass().remove("error");
+							cbOrder.getStyleClass().add("error");
+							msg.setVisible(true);
+						}
+						else{
+						orderService.cancelClientOrder(cbOrder.getValue());
+						cbVendor.getStyleClass().remove("error");
+						cbOrder.getStyleClass().remove("error");
+						msg.setVisible(false);
 						successMsg.setVisible(true);
+						orderService.cancelVendorOrder(cbOrder.getValue());
+						}
+						
+						
+					
 					}
 					catch(Exception e)
 					{
@@ -900,6 +947,9 @@ public class Orders
 		 	table.setEditable(false);
 		 	//table.setPrefSize(1250, 1250);
 		 	
+		// table.setId("my-custom");
+		 
+		 	
 		 	TableColumn dateOfOrder = new TableColumn("Date Of Order");
 		 	dateOfOrder.setMinWidth(125);
 		 	dateOfOrder.setCellValueFactory(
@@ -941,8 +991,12 @@ public class Orders
 		 	status.setCellValueFactory(
 		 			new PropertyValueFactory<OrderVO, String>("status"));
 		 	
+		
+		 	
 		 	table.setItems(dataTable);
 		 	table.getColumns().addAll(dateOfOrder,orderNo, customerName, orderQuantity,orderDelivered,orderPending, amount, advance, dod, status);
+		 	
+		 	
 		 	
 		 	grid.setAlignment(Pos.TOP_LEFT);
 		 	
