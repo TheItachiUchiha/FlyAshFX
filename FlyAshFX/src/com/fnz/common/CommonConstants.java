@@ -18,5 +18,11 @@ public class CommonConstants
 	
 	public static final int ZERO = 0;
 	
+	public static final String STATUS_CANCELLED = "Cancelled";
+	
+	public static final String STATUS_RECEIVED = "Received";
+	
+	public static final String STATUS_DELIVERED = "Delivered";
+	
 	public static final String DB_LOCATION="C:\\FlyAsh\\";
 }

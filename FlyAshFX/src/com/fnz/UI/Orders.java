@@ -186,7 +186,10 @@ public class Orders
 	    grid.setHgap(10);
 	    grid.setVgap(10);
 	    grid.setPadding(new Insets(0, 10, 0, 10));
-
+	    
+	    final ObservableList<String> clientList = FXCollections.observableArrayList();
+	    clientList.clear();
+	    clientList.addAll(orderService.viewClients());
 	    
 	    Label nameLabel = new Label("Client Name");
 	    //nameLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
@@ -320,24 +323,25 @@ public class Orders
 						msg.setVisible(true);
 						eddText.getStyleClass().add("error");
 					}
-					else{
-					CustomerVO customerVO = new CustomerVO();
-					customerVO.setCustomerName(nameText.getText());
-					customerVO.setCustomerAddress(addText.getText());
-					customerVO.setCustomerPhone(phoneText.getText());
-					customerVO.setCustomerEmail(emailText.getText());
-					
-					OrderVO orderVO = new OrderVO();
-					orderVO.setCustomerName(nameText.getText());
-					orderVO.setOrderQuantity(Integer.parseInt(quantityText.getText()));
-					orderVO.setOrderDelivered(CommonConstants.ZERO);
-					orderVO.setAmount(Double.parseDouble(amountText.getText()));
-					orderVO.setAdvance(Double.parseDouble(advText.getText()));
-					orderVO.setDod(eddText.getTextField().getText());
-					orderVO.setStatus(group.getSelectedToggle().getUserData().toString());
-					
-					
-						orderService.addOrder(customerVO, orderVO);
+					else
+					{
+						CustomerVO customerVO = new CustomerVO();
+						customerVO.setCustomerName(nameText.getText());
+						customerVO.setCustomerAddress(addText.getText());
+						customerVO.setCustomerPhone(phoneText.getText());
+						customerVO.setCustomerEmail(emailText.getText());
+						
+						OrderVO orderVO = new OrderVO();
+						orderVO.setCustomerName(nameText.getText());
+						orderVO.setOrderQuantity(Integer.parseInt(quantityText.getText()));
+						orderVO.setOrderDelivered(CommonConstants.ZERO);
+						orderVO.setAmount(Double.parseDouble(amountText.getText()));
+						orderVO.setAdvance(Double.parseDouble(advText.getText()));
+						orderVO.setDod(eddText.getTextField().getText());
+						orderVO.setStatus(group.getSelectedToggle().getUserData().toString());
+						
+						
+						orderService.addOrder(customerVO, orderVO, clientList);
 						successMsg.setVisible(true);
 					}
 				} catch (Exception e) 
@@ -406,19 +410,62 @@ public class Orders
         grid.setVgap(8);
         grid.setPadding(new Insets(30));
         
+        ObservableList<String> clientList = FXCollections.observableArrayList();
+        final ObservableList<String> orderList = FXCollections.observableArrayList();
+        
+        clientList = orderService.viewClients();
+        
+		Label selectVendor = new Label("Select Client");
+		grid.add(selectVendor,1,1);
+		
+		ChoiceBox<String> cbClient = new ChoiceBox<String>(clientList);
+		grid.add(cbClient,3,1);
+		
+		cbClient.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+	      	   @Override
+	      	   public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue)
+	      	   {
+	      	      
+	      	      // Add your stuff here
+	      		   orderList.clear();
+						orderList.addAll(orderService.viewOrderList(newValue));
+	      	   }
+	      	   });
+		
+		
 		Label selectOrder = new Label("Select Order");
-		grid.add(selectOrder,1,1);
+		grid.add(selectOrder,1,2);
 		
-		ChoiceBox<String> cb = new ChoiceBox<String>(FXCollections.observableArrayList(
-				"First", "Second", "Third")
-				);
-		grid.add(cb,3,1);
+		final ChoiceBox<String> cbOrder = new ChoiceBox<String>(orderList);
+		grid.add(cbOrder,3,2);
 		
-		Button submit = new Button("Canel Order");
+		
+		Button submit = new Button("Cancel Order");
 		grid.add(submit, 2, 5);
 	    grid.setAlignment(Pos.CENTER);
-	    //grid.add(servicesPercent, 3, 2);
 	    
+	    successMsg.setVisible(false);
+	    successMsg.setText("Cancelled Successfully !");
+	    grid.add(successMsg,2,7);
+	    
+
+	    
+	    submit.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0)
+			{
+				try
+				{
+					orderService.cancelClientOrder(cbOrder.getValue());
+					successMsg.setVisible(true);
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+			}
+	    });
+				
 	    return grid;
 	}
 	
@@ -445,6 +492,10 @@ public class Orders
 	    grid.setVgap(10);
 	    grid.setPadding(new Insets(0, 10, 0, 10));
 
+	    
+	    final ObservableList<String> vendorList = FXCollections.observableArrayList();
+	    vendorList.clear();
+	    vendorList.addAll(orderService.viewVendors());
 	    
 	    Label nameLabel = new Label("Vendor Name");
 	    //nameLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
@@ -590,7 +641,7 @@ public class Orders
 						orderVO.setAdvance(Double.parseDouble(advText.getText()));
 						orderVO.setDod(eddText.getTextField().getText());
 						orderVO.setStatus(group.getSelectedToggle().getUserData().toString());
-						orderService.addVendorOrder(vendorVO, orderVO);
+						orderService.addVendorOrder(vendorVO, orderVO,vendorList);
 						successMsg.setVisible(true);
 					}
 					
@@ -655,27 +706,72 @@ public class Orders
 	 * <Date> <Name> <Comments>
 	 * 
 	 */
-	public GridPane VendorCancelOrder()
-	{
-		grid = new GridPane();
-		grid.setHgap(10);
-        grid.setVgap(8);
-        grid.setPadding(new Insets(30));
-        
-		Label selectOrder = new Label("Select Order");
-		grid.add(selectOrder,1,1);
-		
-		ChoiceBox cb = new ChoiceBox(FXCollections.observableArrayList(
-				"First", "Second", "Third")
-				);
-		grid.add(cb,3,1);
-		
-		Button submit = new Button("Canel Order");
-		grid.add(submit, 2, 5);
-	    grid.setAlignment(Pos.CENTER);
-	    //grid.add(servicesPercent, 3, 2);
-	    
-	    return grid;
+		public GridPane VendorCancelOrder()
+		{
+			grid = new GridPane();
+			grid.setHgap(10);
+	        grid.setVgap(8);
+	        grid.setPadding(new Insets(30));
+	        
+	        ObservableList<String> vendorList = FXCollections.observableArrayList();
+	        final ObservableList<String> orderList = FXCollections.observableArrayList();
+	        
+	        vendorList = orderService.viewVendors();
+	        
+			Label selectVendor = new Label("Select Vendor");
+			grid.add(selectVendor,1,1);
+			
+			ChoiceBox<String> cbVendor = new ChoiceBox<String>(vendorList);
+					
+			grid.add(cbVendor,3,1);
+			
+			cbVendor.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+		      	   @Override
+		      	   public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue)
+		      	   {
+		      	      
+		      	      // Add your stuff here
+		      		   orderList.clear();
+							orderList.addAll(orderService.viewPurchaseList(newValue));
+		      	   }
+		      	   });
+			
+			
+			Label selectOrder = new Label("Select Order");
+			grid.add(selectOrder,1,2);
+			
+			final ChoiceBox<String> cbOrder = new ChoiceBox<String>(orderList);
+			grid.add(cbOrder,3,2);
+			
+			
+			Button submit = new Button("Cancel Order");
+			grid.add(submit, 2, 5);
+		    grid.setAlignment(Pos.CENTER);
+		    //grid.add(servicesPercent, 3, 2);
+		    
+		    successMsg.setVisible(false);
+		    successMsg.setText("Cancelled Successfully !");
+		    grid.add(successMsg,2,7);
+		    
+		    
+		    
+		    submit.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent arg0)
+				{
+					try
+					{
+						orderService.cancelVendorOrder(cbOrder.getValue());
+						successMsg.setVisible(true);
+					}
+					catch(Exception e)
+					{
+						e.printStackTrace();
+					}
+				}
+		    });
+		    
+		    return grid;
 	}
 	
 	/*Create Method <function name><return type><comments>

@@ -32,7 +32,7 @@ public class SQLConstants
 	public static final String FETCH_PRODUCTION_INVENTORY = "SELECT * FROM PRODUCTION_INVENTORY ";
 	
 	
-	public static final String CREATE_CUSTOMER = "CREATE TABLE if not exists CUSTOMER (CUST_ID text PRIMARY KEY,CUST_NAME text NOT NULL," +
+	public static final String CREATE_CUSTOMER = "CREATE TABLE if not exists CUSTOMER (CUST_ID text PRIMARY KEY,CUST_NAME text UNIQUE NOT NULL," +
 			"CUST_ADD text, CUST_PHONE text, CUST_EMAIL text)";
 	
 	public static final String INSERT_CUSTOMER = "INSERT INTO CUSTOMER values (?,?,?,?,?)";
@@ -49,7 +49,7 @@ public class SQLConstants
 	
 	public static final String FETCH_LATEST_CUST = "SELECT max(rowid) as row from CUSTOMER";
 	
-	public static final String CREATE_VENDOR = "CREATE TABLE if not exists VENDOR (VENDOR_ID text PRIMARY KEY,VENDOR_NAME text NOT NULL," +
+	public static final String CREATE_VENDOR = "CREATE TABLE if not exists VENDOR (VENDOR_ID text PRIMARY KEY,VENDOR_NAME text UNIQUE NOT NULL," +
 			"VENDOR_ADD text, VENDOR_PHONE text, VENDOR_EMAIL text)";
 	
 	public static final String INSERT_VENDOR = "INSERT INTO VENDOR values (?,?,?,?,?)";
@@ -65,4 +65,16 @@ public class SQLConstants
 	public static final String FETCH_LATEST_VENDOR_ORDER = "SELECT max(rowid) as row from VENDOR_ORDER";
 	
 	public static final String FETCH_LATEST_VENDOR = "SELECT max(rowid) as row from VENDOR";
+	
+	public static final String FETCH_VENDORS = "SELECT VENDOR_NAME from VENDOR";
+	
+	public static final String FETCH_VENDOR_PURCHASES = "SELECT PURCHASE_ID from VENDOR_ORDER where VENDOR_NAME = ? AND STATUS <> '"+CommonConstants.STATUS_RECEIVED+"' AND STATUS <> '"+CommonConstants.STATUS_CANCELLED+"'";
+	
+	public static final String FETCH_CLIENTS = "SELECT CUST_NAME from CUSTOMER";
+	
+	public static final String FETCH_CLIENT_ORDERS = "SELECT ORDER_ID from CLIENT_ORDER where CUST_NAME = ? AND STATUS <> '"+CommonConstants.STATUS_DELIVERED+"' AND STATUS <> '"+CommonConstants.STATUS_CANCELLED+"'";
+	
+	public static final String CANCEL_CLIENT_ORDERS = "UPDATE CLIENT_ORDER SET STATUS = 'Cancelled' where ORDER_ID = ?";
+	
+	public static final String CANCEL_VENDOR_ORDERS = "UPDATE VENDOR_ORDER SET STATUS = 'Cancelled' where PURCHASE_ID = ?";
 }

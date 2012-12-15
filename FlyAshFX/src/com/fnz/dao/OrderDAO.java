@@ -31,7 +31,7 @@ public class OrderDAO
 	 * <Date> <Name> <Comments>
 	 * 
 	 */
-	public void addOrder(CustomerVO customerVO, OrderVO orderVO) throws Exception 
+	public void addOrder(CustomerVO customerVO, OrderVO orderVO, ObservableList<String> clientList) throws Exception 
 	{
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -94,12 +94,16 @@ public class OrderDAO
 			
 			pstmt.setQueryTimeout(CommonConstants.TIMEOUT);
 			
-			pstmt.setString(1, newCustNumber);
-			pstmt.setString(2, customerVO.getCustomerName());
-			pstmt.setString(3, customerVO.getCustomerAddress());
-			pstmt.setString(4, customerVO.getCustomerPhone());
-			pstmt.setString(5, customerVO.getCustomerEmail());
-			pstmt.execute();
+			
+			if(!clientList.contains(customerVO.getCustomerName()))
+			{
+				pstmt.setString(1, newCustNumber);
+				pstmt.setString(2, customerVO.getCustomerName());
+				pstmt.setString(3, customerVO.getCustomerAddress());
+				pstmt.setString(4, customerVO.getCustomerPhone());
+				pstmt.setString(5, customerVO.getCustomerEmail());
+				pstmt.execute();
+			}
 			
 			pstmt1.setString(1, newOrderNumber);
 			pstmt1.setString(2, new Date().toString());
@@ -230,7 +234,7 @@ public class OrderDAO
 	 * <Date> <Name> <Comments>
 	 * 
 	 */
-	public void addVendorOrder(VendorVO vendorVO, OrderVO orderVO) throws Exception 
+	public void addVendorOrder(VendorVO vendorVO, OrderVO orderVO, ObservableList<String> vendorList) throws Exception 
 	{
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -293,12 +297,15 @@ public class OrderDAO
 			
 			pstmt.setQueryTimeout(CommonConstants.TIMEOUT);
 			
-			pstmt.setString(1, newCustNumber );
-			pstmt.setString(2, vendorVO.getVendorName());
-			pstmt.setString(3, vendorVO.getVendorAddress());
-			pstmt.setString(4, vendorVO.getVendorPhone());
-			pstmt.setString(5, vendorVO.getVendorEmail());
-			pstmt.execute();
+			if(!vendorList.contains(vendorVO.getVendorName()))
+			{
+				pstmt.setString(1, newCustNumber );
+				pstmt.setString(2, vendorVO.getVendorName());
+				pstmt.setString(3, vendorVO.getVendorAddress());
+				pstmt.setString(4, vendorVO.getVendorPhone());
+				pstmt.setString(5, vendorVO.getVendorEmail());
+				pstmt.execute();
+			}
 			
 			pstmt1.setString(1, newOrderNumber);
 			pstmt1.setString(2, new Date().toString());
@@ -414,6 +421,352 @@ public class OrderDAO
 			}
 		}
 		return list;
+	}
+	/*Create Method <function name><return type><comments>
+	 * <Creator Name><Date Of Creation MM-dd-yyyy>
+	 * 
+	 * <viewOrder()><ObservableList<OrderVO>><view an client order from DB>
+	 * <Abhinay Agarwal><12-10-2012>
+	 * 
+	 * */
+	/**Modification Log
+	 * 
+	 * <Date> <Name> <Comments>
+	 * 
+	 */
+	public ObservableList<String> viewVendors() throws Exception
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet resultSet = null;
+		ObservableList<String> list = FXCollections.observableArrayList();
+		
+		
+		Class.forName(CommonConstants.DRIVERNAME);
+		
+		String sDbUrl = CommonConstants.sJdbc + ":" + CommonConstants.DB_LOCATION + CommonConstants.sTempDb;
+		
+		try 
+		{
+			conn = DriverManager.getConnection(sDbUrl);
+			pstmt = conn.prepareStatement(SQLConstants.FETCH_VENDORS);
+			
+			pstmt.setQueryTimeout(CommonConstants.TIMEOUT);
+			resultSet = pstmt.executeQuery();
+			
+			while(resultSet.next())
+			{
+				list.add(resultSet.getString(1));
+			}
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			if(conn !=null )
+			{
+				conn.close();
+			}
+			if(pstmt != null )
+			{
+				pstmt.close();
+			}
+			if(resultSet != null)
+			{
+				resultSet.close();
+			}
+		}
+		return list;
+	}
+	
+	
+	/*Create Method <function name><return type><comments>
+	 * <Creator Name><Date Of Creation MM-dd-yyyy>
+	 * 
+	 * <viewOrder()><ObservableList<OrderVO>><view an client order from DB>
+	 * <Abhinay Agarwal><12-10-2012>
+	 * 
+	 * */
+	/**Modification Log
+	 * 
+	 * <Date> <Name> <Comments>
+	 * 
+	 */
+	public ObservableList<String> viewPurchaseList(String vendorName) throws Exception
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet resultSet = null;
+		ObservableList<String> list = FXCollections.observableArrayList();
+		
+		
+		Class.forName(CommonConstants.DRIVERNAME);
+		
+		String sDbUrl = CommonConstants.sJdbc + ":" + CommonConstants.DB_LOCATION + CommonConstants.sTempDb;
+		
+		try 
+		{
+			conn = DriverManager.getConnection(sDbUrl);
+			pstmt = conn.prepareStatement(SQLConstants.FETCH_VENDOR_PURCHASES);
+			
+			pstmt.setQueryTimeout(CommonConstants.TIMEOUT);
+			pstmt.setString(1,vendorName);
+			resultSet = pstmt.executeQuery();
+			
+			while(resultSet.next())
+			{
+				list.add(resultSet.getString(1));
+			}
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			if(conn !=null )
+			{
+				conn.close();
+			}
+			if(pstmt != null )
+			{
+				pstmt.close();
+			}
+			if(resultSet != null)
+			{
+				resultSet.close();
+			}
+		}
+		return list;
+	}
+
+	/*Create Method <function name><return type><comments>
+	 * <Creator Name><Date Of Creation MM-dd-yyyy>
+	 * 
+	 * <viewOrder()><ObservableList<OrderVO>><view an client order from DB>
+	 * <Abhinay Agarwal><12-10-2012>
+	 * 
+	 * */
+	/**Modification Log
+	 * 
+	 * <Date> <Name> <Comments>
+	 * 
+	 */
+	public ObservableList<String> viewClients() throws Exception
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet resultSet = null;
+		ObservableList<String> list = FXCollections.observableArrayList();
+		
+		
+		Class.forName(CommonConstants.DRIVERNAME);
+		
+		String sDbUrl = CommonConstants.sJdbc + ":" + CommonConstants.DB_LOCATION + CommonConstants.sTempDb;
+		
+		try 
+		{
+			conn = DriverManager.getConnection(sDbUrl);
+			pstmt = conn.prepareStatement(SQLConstants.FETCH_CLIENTS);
+			
+			pstmt.setQueryTimeout(CommonConstants.TIMEOUT);
+			resultSet = pstmt.executeQuery();
+			
+			while(resultSet.next())
+			{
+				list.add(resultSet.getString(1));
+			}
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			if(conn !=null )
+			{
+				conn.close();
+			}
+			if(pstmt != null )
+			{
+				pstmt.close();
+			}
+			if(resultSet != null)
+			{
+				resultSet.close();
+			}
+		}
+		return list;
+	}
+	
+	
+	/*Create Method <function name><return type><comments>
+	 * <Creator Name><Date Of Creation MM-dd-yyyy>
+	 * 
+	 * <viewOrder()><ObservableList<OrderVO>><view an client order from DB>
+	 * <Abhinay Agarwal><12-10-2012>
+	 * 
+	 * */
+	/**Modification Log
+	 * 
+	 * <Date> <Name> <Comments>
+	 * 
+	 */
+	public ObservableList<String> viewOrderList(String vendorName) throws Exception
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet resultSet = null;
+		ObservableList<String> list = FXCollections.observableArrayList();
+		
+		
+		Class.forName(CommonConstants.DRIVERNAME);
+		
+		String sDbUrl = CommonConstants.sJdbc + ":" + CommonConstants.DB_LOCATION + CommonConstants.sTempDb;
+		
+		try 
+		{
+			conn = DriverManager.getConnection(sDbUrl);
+			pstmt = conn.prepareStatement(SQLConstants.FETCH_CLIENT_ORDERS);
+			
+			pstmt.setQueryTimeout(CommonConstants.TIMEOUT);
+			pstmt.setString(1,vendorName);
+			resultSet = pstmt.executeQuery();
+			
+			while(resultSet.next())
+			{
+				list.add(resultSet.getString(1));
+			}
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			if(conn !=null )
+			{
+				conn.close();
+			}
+			if(pstmt != null )
+			{
+				pstmt.close();
+			}
+			if(resultSet != null)
+			{
+				resultSet.close();
+			}
+		}
+		return list;
+	}
+	
+	/*Create Method <function name><return type><comments>
+	 * <Creator Name><Date Of Creation MM-dd-yyyy>
+	 * 
+	 * <viewOrder()><ObservableList<OrderVO>><view an client order from DB>
+	 * <Abhinay Agarwal><12-10-2012>
+	 * 
+	 * */
+	/**Modification Log
+	 * 
+	 * <Date> <Name> <Comments>
+	 * 
+	 */
+	public void cancelClientOrder(String orderNumber) throws Exception
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet resultSet = null;
+		
+		
+		Class.forName(CommonConstants.DRIVERNAME);
+		
+		String sDbUrl = CommonConstants.sJdbc + ":" + CommonConstants.DB_LOCATION + CommonConstants.sTempDb;
+		
+		try 
+		{
+			conn = DriverManager.getConnection(sDbUrl);
+			pstmt = conn.prepareStatement(SQLConstants.CANCEL_CLIENT_ORDERS);
+			
+			pstmt.setQueryTimeout(CommonConstants.TIMEOUT);
+			pstmt.setString(1,orderNumber);
+			pstmt.executeUpdate();
+			
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			if(conn !=null )
+			{
+				conn.close();
+			}
+			if(pstmt != null )
+			{
+				pstmt.close();
+			}
+			if(resultSet != null)
+			{
+				resultSet.close();
+			}
+		}
+	}
+	/*Create Method <function name><return type><comments>
+	 * <Creator Name><Date Of Creation MM-dd-yyyy>
+	 * 
+	 * <viewOrder()><ObservableList<OrderVO>><view an client order from DB>
+	 * <Abhinay Agarwal><12-10-2012>
+	 * 
+	 * */
+	/**Modification Log
+	 * 
+	 * <Date> <Name> <Comments>
+	 * 
+	 */
+	public void cancelVendorOrder(String orderNumber) throws Exception
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet resultSet = null;
+		
+		
+		Class.forName(CommonConstants.DRIVERNAME);
+		
+		String sDbUrl = CommonConstants.sJdbc + ":" + CommonConstants.DB_LOCATION + CommonConstants.sTempDb;
+		
+		try 
+		{
+			conn = DriverManager.getConnection(sDbUrl);
+			pstmt = conn.prepareStatement(SQLConstants.CANCEL_VENDOR_ORDERS);
+			
+			pstmt.setQueryTimeout(CommonConstants.TIMEOUT);
+			pstmt.setString(1,orderNumber);
+			pstmt.executeUpdate();
+			
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			if(conn !=null )
+			{
+				conn.close();
+			}
+			if(pstmt != null )
+			{
+				pstmt.close();
+			}
+			if(resultSet != null)
+			{
+				resultSet.close();
+			}
+		}
 	}
 
 }
