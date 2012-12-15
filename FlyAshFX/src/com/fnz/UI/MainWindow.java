@@ -10,6 +10,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -43,6 +44,7 @@ public class MainWindow extends Application
         border.setLeft(addVBox());
         border.setCenter(addGridPane());
         border.setRight(addVBox());
+        border.setBottom(addBBox());
         scene = new Scene(border);
         scene.getStylesheets().add(FXCalendarDemo.class.getResource("/com/fnz/styles/calendar_styles.css").toExternalForm());
         scene.getStylesheets().add(FXCalendarDemo.class.getResource("/com/fnz/styles/gui.css").toExternalForm());
@@ -60,6 +62,17 @@ public class MainWindow extends Application
     	}
     }
     
+    private HBox addBBox(){
+    	javafx.scene.layout.
+        HBox hbox = new HBox();
+        hbox.setPadding(new Insets(15, 12, 15, 12));
+        hbox.setSpacing(10);   // Gap between nodes
+       // hbox.setStyle("-fx-background-color: #336699;");
+        hbox.getStyleClass().add("styleBg");
+        Label lName=new Label("copyright © something");
+        hbox.getChildren().add(lName);
+        return hbox;
+    }
     
     /*Create Method <function name><return type><comments>
 	 * <Creator Name><Date Of Creation MM-dd-yyyy>
@@ -80,8 +93,9 @@ public class MainWindow extends Application
         HBox hbox = new HBox();
         hbox.setPadding(new Insets(15, 12, 15, 12));
         hbox.setSpacing(10);   // Gap between nodes
-        hbox.setStyle("-fx-background-color: #336699;");
-
+       // hbox.setStyle("-fx-background-color: #336699;");
+        hbox.getStyleClass().add("styleBg");
+        
         Button inventoryButton = new Button("Inventory");
         inventoryButton.setPrefSize(100, 50);
 
