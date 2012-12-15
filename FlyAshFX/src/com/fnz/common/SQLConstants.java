@@ -77,4 +77,8 @@ public class SQLConstants
 	public static final String CANCEL_CLIENT_ORDERS = "UPDATE CLIENT_ORDER SET STATUS = 'Cancelled' where ORDER_ID = ?";
 	
 	public static final String CANCEL_VENDOR_ORDERS = "UPDATE VENDOR_ORDER SET STATUS = 'Cancelled' where PURCHASE_ID = ?";
+	
+	public static final String FETCH_CLIENT_ORDER_DETAILS = "SELECT * FROM CLIENT_ORDER WHERE ORDER_ID = ?";
+	
+	public static final String FETCH_VENDOR_ORDER_DETAILS = "SELECT * FROM VENDOR WHERE PURCHASE_ID = ?";
 }

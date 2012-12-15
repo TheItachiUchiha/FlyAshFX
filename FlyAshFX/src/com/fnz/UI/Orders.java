@@ -33,7 +33,9 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -130,30 +132,36 @@ public class Orders
         	      else if(newValue.equals(itemClient1))
 				  {
         	    	  border.setCenter(ClientPlaceOrder());
+        	    	  border.setRight(null);
 				  }
         	      else if(newValue.equals(itemClient2))
 				  {
-        	    	  border.setCenter(ClientEditOrder());
+        	    	  border.setCenter(ClientEditOrder(border));
 				  }
         	      else if(newValue.equals(itemClient3))
 				  {
         	    	  border.setCenter(ClientCancelOrder());
+        	    	  border.setRight(null);
 				  }
         	      else if(newValue.equals(itemVendor))
 				  {
         	    	  border.setCenter(viewVendorOrder());
+        	    	  border.setRight(null);
 				  }
         	      else if(newValue.equals(itemVendor1))
 				  {
         	    	  border.setCenter(VendorPlaceOrder());
+        	    	  border.setRight(null);
 				  }
         	      else if(newValue.equals(itemVendor2))
 				  {
         	    	  border.setCenter(VendorEditOrder());
+        	    	  border.setRight(null);
 				  }
         	      else if(newValue.equals(itemVendor3))
 				  {
         	    	  border.setCenter(VendorCancelOrder());
+        	    	  border.setRight(null);
 				  }
         	   }
         	});
@@ -373,28 +381,70 @@ public class Orders
 	 * <Date> <Name> <Comments>
 	 * 
 	 */
-	public GridPane ClientEditOrder()
+	public GridPane ClientEditOrder(final BorderPane border)
 	{
 		grid = new GridPane();
 		grid.setHgap(10);
         grid.setVgap(8);
         grid.setPadding(new Insets(30));
         
+        ObservableList<String> clientList = FXCollections.observableArrayList();
+        final ObservableList<String> orderList = FXCollections.observableArrayList();
+        clientList.clear();
+        clientList.addAll(orderService.viewClients());
+        
+    	Label selectClient = new Label("Select Client");
+		grid.add(selectClient,1,1);
+		
+		ChoiceBox<String> cbClient = new ChoiceBox<String>(clientList);
+		grid.add(cbClient,3,1);
+		
+		cbClient.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+	      	   @Override
+	      	   public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue)
+	      	   {
+	      	      
+	      	      // Add your stuff here
+	      		   
+	      		   orderList.clear();
+	      		   orderList.addAll(orderService.viewOrderList(newValue));
+	      	   }
+	      	   });
+		
+			
 		Label selectOrder = new Label("Select Order");
-		grid.add(selectOrder,1,1);
+		grid.add(selectOrder,1,2);
 		
-		ChoiceBox<String> cb = new ChoiceBox<String>(FXCollections.observableArrayList(
-				"First", "Second", "Third")
-				);
-		grid.add(cb,3,1);
+		final ChoiceBox<String> cbOrder = new ChoiceBox<String>(orderList);
+		grid.add(cbOrder,3,2);
 		
-		Button submit = new Button("Submit");
+		
+		Button submit = new Button("Edit Order");
 		grid.add(submit, 2, 5);
 	    grid.setAlignment(Pos.CENTER);
 	    //grid.add(servicesPercent, 3, 2);
 	    
+	    submit.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0)
+			{
+				try
+				{
+					border.setCenter(newEditPaneClient(cbOrder.getValue()));
+					border.setRight(newRightPaneEditClient(cbOrder.getValue()));
+					//successMsg.setVisible(true);
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+			}
+
+	    });
+	    
 	    return grid;
 	}
+
 	
 	
 	/*Create Method <function name><return type><comments>
@@ -1011,6 +1061,141 @@ public class Orders
 	}
 	
 	
+	public GridPane newEditPaneClient(String orderNo) throws Exception
+	{
+	
+		msg.setVisible(false);
+		successMsg.setVisible(false);
+		
+		grid = new GridPane();
+	    grid.setHgap(10);
+	    grid.setVgap(10);
+	    grid.setPadding(new Insets(0, 10, 0, 10));
+	    
+	    OrderVO orderVO = new OrderVO();
+	    
+	    orderVO = orderService.fetchClientOrderDetails(orderNo);
+	    
+	    
+	    
+	    final ObservableList<String> clientList = FXCollections.observableArrayList();
+	    clientList.clear();
+	    clientList.addAll(orderService.viewClients());
+	    
+	    Label clientLabel = new Label("Quantity Delivered");
+	    //nameLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+	     grid.add(clientLabel, 1, 1); 
+	     
+	    
+	    final TextField nameText = new TextField(((Integer)orderVO.getOrderDelivered()).toString());
+	    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+	    grid.add(nameText, 3, 1);
+	    tempvalidator.allowCharacters(nameText);
+	    
+	    Label quantityLabel = new Label("Quantity Delivered");
+	    //quantityLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+	    grid.add(quantityLabel, 1, 2); 
+
+	    
+	    final TextField quantityText = new TextField();
+	    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+	    grid.add(quantityText, 3, 2);
+	    tempvalidator.allowDigit(quantityText);
+	     
+	    Label paymentLabel1 = new Label("Payment Received");
+	    //quantityLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+	    grid.add(paymentLabel1, 1, 3); 
+
+	    
+	    final TextField paymentText = new TextField();
+	    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+	    grid.add(paymentText, 3, 3);
+	    tempvalidator.allowDigit(paymentText);
+	     
+	     grid.setAlignment(Pos.CENTER);
+	     return grid;
+	}	
+	
+	
+	public GridPane newRightPaneEditClient(String orderNo) throws Exception
+	{
+	
+		msg.setVisible(false);
+		successMsg.setVisible(false);
+		
+		grid = new GridPane();
+	    grid.setHgap(10);
+	    grid.setVgap(10);
+	    grid.setPadding(new Insets(0, 100, 0, 10));
+	    
+	    
+	    OrderVO orderVO = new OrderVO();
+	    
+	    orderVO = orderService.fetchClientOrderDetails(orderNo);
+	    
+	    
+	    Label orderLabel = new Label("Order Number : ");
+	    orderLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+	    grid.add(orderLabel, 1, 1);
+	    
+	    Label orderNumber = new Label(orderVO.getOrderNo());
+	    orderNumber.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+	    grid.add(orderNumber, 2, 1);
+	    
+	    Label customerLabel = new Label("Customer Name : ");
+	    customerLabel.setFont(Font.font("Arial", 20));
+	    grid.add(customerLabel, 1, 2);
+	    
+	    Label custName = new Label(orderVO.getCustomerName());
+	    custName.setFont(Font.font("Arial", 20));
+	    grid.add(custName, 2, 2);
+	    
+	    Label quantityLabel = new Label("Quantiy Order Recieved : ");
+	    quantityLabel.setFont(Font.font("Arial", 20));
+	    grid.add(quantityLabel, 1, 3);
+	    
+	    Label quantity = new Label(((Integer)orderVO.getOrderQuantity()).toString());
+	    quantity.setFont(Font.font("Arial", 20));
+	    grid.add(quantity, 2, 3);
+	    
+	    Label quantityDel = new Label("Quantity Delivered : ");
+	    quantityDel.setFont(Font.font("Arial", 20));
+	    grid.add(quantityDel, 1, 4);
+	    
+	    Label quantityDeivered = new Label(((Integer)orderVO.getOrderDelivered()).toString());
+	    quantityDeivered.setFont(Font.font("Arial", 20));
+	    grid.add(quantityDeivered, 2, 4);
+	    
+	    Label quantityP = new Label("Quantity Pending : ");
+	    quantityP.setFont(Font.font("Arial", 20));
+	    grid.add(quantityP, 1, 5);
+	    
+	    Label quantityPending = new Label(((Integer)orderVO.getOrderPending()).toString());
+	    quantityPending.setFont(Font.font("Arial", 20));
+	    grid.add(quantityPending, 2, 5);
+	    
+	    Label totalAmountLabel = new Label("Total Amount : ");
+	    totalAmountLabel.setFont(Font.font("Arial", 20));
+	    grid.add(totalAmountLabel, 1, 6);
+	    
+	    Label totalAmount = new Label(((Double)orderVO.getAmount()).toString());
+	    totalAmount.setFont(Font.font("Arial", 20));
+	    grid.add(totalAmount, 2, 6);
+	    
+	    Label amountP = new Label("Amount Pending : ");
+	    amountP.setFont(Font.font("Arial", 20));
+	    grid.add(amountP, 1, 7);
+	    
+	    Label amountPending = new Label(((Double)(orderVO.getAmount()-orderVO.getAdvance())).toString());
+	    amountPending.setFont(Font.font("Arial", 20));
+	    grid.add(amountPending, 2, 7);
+	     
+	    
+	    	     
+	    grid.setAlignment(Pos.CENTER_LEFT);
+	     return grid;
+	}	
+
 	
 	
 	

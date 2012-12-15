@@ -42,6 +42,7 @@ public class MainWindow extends Application
         border.setTop(addHBox());
         border.setLeft(addVBox());
         border.setCenter(addGridPane());
+        border.setRight(addVBox());
         scene = new Scene(border);
         scene.getStylesheets().add(FXCalendarDemo.class.getResource("/com/fnz/styles/calendar_styles.css").toExternalForm());
         scene.getStylesheets().add(FXCalendarDemo.class.getResource("/com/fnz/styles/gui.css").toExternalForm());
@@ -98,6 +99,7 @@ public class MainWindow extends Application
 			public void handle(ActionEvent e) 
 			{
 				border.setLeft(new Orders().addVBox(border));
+				border.setRight(null);
 			}
 		});
         
@@ -106,6 +108,7 @@ public class MainWindow extends Application
 			public void handle(ActionEvent arg0) 
 			{
 				border.setLeft(new Inventory().addVBox(border));
+				border.setRight(null);
 			}
 		});
         

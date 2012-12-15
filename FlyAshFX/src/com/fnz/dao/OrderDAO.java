@@ -768,5 +768,123 @@ public class OrderDAO
 			}
 		}
 	}
+	
+
+	public OrderVO fetchClientOrderDetails(String orderNo) throws Exception
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet resultSet = null;
+		OrderVO orderVO = new OrderVO();
+		
+		
+		Class.forName(CommonConstants.DRIVERNAME);
+		
+		String sDbUrl = CommonConstants.sJdbc + ":" + CommonConstants.DB_LOCATION + CommonConstants.sTempDb;
+		
+		try 
+		{
+			conn = DriverManager.getConnection(sDbUrl);
+			pstmt = conn.prepareStatement(SQLConstants.FETCH_CLIENT_ORDER_DETAILS);
+			
+			pstmt.setQueryTimeout(CommonConstants.TIMEOUT);
+			pstmt.setString(1, orderNo);
+			resultSet = pstmt.executeQuery();
+			
+			while(resultSet.next())
+			{
+				orderVO = new OrderVO();
+				orderVO.setOrderNo(resultSet.getString(1));
+				orderVO.setDate(resultSet.getString(2));
+				orderVO.setCustomerName(resultSet.getString(3));
+				orderVO.setOrderQuantity(resultSet.getInt(4));
+				orderVO.setOrderDelivered(resultSet.getInt(5));
+				orderVO.setOrderPending(orderVO.getOrderQuantity() - orderVO.getOrderDelivered());
+				orderVO.setAmount(resultSet.getDouble(6));
+				orderVO.setAdvance(resultSet.getDouble(7));
+				orderVO.setDod(resultSet.getString(8));
+				orderVO.setStatus(resultSet.getString(9));
+			}
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			if(conn !=null )
+			{
+				conn.close();
+			}
+			if(pstmt != null )
+			{
+				pstmt.close();
+			}
+			if(resultSet != null)
+			{
+				resultSet.close();
+			}
+		}
+		return orderVO;
+	}
+	
+
+	public OrderVO fetchVendorOrderDetails(String orderNo) throws Exception
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet resultSet = null;
+		OrderVO orderVO = new OrderVO();
+		
+		
+		Class.forName(CommonConstants.DRIVERNAME);
+		
+		String sDbUrl = CommonConstants.sJdbc + ":" + CommonConstants.DB_LOCATION + CommonConstants.sTempDb;
+		
+		try 
+		{
+			conn = DriverManager.getConnection(sDbUrl);
+			pstmt = conn.prepareStatement(SQLConstants.FETCH_VENDOR_ORDER_DETAILS);
+			
+			pstmt.setQueryTimeout(CommonConstants.TIMEOUT);
+			pstmt.setString(1, orderNo);
+			resultSet = pstmt.executeQuery();
+			
+			while(resultSet.next())
+			{
+				orderVO = new OrderVO();
+				orderVO.setOrderNo(resultSet.getString(1));
+				orderVO.setDate(resultSet.getString(2));
+				orderVO.setCustomerName(resultSet.getString(3));
+				orderVO.setOrderQuantity(resultSet.getInt(4));
+				orderVO.setOrderDelivered(resultSet.getInt(5));
+				orderVO.setOrderPending(orderVO.getOrderQuantity() - orderVO.getOrderDelivered());
+				orderVO.setAmount(resultSet.getDouble(6));
+				orderVO.setAdvance(resultSet.getDouble(7));
+				orderVO.setDod(resultSet.getString(8));
+				orderVO.setStatus(resultSet.getString(9));
+			}
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			if(conn !=null )
+			{
+				conn.close();
+			}
+			if(pstmt != null )
+			{
+				pstmt.close();
+			}
+			if(resultSet != null)
+			{
+				resultSet.close();
+			}
+		}
+		return orderVO;
+	}
 
 }

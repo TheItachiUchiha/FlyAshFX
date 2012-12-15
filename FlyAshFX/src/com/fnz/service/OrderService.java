@@ -133,4 +133,30 @@ public class OrderService
 			e.printStackTrace();
 		}
 	}
+	public OrderVO fetchClientOrderDetails(String orderNo) throws Exception
+	{
+		OrderVO orderVO = new OrderVO();
+		try
+		{
+			orderVO = orderDAO.fetchClientOrderDetails(orderNo);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return orderVO; 
+	}
+	public OrderVO fetchVendorOrderDetails(String orderNo) throws Exception
+	{
+		OrderVO orderVO = new OrderVO();
+		try
+		{
+			orderVO = orderDAO.fetchVendorOrderDetails(orderNo);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return orderVO; 
+	}
 }
