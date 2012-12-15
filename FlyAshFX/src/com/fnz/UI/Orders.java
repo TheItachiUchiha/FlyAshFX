@@ -1,6 +1,6 @@
 package com.fnz.UI;
 
-
+import com.fnz.Validation.Validation;
 import com.fnz.VO.CustomerVO;
 import com.fnz.VO.OrderVO;
 import com.fnz.VO.VendorVO;
@@ -44,10 +44,18 @@ public class Orders
 {
 	GridPane grid;
 	OrderService orderService;
-	
+	Validation tempvalidator;
+	Label msg = new Label("Cannot be Empty");
+	Label successMsg = new Label("Added Successfully !");
 	public Orders()
 	{
 		orderService = new OrderService();
+		msg.setVisible(false);
+		successMsg.setVisible(false);
+		msg.setTextFill(Color.RED);
+		successMsg.setTextFill(Color.BLUE);
+		
+		tempvalidator = new Validation();
 	}
 	
 	
@@ -171,6 +179,9 @@ public class Orders
 	 */
 	public GridPane ClientPlaceOrder()
 	{
+		msg.setVisible(false);
+		successMsg.setVisible(false);
+		
 		grid = new GridPane();
 	    grid.setHgap(10);
 	    grid.setVgap(10);
@@ -179,12 +190,13 @@ public class Orders
 	    
 	    Label nameLabel = new Label("Client Name");
 	    //nameLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-	    grid.add(nameLabel, 1, 2); 
-
+	     grid.add(nameLabel, 1, 2); 
+	     
 	    
 	    final TextField nameText = new TextField();
 	    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    grid.add(nameText, 2, 2);
+	    tempvalidator.allowCharacters(nameText);
 	    
 	    Label addressLabel = new Label("Client Address");
 	    //nameLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
@@ -198,11 +210,12 @@ public class Orders
 	    Label phoneLabel = new Label("Client Phone");
 	    //phoneLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    grid.add(phoneLabel, 1, 4); 
-
+	    
 	    
 	    final TextField phoneText = new TextField();
 	    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    grid.add(phoneText, 2, 4);
+	    tempvalidator.allowAsPhoneNumber(phoneText);
 	    
 	    Label emailLabel = new Label("Client Email");
 	    //emailLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
@@ -212,6 +225,7 @@ public class Orders
 	    final TextField emailText = new TextField();
 	    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    grid.add(emailText, 2, 5);
+	    tempvalidator.allowAsEmail(emailText);
 	    
 	    Label quantityLabel = new Label("Quantity");
 	    //quantityLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
@@ -221,6 +235,7 @@ public class Orders
 	    final TextField quantityText = new TextField();
 	    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    grid.add(quantityText, 2, 6);
+	    tempvalidator.allowDigit(quantityText);
 	    
 	    Label amountLabel = new Label("Amount");
 	    //amountLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
@@ -230,6 +245,7 @@ public class Orders
 	    final TextField amountText = new TextField();
 	    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    grid.add(amountText, 2, 7);
+	    tempvalidator.allowAsAmount(amountText);
 	    
 	    Label advanceLabel = new Label("Advance Received");
 	    //advanceLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
@@ -239,7 +255,8 @@ public class Orders
 	    final TextField advText = new TextField();
 	    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    grid.add(advText, 2, 8);
-	     	 	
+	    tempvalidator.allowAsAmount(advText); 
+	    
 	    Label eddLabel = new Label("Expected Delivery Date");
 	    //eddLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    grid.add(eddLabel, 1, 9); 
@@ -275,6 +292,9 @@ public class Orders
 	    Button cancel = new Button("Cancel");
 	    grid.add(cancel,2,11);
 	    
+	    grid.add(msg,2,13);
+		grid.add(successMsg,2,13);
+	    
 	    grid.setAlignment(Pos.CENTER);
 	    //grid.add(servicesPercent, 3, 2);
 	    
@@ -284,6 +304,23 @@ public class Orders
 			{
 				try
 				{
+					nameText.getStyleClass().remove("error");
+					quantityText.getStyleClass().remove("error");
+					msg.setVisible(false);
+					
+					if (tempvalidator.isEmpty(nameText.getText())){
+					msg.setVisible(true);
+					nameText.getStyleClass().add("error");
+					}	
+					else if(tempvalidator.isEmpty(quantityText.getText())){
+						msg.setVisible(true);
+						quantityText.getStyleClass().add("error");
+					}
+					else if(tempvalidator.isEmpty(eddText.getTextField().getText())){
+						msg.setVisible(true);
+						eddText.getStyleClass().add("error");
+					}
+					else{
 					CustomerVO customerVO = new CustomerVO();
 					customerVO.setCustomerName(nameText.getText());
 					customerVO.setCustomerAddress(addText.getText());
@@ -301,10 +338,8 @@ public class Orders
 					
 					
 						orderService.addOrder(customerVO, orderVO);
-						Label msg = new Label("Successfully Added !!!");
-						msg.setTextFill(Color.RED);
-						grid.add(msg,2,13);
-					
+						successMsg.setVisible(true);
+					}
 				} catch (Exception e) 
 				{
 					e.printStackTrace();
@@ -402,6 +437,9 @@ public class Orders
 	 */
 	public GridPane VendorPlaceOrder()
 	{
+		msg.setVisible(false);
+		successMsg.setVisible(false);
+		
 		grid = new GridPane();
 	    grid.setHgap(10);
 	    grid.setVgap(10);
@@ -416,6 +454,7 @@ public class Orders
 	    final TextField nameText = new TextField();
 	    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    grid.add(nameText, 2, 2);
+	    tempvalidator.allowCharacters(nameText);
 	    
 	    Label addressLabel = new Label("Vendor Address");
 	    //nameLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
@@ -434,6 +473,7 @@ public class Orders
 	    final TextField phoneText = new TextField();
 	    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    grid.add(phoneText, 2, 4);
+	    tempvalidator.allowAsPhoneNumber(phoneText);
 	    
 	    Label emailLabel = new Label("Vendor Email");
 	    //emailLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
@@ -452,6 +492,7 @@ public class Orders
 	    final TextField quantityText = new TextField();
 	    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    grid.add(quantityText, 2, 6);
+	    tempvalidator.allowDigit(quantityText);
 	    
 	    Label amountLabel = new Label("Amount");
 	    //amountLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
@@ -461,6 +502,7 @@ public class Orders
 	    final TextField amountText = new TextField();
 	    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    grid.add(amountText, 2, 7);
+	    tempvalidator.allowAsAmount(amountText);
 	    
 	    Label advanceLabel = new Label("Adavance Given");
 	    //advanceLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
@@ -470,7 +512,8 @@ public class Orders
 	    final TextField advText = new TextField();
 	    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    grid.add(advText, 2, 8);
-	     	 	
+	    tempvalidator.allowAsAmount(advText); 
+	    
 	    Label eddLabel = new Label("Expected Delivery Date");
 	    //eddLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    grid.add(eddLabel, 1, 9); 
@@ -480,7 +523,9 @@ public class Orders
 	    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    grid.add(eddText, 2, 9);
 	    
-	    
+	    grid.add(msg,2,13);
+	 	grid.add(successMsg,2,13);
+	 	    
 	    final ToggleGroup group = new ToggleGroup();
 	    RadioButton rb1 = new RadioButton("Pending");
 	    rb1.setUserData("Pending");
@@ -514,41 +559,43 @@ public class Orders
 			{
 				try
 				{
-					VendorVO vendorVO = new VendorVO();
-					vendorVO.setVendorName(nameText.getText());
-					vendorVO.setVendorAddress(addText.getText());
-					vendorVO.setVendorPhone(phoneText.getText());
-					vendorVO.setVendorEmail(emailText.getText());
+					nameText.getStyleClass().remove("error");
+					quantityText.getStyleClass().remove("error");
+					msg.setVisible(false);
 					
-					OrderVO orderVO = new OrderVO();
-					orderVO.setCustomerName(nameText.getText());
-					orderVO.setOrderQuantity(Integer.parseInt(quantityText.getText()));
-					orderVO.setOrderDelivered(CommonConstants.ZERO);
-					orderVO.setAmount(Double.parseDouble(amountText.getText()));
-					orderVO.setAdvance(Double.parseDouble(advText.getText()));
-					orderVO.setDod(eddText.getTextField().getText());
-					orderVO.setStatus(group.getSelectedToggle().getUserData().toString());
-					
-					
-					/*if("".equals(rawMaterialName.getText())||rawMaterialName.getText().equals(null))
-					{
-						Label msg = new Label("Cannot be Empty");
-						msg.setTextFill(Color.RED);
-						grid.add(msg,4,1);
-					}*/
-					/*else if("".equals(cb.getValue())||cb.getValue().equals(null))
-					{
-						Label msg = new Label("Please select one Unit");
-						msg.setTextFill(Color.RED);
-						grid.add(msg,4,2);
-					}*/
-					//else
-					//{
+					if (tempvalidator.isEmpty(nameText.getText())){
+					msg.setVisible(true);
+					nameText.getStyleClass().add("error");
+					}	
+					else if(tempvalidator.isEmpty(quantityText.getText())){
+						msg.setVisible(true);
+						quantityText.getStyleClass().add("error");
+					}
+					else if(tempvalidator.isEmpty(eddText.getTextField().getText())){
+						msg.setVisible(true);
+						eddText.getStyleClass().add("error");
+					}
+					else{
+						VendorVO vendorVO = new VendorVO();
+						vendorVO.setVendorName(nameText.getText());
+						vendorVO.setVendorAddress(addText.getText());
+						vendorVO.setVendorPhone(phoneText.getText());
+						vendorVO.setVendorEmail(emailText.getText());
+						
+						OrderVO orderVO = new OrderVO();
+						orderVO.setCustomerName(nameText.getText());
+						orderVO.setOrderQuantity(Integer.parseInt(quantityText.getText()));
+						orderVO.setOrderDelivered(CommonConstants.ZERO);
+						orderVO.setAmount(Double.parseDouble(amountText.getText()));
+						orderVO.setAdvance(Double.parseDouble(advText.getText()));
+						orderVO.setDod(eddText.getTextField().getText());
+						orderVO.setStatus(group.getSelectedToggle().getUserData().toString());
 						orderService.addVendorOrder(vendorVO, orderVO);
-						Label msg = new Label("Successfully Added !!!");
-						msg.setTextFill(Color.RED);
-						grid.add(msg,2,13);
-					//}
+						successMsg.setVisible(true);
+					}
+					
+					
+					
 				} catch (Exception e) 
 				{
 					e.printStackTrace();

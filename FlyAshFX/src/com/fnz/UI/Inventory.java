@@ -2,6 +2,7 @@ package com.fnz.UI;
 
 
 import com.fnz.VO.FinshedProductVO;
+import com.fnz.Validation.Validation;
 import com.fnz.dao.DBInteraction;
 import com.fnz.service.InventoryService;
 import com.sai.javafx.calendar.FXCalendar;
@@ -42,6 +43,7 @@ public class Inventory
 	InventoryService inventoryService;
 	Label msg = new Label("Cannot be Empty");
 	Label successMsg = new Label("Added Successfully !");
+	Validation tempValidator;
 	public Inventory()
 	{
 		inventoryService = new InventoryService();
@@ -49,6 +51,9 @@ public class Inventory
 		successMsg.setVisible(false);
 		msg.setTextFill(Color.RED);
 		successMsg.setTextFill(Color.BLUE);
+		
+		
+		tempValidator = new Validation();
 	}
 	
 	
@@ -205,14 +210,20 @@ public class Inventory
 				{
 					try
 					{
-						System.out.println(cb.getValue());
+						//System.out.println(cb.getValue());
 						
-						if("".equals(rawMaterialName.getText())||rawMaterialName.getText().equals(null))
+						
+						
+						
+						if(tempValidator.isEmpty(rawMaterialName.getText()))
 						{
-							msg.setVisible(true);
-							rawMaterialName.getStyleClass().add("error");
+								msg.setVisible(true);
+								rawMaterialName.getStyleClass().add("error");
+							
+							
+							
 						}
-						else if("".equals(cb.getValue())||cb.getValue()==null)
+						else if(tempValidator.isEmpty(cb.getValue()))
 						{
 							msg.setVisible(true);
 							rawMaterialName.getStyleClass().remove("error");
@@ -293,7 +304,7 @@ public class Inventory
 					{
 						try
 						{
-							if("".equals(cb.getValue())||cb.getValue()==null)
+							if(tempValidator.isEmpty(cb.getValue()))
 							{
 								msg.setVisible(true);
 								cb.getStyleClass().add("error");
@@ -351,6 +362,28 @@ public class Inventory
 			
 			final TextField bricksProduced = new TextField();
 			grid.add(bricksProduced,3,2);
+			tempValidator.allowDigit(bricksProduced);
+			
+			/*bricksProduced.lengthProperty().addListener(new ChangeListener<Number>(){
+				 
+				@Override
+				public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {              
+					 
+					 if(newValue.intValue() > oldValue.intValue()){
+						char ch = bricksProduced.getText().charAt(oldValue.intValue());
+						//System.out.println("Length:"+ oldValue+"  "+ newValue +" "+ch);                   
+			 
+						//Check if the new character is the number or other's
+						if(!(ch >= '0' && ch <= '9' )){       
+			                 
+							//if it's not number then just setText to previous one
+							bricksProduced.setText(bricksProduced.getText().substring(0,bricksProduced.getText().length()-1)); 
+						}
+					}
+				}
+				
+			});*/
+			
 			
 			Label labelLocation = new Label("Enter Storage Location");
 			grid.add(labelLocation,1,3);
@@ -378,20 +411,20 @@ public class Inventory
 					//Label msg=null;
 					try
 					{
-						if("".equals(bricksProduced.getText())||bricksProduced.getText().equals(null))
+						if(tempValidator.isEmpty(bricksProduced.getText()))
 						{
 							bricksProduced.getStyleClass().add("error");
 							msg.setVisible(true);
 							msg.setText("Cannot be Empty");
 						}
-						else if("".equals(storageLocation.getText())||storageLocation.getText().equals(null))
+						else if(tempValidator.isEmpty(storageLocation.getText()))
 						{
 							msg.setVisible(true);
 							msg.setText("Cannot be Empty");
 							bricksProduced.getStyleClass().remove("error");
 							storageLocation.getStyleClass().add("error");
 						}
-						else if("".equals(dateProduction.getTextField().getText())||dateProduction.getTextField().getText().equals(null))
+						else if(tempValidator.isEmpty(dateProduction.getTextField().getText()))
 						{
 							msg.setVisible(true);
 							msg.setText("Cannot be Empty");
