@@ -116,7 +116,7 @@ public class MainWindow extends Application
         dropShadow.setOffsetY(5);
        
         //Adding text and DropShadow effect to it
-        Text text = new Text("FlyAsh Corp.");
+        Text text = new Text("               FlyAsh Corp.\n             	 Cuttack");
         text.setFont(Font.font("Courier New", FontWeight.BOLD, 28));
         text.setEffect(dropShadow);
         text.setX(600); //useless

@@ -356,6 +356,7 @@ public class Orders
 						
 						
 						orderService.addOrder(customerVO, orderVO, clientList);
+						successMsg.setText("Added Successfully !");
 						successMsg.setVisible(true);
 					}
 				} catch (Exception e) 
@@ -719,6 +720,7 @@ public class Orders
 						orderVO.setDod(eddText.getTextField().getText());
 						orderVO.setStatus(group.getSelectedToggle().getUserData().toString());
 						orderService.addVendorOrder(vendorVO, orderVO,vendorList);
+						successMsg.setText("Added Successfully !");
 						successMsg.setVisible(true);
 					}
 					
@@ -952,7 +954,7 @@ public class Orders
 		 	table.getColumns().addAll(dateOfOrder,orderNo, customerName, orderQuantity,orderDelivered,orderPending,amount, advance, dod, status);
 		 	
 		 	grid.setAlignment(Pos.TOP_LEFT);
-		 	
+		 	//table.getSelectionModel().setCellSelectionEnabled(true);
 		 	grid.add(table,1,3);
         }
         catch(Exception e)

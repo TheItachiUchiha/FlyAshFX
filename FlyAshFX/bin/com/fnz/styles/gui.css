@@ -38,6 +38,13 @@
    
 }
 
+/*table*/
+
+.table-row-cell:empty {
+    -fx-background-color:null;
+}
+
+
 
 
 
