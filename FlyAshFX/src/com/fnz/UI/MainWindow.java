@@ -11,10 +11,15 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -50,6 +55,7 @@ public class MainWindow extends Application
         scene.getStylesheets().add(FXCalendarDemo.class.getResource("/com/fnz/styles/gui.css").toExternalForm());
         stage.setX(0);
 	    stage.setY(0);
+	    stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/fnz/styles/Two-storied house.png")));
 	    stage.setWidth(Screen.getPrimary().getVisualBounds().getWidth());
 	    stage.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
 	    stage.setScene(this.scene);
@@ -104,8 +110,18 @@ public class MainWindow extends Application
         
         Button accountButton = new Button("Accounts");
         accountButton.setPrefSize(100, 50);
+        //DropShadow effect
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setOffsetX(5);
+        dropShadow.setOffsetY(5);
+       
+        //Adding text and DropShadow effect to it
+        Text text = new Text("FlyAsh Corp.");
+        text.setFont(Font.font("Courier New", FontWeight.BOLD, 28));
+        text.setEffect(dropShadow);
+        text.setX(600); //useless
         
-        hbox.getChildren().addAll(inventoryButton, ordersButton, accountButton);
+        hbox.getChildren().addAll(inventoryButton, ordersButton, accountButton,text);
         
         ordersButton.setOnAction(new EventHandler<ActionEvent>() {
 			
