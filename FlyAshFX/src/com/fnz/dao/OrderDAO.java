@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javafx.collections.FXCollections;
@@ -18,7 +19,7 @@ import com.fnz.common.SQLConstants;
 
 public class OrderDAO 
 {
-	
+	SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");  
 	/*Create Method <function name><return type><comments>
 	 * <Creator Name><Date Of Creation MM-dd-yyyy>
 	 * 
@@ -106,7 +107,7 @@ public class OrderDAO
 			}
 			
 			pstmt1.setString(1, newOrderNumber);
-			pstmt1.setString(2, new Date().toString());
+			pstmt1.setString(2, format.format(new Date()).toString());
 			pstmt1.setString(3, orderVO.getCustomerName());
 			pstmt1.setInt(4, orderVO.getOrderQuantity());
 			pstmt1.setInt(5, orderVO.getOrderDelivered());
@@ -308,7 +309,7 @@ public class OrderDAO
 			}
 			
 			pstmt1.setString(1, newOrderNumber);
-			pstmt1.setString(2, new Date().toString());
+			pstmt1.setString(2, format.format(new Date()).toString());
 			pstmt1.setString(3, orderVO.getCustomerName());
 			pstmt1.setInt(4, orderVO.getOrderQuantity());
 			pstmt1.setInt(5, orderVO.getOrderDelivered());
@@ -886,5 +887,121 @@ public class OrderDAO
 		}
 		return orderVO;
 	}
-
+	
+	public void editClientOrder(String orderNo, int quantityDelivered, double amountReceived ) throws Exception
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet resultSet = null;
+		OrderVO orderVO = new OrderVO();
+		String status=null;
+		
+		
+		Class.forName(CommonConstants.DRIVERNAME);
+		
+		String sDbUrl = CommonConstants.sJdbc + ":" + CommonConstants.DB_LOCATION + CommonConstants.sTempDb;
+		
+		try 
+		{   
+		    orderVO = fetchClientOrderDetails(orderNo);
+			
+		    conn = DriverManager.getConnection(sDbUrl);
+			
+		    pstmt = conn.prepareStatement(SQLConstants.UPDATE_CLIENT_ORDER_DETAILS);
+			
+			pstmt.setQueryTimeout(CommonConstants.TIMEOUT);
+			
+			if(orderVO.getOrderDelivered()+quantityDelivered==0)
+			{
+				status=CommonConstants.STATUS_PENDING;
+			}
+			else if(orderVO.getOrderDelivered()+quantityDelivered>0 && orderVO.getOrderDelivered()+quantityDelivered<orderVO.getOrderQuantity())
+			{
+				status=CommonConstants.STATUS_PARTIALLY_DELIVERED;
+			}
+			else
+			{
+				status=CommonConstants.STATUS_DELIVERED;
+			}
+			pstmt.setInt(1, orderVO.getOrderDelivered()+quantityDelivered);
+			pstmt.setDouble(2, orderVO.getAdvance()+amountReceived);
+			pstmt.setString(3, status);
+			pstmt.setString(4, orderNo);
+			pstmt.executeUpdate();
+			
+			
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			if(conn !=null )
+			{
+				conn.close();
+			}
+			if(pstmt != null )
+			{
+				pstmt.close();
+			}
+			if(resultSet != null)
+			{
+				resultSet.close();
+			}
+		}
+	}
+	
+	public void editVendorOrder(String orderNo, int quantityDelivered, double amountReceived ) throws Exception
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet resultSet = null;
+		OrderVO orderVO = new OrderVO();
+		
+		
+		Class.forName(CommonConstants.DRIVERNAME);
+		
+		String sDbUrl = CommonConstants.sJdbc + ":" + CommonConstants.DB_LOCATION + CommonConstants.sTempDb;
+		
+		try 
+		{
+		    
+		    orderVO = fetchClientOrderDetails(orderNo);
+			
+		    conn = DriverManager.getConnection(sDbUrl);
+			
+		    pstmt = conn.prepareStatement(SQLConstants.UPDATE_VENDOR_PURCHASE_DETAILS);
+			
+			pstmt.setQueryTimeout(CommonConstants.TIMEOUT);
+			pstmt.setInt(1, orderVO.getOrderDelivered()+quantityDelivered);
+			pstmt.setDouble(2, orderVO.getAdvance()+amountReceived);
+			pstmt.setString(3, orderNo);
+			pstmt.executeUpdate();
+			
+			
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			if(conn !=null )
+			{
+				conn.close();
+			}
+			if(pstmt != null )
+			{
+				pstmt.close();
+			}
+			if(resultSet != null)
+			{
+				resultSet.close();
+			}
+		}
+	}
+	
 }
+
+

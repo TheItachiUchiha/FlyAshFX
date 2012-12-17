@@ -159,4 +159,28 @@ public class OrderService
 		}
 		return orderVO; 
 	}
+	
+	public void editClientOrder(String orderNo, int quantityDelivered, double amountReceived ) throws Exception
+	{
+		try
+		{
+			orderDAO.editClientOrder(orderNo, quantityDelivered, amountReceived);
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void editVendorOrder(String orderNo, int quantityDelivered, double amountReceived ) throws Exception
+	{
+		try
+		{
+			orderDAO.editVendorOrder(orderNo, quantityDelivered, amountReceived);
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+	}
 }

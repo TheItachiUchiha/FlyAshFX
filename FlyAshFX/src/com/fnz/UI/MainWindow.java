@@ -55,7 +55,7 @@ public class MainWindow extends Application
         scene.getStylesheets().add(FXCalendarDemo.class.getResource("/com/fnz/styles/gui.css").toExternalForm());
         stage.setX(0);
 	    stage.setY(0);
-	    stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/fnz/styles/Two-storied house.png")));
+	    //stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/fnz/styles/Two-storied house.png")));
 	    stage.setWidth(Screen.getPrimary().getVisualBounds().getWidth());
 	    stage.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
 	    stage.setScene(this.scene);

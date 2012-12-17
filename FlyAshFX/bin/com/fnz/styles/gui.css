@@ -19,7 +19,7 @@
     -fx-background-color:null;
     -fx-background-insets: 0,1;
    	
-    -fx-background-radius: -1.4, 0, 
+    -fx-background-radius: -1.4, 0, 0;
 }
 .tree-view:focused {
     -fx-padding: 1;

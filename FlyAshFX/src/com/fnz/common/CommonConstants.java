@@ -24,5 +24,13 @@ public class CommonConstants
 	
 	public static final String STATUS_DELIVERED = "Delivered";
 	
+	public static final String STATUS_PENDING = "Pending";
+	
+	public static final String STATUS_PARTIALLY_RECEIVED = "Partially Received";
+	
+	public static final String STATUS_PARTIALLY_DELIVERED = "Partially Delivered";
+	
+	
+	
 	public static final String DB_LOCATION="C:\\FlyAsh\\";
 }
