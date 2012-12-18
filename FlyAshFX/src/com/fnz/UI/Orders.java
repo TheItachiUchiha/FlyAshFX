@@ -228,7 +228,9 @@ public class Orders
 		     
 		    
 		    final AutoFillTextBox nameText = new AutoFillTextBox(clientList);
-		  
+		nameText.textbox.setPrefWidth(145);
+		tempvalidator.allowCharacters(nameText.textbox);
+		    //System.out.println(nameText.textbox.getPrefColumnCount());
 		    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 		    grid.add(nameText, 2, 2);
 		    
@@ -377,7 +379,7 @@ public class Orders
 						
 						if (tempvalidator.isEmpty(nameText.getText())){
 						msg.setVisible(true);
-						nameText.getStyleClass().add("error");
+						nameText.textbox.getStyleClass().add("error");
 						}	
 						else if(tempvalidator.isEmpty(quantityText.getText())){
 							msg.setVisible(true);
@@ -635,6 +637,8 @@ public class Orders
 	
 		    
 		    final AutoFillTextBox<String> nameText = new AutoFillTextBox<String>(vendorList);
+		    nameText.textbox.setPrefWidth(145);
+		    tempvalidator.allowCharacters(nameText.textbox);
 		    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 		    grid.add(nameText, 2, 2);
 		    //tempvalidator.allowCharacters(nameText);
@@ -769,7 +773,7 @@ public class Orders
 						
 						if (tempvalidator.isEmpty(nameText.getText())){
 						msg.setVisible(true);
-						nameText.getStyleClass().add("error");
+						nameText.textbox.getStyleClass().add("error");
 						}	
 						else if(tempvalidator.isEmpty(quantityText.getText())){
 							msg.setVisible(true);
