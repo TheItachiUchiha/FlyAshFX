@@ -228,9 +228,10 @@ public class Orders
 		     
 		    
 		    final AutoFillTextBox nameText = new AutoFillTextBox(clientList);
-		    nameText.getTextbox().minWidth(100);
+		  
 		    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 		    grid.add(nameText, 2, 2);
+		    
 		    //tempvalidator.allowCharacters(nameText);
 		    
 		    
@@ -242,8 +243,8 @@ public class Orders
 		    final TextField addText = new TextField();
 		    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 		    grid.add(addText, 2, 3);
-		    System.out.println(addText.getMinWidth());
-		    System.out.println(addText.widthProperty().floatValue());
+		    
+		 
 		    
 		    Label phoneLabel = new Label("Client Phone");
 		    //phoneLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
