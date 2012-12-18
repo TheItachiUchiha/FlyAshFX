@@ -58,6 +58,8 @@ public class Orders
 	Label msg = new Label("Cannot be Empty");
 	Label successMsg = new Label("Added Successfully !");
 	
+   
+	
 	DecimalFormat df = new DecimalFormat("#.##");
 	SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");  
 	
@@ -245,7 +247,7 @@ public class Orders
 		    final TextField addText = new TextField();
 		    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 		    grid.add(addText, 2, 3);
-		    
+		   
 		 
 		    
 		    Label phoneLabel = new Label("Client Phone");
@@ -301,11 +303,14 @@ public class Orders
 		    grid.add(quantityText, 2, 6);
 		    tempvalidator.allowDigit(quantityText);
 		    
-		    Label amountLabel = new Label("Amount");
+		    
+		    
+		    Label amountLabel = new Label("Amount (`)");
+		    
 		    //amountLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 		    grid.add(amountLabel, 1, 7); 
-	
-		    final Text rupee= new Text();
+		    
+		   
 		    
 		    
 		    
@@ -313,8 +318,9 @@ public class Orders
 		    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 		    grid.add(amountText, 2, 7);
 		    tempvalidator.allowAsAmount(amountText);
+		   
 		    
-		    Label advanceLabel = new Label("Advance Received");
+		    Label advanceLabel = new Label("Advance Received (`)");
 		    //advanceLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 		    grid.add(advanceLabel, 1, 8); 
 	
@@ -324,6 +330,7 @@ public class Orders
 		    grid.add(advText, 2, 8);
 		    advText.setText("0000.00");
 		    tempvalidator.allowAsAmount(advText); 
+		   
 		    
 		    Label eddLabel = new Label("Expected Delivery Date");
 		    //eddLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
@@ -700,7 +707,7 @@ public class Orders
 		    grid.add(quantityText, 2, 6);
 		    tempvalidator.allowDigit(quantityText);
 		    
-		    Label amountLabel = new Label("Amount");
+		    Label amountLabel = new Label("Amount (`)");
 		    //amountLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 		    grid.add(amountLabel, 1, 7); 
 	
@@ -710,7 +717,7 @@ public class Orders
 		    grid.add(amountText, 2, 7);
 		    tempvalidator.allowAsAmount(amountText);
 		    
-		    Label advanceLabel = new Label("Adavance Given");
+		    Label advanceLabel = new Label("Adavance Given (`)");
 		    //advanceLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 		    grid.add(advanceLabel, 1, 8); 
 	
@@ -1028,7 +1035,7 @@ public class Orders
         	dataTable = orderService.viewOrder();
     
 		 	final Label label = new Label("Client Orders");
-		 	label.setFont(new Font("Arial", 20));
+		 	
 		 	grid.add(label,1,1);
 		 	
 		 	TableView<OrderVO> table = new TableView<OrderVO>();
@@ -1120,7 +1127,7 @@ public class Orders
         	dataTable = orderService.viewVendorOrder();
     
 		 	final Label label = new Label("Vendor Orders");
-		 	label.setFont(new Font("Arial", 20));
+		 	
 		 	grid.add(label,1,1);
 		 	
 		 	TableView<OrderVO> table = new TableView<OrderVO>();
@@ -1214,7 +1221,7 @@ public class Orders
 	    grid.add(quantityText, 3, 2);
 	    tempvalidator.allowDigit(quantityText);
 	     
-	    Label paymentLabel1 = new Label("Payment Received");
+	    Label paymentLabel1 = new Label("Payment Received (`)");
 	    //quantityLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    grid.add(paymentLabel1, 1, 3); 
 
@@ -1330,7 +1337,7 @@ public class Orders
 	    quantityPending.setFont(Font.font("Arial", 20));
 	    grid.add(quantityPending, 2, 5);
 	    
-	    Label totalAmountLabel = new Label("Total Amount : ");
+	    Label totalAmountLabel = new Label("Total Amount (`) : ");
 	    totalAmountLabel.setFont(Font.font("Arial", 20));
 	    grid.add(totalAmountLabel, 1, 6);
 	    
@@ -1338,7 +1345,7 @@ public class Orders
 	    totalAmount.setFont(Font.font("Arial", 20));
 	    grid.add(totalAmount, 2, 6);
 	    
-	    Label amountP = new Label("Amount Pending : ");
+	    Label amountP = new Label("Amount Pending (`) : ");
 	    amountP.setFont(Font.font("Arial", 20));
 	    grid.add(amountP, 1, 7);
 	    
@@ -1376,7 +1383,7 @@ public class Orders
 	    grid.add(quantityText, 3, 2);
 	    tempvalidator.allowDigit(quantityText);
 	     
-	    Label paymentLabel1 = new Label("Payment Given");
+	    Label paymentLabel1 = new Label("Payment Given (in `)");
 	    //quantityLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	    grid.add(paymentLabel1, 1, 3); 
 
