@@ -1002,6 +1002,116 @@ public class OrderDAO
 		}
 	}
 	
+	public ObservableList<CustomerVO> fetchClientDetails() throws Exception
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet resultSet = null;
+		CustomerVO customerVO = new CustomerVO();
+		ObservableList<CustomerVO> list=FXCollections.observableArrayList();
+		
+		Class.forName(CommonConstants.DRIVERNAME);
+		
+		String sDbUrl = CommonConstants.sJdbc + ":" + CommonConstants.DB_LOCATION + CommonConstants.sTempDb;
+		
+		try 
+		{
+			
+		    conn = DriverManager.getConnection(sDbUrl);
+			
+		    pstmt = conn.prepareStatement(SQLConstants.FETCH_CLIENT_DETAILS);
+			
+			pstmt.setQueryTimeout(CommonConstants.TIMEOUT);
+			resultSet = pstmt.executeQuery();
+			
+			while(resultSet.next())
+			{
+				customerVO = new CustomerVO();
+				customerVO.setCustomerName(resultSet.getString(2));
+				customerVO.setCustomerAddress(resultSet.getString(3));
+				customerVO.setCustomerPhone(resultSet.getString(4));
+				customerVO.setCustomerEmail(resultSet.getString(5));
+				list.add(customerVO);
+			}
+			
+			
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			if(conn !=null )
+			{
+				conn.close();
+			}
+			if(pstmt != null )
+			{
+				pstmt.close();
+			}
+			if(resultSet != null)
+			{
+				resultSet.close();
+			}
+		}
+		return list;
+	}
+	public ObservableList<VendorVO> fetchVendorDetails() throws Exception
+	{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet resultSet = null;
+		VendorVO vendorVO = new VendorVO();
+		ObservableList<VendorVO> list=FXCollections.observableArrayList();
+		
+		Class.forName(CommonConstants.DRIVERNAME);
+		
+		String sDbUrl = CommonConstants.sJdbc + ":" + CommonConstants.DB_LOCATION + CommonConstants.sTempDb;
+		
+		try 
+		{
+			
+		    conn = DriverManager.getConnection(sDbUrl);
+			
+		    pstmt = conn.prepareStatement(SQLConstants.FETCH_VENDOR_DETAILS);
+			
+			pstmt.setQueryTimeout(CommonConstants.TIMEOUT);
+			resultSet = pstmt.executeQuery();
+			
+			while(resultSet.next())
+			{
+				vendorVO = new VendorVO();
+				vendorVO.setVendorName(resultSet.getString(2));
+				vendorVO.setVendorAddress(resultSet.getString(3));
+				vendorVO.setVendorPhone(resultSet.getString(4));
+				vendorVO.setVendorEmail(resultSet.getString(5));
+				list.add(vendorVO);
+				
+			}
+			
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			if(conn !=null )
+			{
+				conn.close();
+			}
+			if(pstmt != null )
+			{
+				pstmt.close();
+			}
+			if(resultSet != null)
+			{
+				resultSet.close();
+			}
+		}
+		return list;
+	}
 }
 
 

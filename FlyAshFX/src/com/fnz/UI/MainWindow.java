@@ -1,5 +1,9 @@
 package com.fnz.UI;
 
+
+
+import np.com.ngopal.control.AutoFillTextBox;
+
 import com.fnz.dao.DBInteraction;
 import com.fnz.dao.InventoryDAO;
 import com.sai.javafx.calendar.demo.FXCalendarDemo;
@@ -53,6 +57,7 @@ public class MainWindow extends Application
         scene = new Scene(border);
         scene.getStylesheets().add(FXCalendarDemo.class.getResource("/com/fnz/styles/calendar_styles.css").toExternalForm());
         scene.getStylesheets().add(FXCalendarDemo.class.getResource("/com/fnz/styles/gui.css").toExternalForm());
+        scene.getStylesheets().add("com\\fnz\\styles\\control.css");
         stage.setX(0);
 	    stage.setY(0);
 	    //stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/fnz/styles/Two-storied house.png")));

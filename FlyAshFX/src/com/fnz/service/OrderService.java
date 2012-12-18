@@ -98,12 +98,12 @@ public class OrderService
 		}
 		return list;
 	}
-	public ObservableList<String> viewOrderList(String clientName)
+	public ObservableList<String> viewOrderList(String customer)
 	{
 		ObservableList<String> list = FXCollections.observableArrayList();
 		try
 		{
-			list = orderDAO.viewOrderList(clientName);
+			list = orderDAO.viewOrderList(customer);
 		}
 		catch(Exception e)
 		{
@@ -182,5 +182,31 @@ public class OrderService
 		{
 			e.printStackTrace();
 		}
+	}
+	public ObservableList<CustomerVO> fetchClientDetails() throws Exception
+	{
+		ObservableList<CustomerVO> list=FXCollections.observableArrayList();
+		try 
+		{
+			list=orderDAO.fetchClientDetails();
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		return list;
+	}
+	public ObservableList<VendorVO> fetchVendorDetails() throws Exception
+	{
+		ObservableList<VendorVO> list=FXCollections.observableArrayList();
+		try 
+		{
+			list=orderDAO.fetchVendorDetails();
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		return list;
 	}
 }
