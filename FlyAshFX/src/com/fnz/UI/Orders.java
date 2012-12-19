@@ -218,11 +218,16 @@ public class Orders
 		    
 		    final ObservableList<String> clientList = FXCollections.observableArrayList();
 		    clientList.clear();
-		    clientList.addAll(orderService.viewClients());
+		    
 		    
 		    final ObservableList<CustomerVO> customerList = FXCollections.observableArrayList();
 		    customerList.clear();
 		    customerList.addAll(orderService.fetchClientDetails());
+		    
+		    for(CustomerVO cust : customerList)
+		    {
+		    	clientList.add(cust.getCustomerName());
+		    }
 		    
 		    Label nameLabel = new Label("Client Name");
 		    //nameLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
@@ -285,6 +290,12 @@ public class Orders
 			            	phoneText.setText(customerList.get(i).getCustomerPhone());
 			            	emailText.setText(customerList.get(i).getCustomerEmail());
 			            }
+			        	if(!customerList.get(i).getCustomerName().equalsIgnoreCase(newValue))
+			        	{
+			            	addText.setText("");
+			            	phoneText.setText("");
+			            	emailText.setText("");
+			        	}
 			        }
 		        }
 		    });
@@ -632,11 +643,16 @@ public class Orders
 		    
 		    final ObservableList<String> vendorList = FXCollections.observableArrayList();
 		    vendorList.clear();
-		    vendorList.addAll(orderService.viewVendors());
+		    
 		    
 		    final ObservableList<VendorVO> vendorVOList = FXCollections.observableArrayList();
 		    vendorVOList.clear();
 		    vendorVOList.addAll(orderService.fetchVendorDetails());
+		    
+		    for(VendorVO vendorVO : vendorVOList)
+		    {
+		    	vendorList.add(vendorVO.getVendorName());
+		    }
 		    
 		    Label nameLabel = new Label("Vendor Name");
 		    //nameLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
@@ -693,6 +709,12 @@ public class Orders
 			            	phoneText.setText(vendorVOList.get(i).getVendorPhone());
 			            	emailText.setText(vendorVOList.get(i).getVendorEmail());
 			            }
+			        	if(!vendorVOList.get(i).getVendorName().equalsIgnoreCase(newValue))
+			        	{
+			            	addText.setText("");
+			            	phoneText.setText("");
+			            	emailText.setText("");
+			        	}
 			        }
 		        }
 		    });

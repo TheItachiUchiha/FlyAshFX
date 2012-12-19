@@ -99,7 +99,7 @@ public class OrderDAO
 			if(!clientList.contains(customerVO.getCustomerName()))
 			{
 				pstmt.setString(1, newCustNumber);
-				pstmt.setString(2, customerVO.getCustomerName());
+				pstmt.setString(2, Character.toString(customerVO.getCustomerName().toLowerCase().charAt(0)).toUpperCase()+customerVO.getCustomerName().toLowerCase().substring(1));
 				pstmt.setString(3, customerVO.getCustomerAddress());
 				pstmt.setString(4, customerVO.getCustomerPhone());
 				pstmt.setString(5, customerVO.getCustomerEmail());
@@ -108,7 +108,7 @@ public class OrderDAO
 			
 			pstmt1.setString(1, newOrderNumber);
 			pstmt1.setString(2, format.format(new Date()).toString());
-			pstmt1.setString(3, orderVO.getCustomerName());
+			pstmt1.setString(3, Character.toString(orderVO.getCustomerName().toLowerCase().charAt(0)).toUpperCase()+orderVO.getCustomerName().toLowerCase().substring(1));
 			pstmt1.setInt(4, orderVO.getOrderQuantity());
 			pstmt1.setInt(5, orderVO.getOrderDelivered());
 			pstmt1.setDouble(6, orderVO.getAmount());
@@ -301,7 +301,7 @@ public class OrderDAO
 			if(!vendorList.contains(vendorVO.getVendorName()))
 			{
 				pstmt.setString(1, newCustNumber );
-				pstmt.setString(2, vendorVO.getVendorName());
+				pstmt.setString(2, Character.toString(vendorVO.getVendorName().toLowerCase().charAt(0)).toUpperCase()+vendorVO.getVendorName().toLowerCase().substring(1));
 				pstmt.setString(3, vendorVO.getVendorAddress());
 				pstmt.setString(4, vendorVO.getVendorPhone());
 				pstmt.setString(5, vendorVO.getVendorEmail());
@@ -310,7 +310,7 @@ public class OrderDAO
 			
 			pstmt1.setString(1, newOrderNumber);
 			pstmt1.setString(2, format.format(new Date()).toString());
-			pstmt1.setString(3, orderVO.getCustomerName());
+			pstmt1.setString(3, Character.toString(orderVO.getCustomerName().toLowerCase().charAt(0)).toUpperCase()+orderVO.getCustomerName().toLowerCase().substring(1));
 			pstmt1.setInt(4, orderVO.getOrderQuantity());
 			pstmt1.setInt(5, orderVO.getOrderDelivered());
 			pstmt1.setDouble(6, orderVO.getAmount());
