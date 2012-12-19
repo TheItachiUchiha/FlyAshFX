@@ -9,9 +9,12 @@ import com.fnz.dao.InventoryDAO;
 import com.sai.javafx.calendar.demo.FXCalendarDemo;
 
 import javafx.application.Application;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
@@ -20,6 +23,7 @@ import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -36,13 +40,20 @@ public class MainWindow extends Application
 	private BorderPane border;
 	private Stage stage;
 	private Scene scene;
-
+	static DropShadow effect2 = new DropShadow();
+	static DropShadow effect1 = new DropShadow();
+	public boolean flag;
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args)
     {
         launch(MainWindow.class, args);
+       
+        
+        
+        
+       
     }
     
     @Override
@@ -80,7 +91,7 @@ public class MainWindow extends Application
     private BorderPane addBBox(){
     	javafx.scene.layout.
         BorderPane border = new BorderPane();
-    	border.setPadding(new Insets(15, 12, 15, 12));
+    	border.setPadding(new Insets(0, 12, 0, 12));
        // hbox.setSpacing(10);   // Gap between nodes
        // hbox.setStyle("-fx-background-color: #336699;");
     	border.getStyleClass().add("styleBg");
@@ -89,6 +100,7 @@ public class MainWindow extends Application
         
         
         HBox hbox = new HBox();
+       
         Button upload = new Button();
         upload.setId("upload");
         Image img1 = new Image(getClass().getResourceAsStream("upload.png"),40,40,false,false);
@@ -121,37 +133,47 @@ public class MainWindow extends Application
         hbox.setSpacing(10);   // Gap between nodes
        // hbox.setStyle("-fx-background-color: #336699;");
         hbox.getStyleClass().add("styleBg");
-        
-        DropShadow effect = new DropShadow();
-        effect.setColor(Color.DARKKHAKI);
-      effect.setBlurType(BlurType.GAUSSIAN);
-        effect.setSpread(0.8);
-        effect.setRadius(12);
-        
-        Text t= new Text("Inventory");
-        t.setEffect(effect);
+        effect2.setColor(Color.DARKGOLDENROD);
+        effect2.setBlurType(BlurType.GAUSSIAN);
+          effect2.setSpread(0.8);
+          effect2.setRadius(12);
+      
+          effect1.setColor(Color.DARKCYAN);
+          effect1.setBlurType(BlurType.GAUSSIAN);
+            effect1.setSpread(0.8);
+            effect1.setRadius(12);
+       
+      flag=false;
         
        
         
-        Button inventoryButton = new Button("Inventory");
+        final Button inventoryButton = new Button("Inventory");
         inventoryButton.setId("inventoryButton");
-        inventoryButton.setEffect(effect);
-        
-        
-        
-               
+        inventoryButton.setEffect(effect1);   
         Image img1 = new Image(getClass().getResourceAsStream("icon_inventory.png"),72,72,false,false);
         inventoryButton.setGraphic(new ImageView(img1));
         inventoryButton.setContentDisplay(ContentDisplay.TOP);
         inventoryButton.setMaxSize(5, 5);
+        changeBackgroundOnHoverUsingEventsInven(inventoryButton);
 
-        Button ordersButton = new Button("Orders");
-        //ordersButton.setId("ordersButton");
-        ordersButton.setPrefSize(100, 80);
+        final Button ordersButton = new Button("Orders");
+        ordersButton.setId("ordersButton");
+        ordersButton.setEffect(effect1);
+        Image img3 = new Image(getClass().getResourceAsStream("Rupee_Order.png"),72,72,false,false);
+        ordersButton.setGraphic(new ImageView(img3));
+        ordersButton.setContentDisplay(ContentDisplay.TOP);
+        ordersButton.setMaxSize(5, 5);
+       changeBackgroundOnHoverUsingEventsOrder(ordersButton);
         
-        Button accountButton = new Button("Accounts");
-        //accountButton.setId("accountButton");
-        accountButton.setPrefSize(100, 80);
+        
+        final Button accountButton = new Button("Accounts");
+        accountButton.setId("accountButton");
+        accountButton.setEffect(effect1);
+        Image img2 = new Image(getClass().getResourceAsStream("icon-leadsbox.png"),72,72,false,false);
+        accountButton.setGraphic(new ImageView(img2));
+        accountButton.setContentDisplay(ContentDisplay.TOP);
+        accountButton.setMaxSize(5, 5);
+       // changeBackgroundOnHoverUsingEvents(accountButton);
         
         //DropShadow effect
         DropShadow dropShadow = new DropShadow();
@@ -171,6 +193,25 @@ public class MainWindow extends Application
 			@Override
 			public void handle(ActionEvent e) 
 			{
+				
+		        
+				inventoryButton.setEffect(effect1);
+				   accountButton.setEffect(effect1);
+				   ordersButton.setEffect(effect2);
+				border.setLeft(new Orders().addVBox(border));
+				border.setRight(null);
+			}
+		});
+        ordersButton.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent e) 
+			{
+				
+		        
+				inventoryButton.setEffect(effect1);
+				   accountButton.setEffect(effect1);
+				   ordersButton.setEffect(effect2);
 				border.setLeft(new Orders().addVBox(border));
 				border.setRight(null);
 			}
@@ -180,6 +221,11 @@ public class MainWindow extends Application
 			@Override
 			public void handle(ActionEvent arg0) 
 			{
+				
+			        
+				   inventoryButton.setEffect(effect2);
+				   accountButton.setEffect(effect1);
+				   ordersButton.setEffect(effect1);
 				border.setLeft(new Inventory().addVBox(border));
 				border.setRight(null);
 			}
@@ -189,21 +235,83 @@ public class MainWindow extends Application
 			@Override
 			public void handle(ActionEvent arg0) 
 			{
-				try {
+				
+				inventoryButton.setEffect(effect1);
+				   accountButton.setEffect(effect2);
+				   ordersButton.setEffect(effect1);
+				     
+			        
 					//System.out.println(new InventoryDAO().fetchProduction().get(1));
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			
 			}
 		});
+      
         
         return hbox;
     }
         
         
         
-    /*Create Method <function name><return type><comments>
+    
+
+      public void changeBackgroundOnHoverUsingEventsInven(final Node node) {
+     
+        node.setOnMouseEntered(new EventHandler<MouseEvent>() {
+          @Override public void handle(MouseEvent mouseEvent) {
+            node.setEffect(effect2);
+            
+          }
+        });
+        
+        node.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        	 @Override public void handle(MouseEvent mouseEvent) {
+            node.setEffect(effect2);
+            flag=true;
+          }
+        });
+        node.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override public void handle(MouseEvent mouseEvent) {
+            	if (flag==true) {
+            		
+            		node.setEffect(effect2);
+            	}
+            	else{
+            		node.setEffect(effect1);
+            	}
+            	
+            }
+          });
+      }    
+      public void changeBackgroundOnHoverUsingEventsOrder(final Node node) {
+    	     
+          node.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override public void handle(MouseEvent mouseEvent) {
+              node.setEffect(effect2);
+              
+            }
+          });
+          node.setOnMouseClicked(new EventHandler<MouseEvent>() {
+         	 @Override public void handle(MouseEvent mouseEvent) {
+             node.setEffect(effect2);
+             flag=true;
+           }
+         });
+         
+          node.setOnMouseExited(new EventHandler<MouseEvent>() {
+              @Override public void handle(MouseEvent mouseEvent) {
+              	if (flag==true) {
+              		
+              		node.setEffect(effect2);
+              	}
+              	else{
+              		node.setEffect(effect1);
+              	}
+              	
+              }
+            });
+        }    
+
+	/*Create Method <function name><return type><comments>
 	 * <Creator Name><Date Of Creation MM-dd-yyyy>
 	 * 
 	 * <addVBox()><VBox><Vertical pane to be placed on the left>
