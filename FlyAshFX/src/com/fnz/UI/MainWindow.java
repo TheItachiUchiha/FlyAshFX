@@ -6,6 +6,7 @@ import np.com.ngopal.control.AutoFillTextBox;
 
 import com.fnz.dao.DBInteraction;
 import com.fnz.dao.InventoryDAO;
+import com.fnz.utilities.ModalDialog;
 import com.sai.javafx.calendar.demo.FXCalendarDemo;
 
 import javafx.application.Application;
@@ -98,7 +99,7 @@ public class MainWindow extends Application
     private BorderPane addBBox(){
     	javafx.scene.layout.
         BorderPane border = new BorderPane();
-    	border.setPadding(new Insets(0, 12, 0, 12));
+    	border.setPadding(new Insets(15, 12, 15, 12));
        // hbox.setSpacing(10);   // Gap between nodes
        // hbox.setStyle("-fx-background-color: #336699;");
     	border.getStyleClass().add("styleBg");
@@ -106,7 +107,7 @@ public class MainWindow extends Application
         border.setLeft(lName);
         
         
-        HBox hbox = new HBox();
+        /*HBox hbox = new HBox();
        
         Button upload = new Button();
         upload.setId("upload");
@@ -115,7 +116,7 @@ public class MainWindow extends Application
         upload.setContentDisplay(ContentDisplay.TOP);
         hbox.getChildren().add(upload);
         
-        border.setRight(hbox);
+        border.setRight(hbox);*/
         return border;
     }
     
@@ -270,8 +271,20 @@ public class MainWindow extends Application
         Image settingImage = new Image("setting.png",30,30,false,false);
         setting.setGraphic(new ImageView(settingImage));
         setting.setPrefSize(50, 50);
-        MenuItem restore = new MenuItem("Backup/Restore");
-        setting.getItems().add(restore);
+        MenuItem Backup = new MenuItem("Backup/Restore");
+        Backup.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) 
+			{
+				
+				ModalDialog m = new ModalDialog();
+				   m.ModalDialogUpload(stage, "Make a Back Up", "");  
+			        
+					//System.out.println(new InventoryDAO().fetchProduction().get(1));
+			
+			}
+		});
+        setting.getItems().add(Backup);
         rightHbox.getChildren().addAll(setting);
         upperBorder.setRight(rightHbox);
         
