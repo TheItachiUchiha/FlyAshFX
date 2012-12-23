@@ -15,7 +15,7 @@ import java.net.URLConnection;
  *
  * @author Muthu
  */
-public class FileUpload
+public class FileUploadDownload
 {
  
    /**
@@ -32,18 +32,8 @@ public class FileUpload
  * @throws IOException 
     * @throws MalformedURLException, IOException on error.
     */
-	public static void main(String args[]) throws MalformedURLException, IOException{
-		
-		String ftpServer = "ftp.DriveHQ.com";
-		String User="panther999";
-		String password="seahawk123";
-		String MacAdd= new ObtainMac().getMac();
-		String filename="\\VirtualDatabaseBackup\\"+MacAdd+",flyash.db";
-		File f= new File("c:/FlyAsh/flyash.db");
 	
-		upload(ftpServer,User,password,filename,f);
-	}
-   public static void upload( String ftpServer, String user, String password,
+   public static String upload( String ftpServer, String user, String password,
          String fileName, File source ) throws MalformedURLException,
          IOException
    {
@@ -105,10 +95,11 @@ public class FileUpload
                   ioe.printStackTrace();
                }
          }
+         return "Upload Successful";
       }
       else
       {
-         System.out.println( "Input not available." );
+        return "Some problem occured";
       }
    }
  
@@ -125,7 +116,7 @@ public class FileUpload
     * @param destination , Destination file to save.
     * @throws MalformedURLException, IOException on error.
     */
-   public void download( String ftpServer, String user, String password,
+   public String download( String ftpServer, String user, String password,
          String fileName, File destination ) throws MalformedURLException,
          IOException
    {
@@ -186,10 +177,11 @@ public class FileUpload
                   ioe.printStackTrace();
                }
          }
+         return "Download Successful";
       }
       else
       {
-         System.out.println( "Input not available" );
+         return "Input not available";
       }
    }
 }

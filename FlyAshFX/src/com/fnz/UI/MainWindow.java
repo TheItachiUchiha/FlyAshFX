@@ -278,7 +278,7 @@ public class MainWindow extends Application
 			{
 				
 				ModalDialog m = new ModalDialog();
-				   m.ModalDialogUpload(stage, "Make a Back Up", "");  
+				   m.ModalDialogUpload(stage, "Make a Back Up / Restore Database", "Choose your option: ");  
 			        
 					//System.out.println(new InventoryDAO().fetchProduction().get(1));
 			
