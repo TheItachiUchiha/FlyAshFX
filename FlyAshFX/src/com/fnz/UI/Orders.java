@@ -1055,10 +1055,12 @@ public class Orders
         {
         	dataTable = FXCollections.observableArrayList();
         	dataTable = orderService.viewOrder();
-    
+        	BorderPane newBorderPane = new BorderPane();
+        	
+        	
 		 	final Label label = new Label("Client Orders");
-		 	
-		 	grid.add(label,1,1);
+		 	newBorderPane.setLeft(label);
+		 	grid.add(newBorderPane,1,1);
 		 	
 		 	TableView<OrderVO> table = new TableView<OrderVO>();
 		 	table.setEditable(false);
