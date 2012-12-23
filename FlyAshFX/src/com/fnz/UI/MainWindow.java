@@ -178,7 +178,7 @@ public class MainWindow extends Application
         tooltip.setText("Inventory\n");
         inventoryButton.setTooltip(tooltip);
         inventoryButton.setId("inventoryButton");
-        //inventoryButton.setEffect(effect1);   
+        inventoryButton.setEffect(effect1);   
         Image img1 = new Image("icon_inventory.png",40,40,false,false);
         inventoryButton.setGraphic(new ImageView(img1));
         inventoryButton.setContentDisplay(ContentDisplay.TOP);
@@ -272,6 +272,7 @@ public class MainWindow extends Application
         setting.setGraphic(new ImageView(settingImage));
         setting.setPrefSize(50, 50);
         MenuItem Backup = new MenuItem("Backup/Restore");
+        MenuItem Configure = new MenuItem("Configure");
         Backup.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) 
@@ -284,7 +285,21 @@ public class MainWindow extends Application
 			
 			}
 		});
-        setting.getItems().add(Backup);
+        
+        Configure.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) 
+			{
+				
+				ModalDialog m = new ModalDialog();
+				   m.ModalDialogConfigure(stage, "Configure", "Software Configuration: ");  
+			        
+					//System.out.println(new InventoryDAO().fetchProduction().get(1));
+			
+			}
+		});
+        
+        setting.getItems().addAll(Backup,Configure);
         rightHbox.getChildren().addAll(setting);
         upperBorder.setRight(rightHbox);
         
