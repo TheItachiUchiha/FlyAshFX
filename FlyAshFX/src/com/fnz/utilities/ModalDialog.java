@@ -3,6 +3,8 @@ package com.fnz.utilities;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import com.fnz.dao.DBInteraction;
+import com.sai.javafx.calendar.demo.FXCalendarDemo;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -57,10 +59,10 @@ public class ModalDialog {
 	            
 	            Group root = new Group();
 	             Scene scene = new Scene(root);
-	            // scene.setFill(Color.rgb(139,104,139));
-	            root.setId("baseModal");
+	            //scene.setFill(Color.rgb(139,104,139));
+	           
 	            scene.getStylesheets().addAll(this.getClass().getResource("/com/fnz/styles/gui.css").toExternalForm()); 
-	         
+	            
 	          //  DropShadow dropShadow = new DropShadow();
               //  dropShadow.setOffsetX(5);
               //  dropShadow.setOffsetY(5);
@@ -156,6 +158,8 @@ public class ModalDialog {
 	            	   
 	            	   
 	            	   checkDownload=fileDownload.download(ftpServer, User,password,filename,file);
+	            	   //boolean x = fileDownload.exists(ftpServer, User,password,filename);
+	            	   //System.out.println(x);
 	            	    text.setText(checkDownload);
 						Button doneButton= new Button("Done");
 						btnHBox.getChildren().removeAll(UploadButton,DownloadButton);
@@ -192,6 +196,7 @@ public class ModalDialog {
 	        
 	        final  Stage stage = new Stage(StageStyle.UTILITY);           
 	            //Initialize the Stage with type of modal
+	        
 	       
 	            stage.initModality(Modality.APPLICATION_MODAL);
 	            stage.setResizable(false);
@@ -201,9 +206,9 @@ public class ModalDialog {
 	            
 	            Group root = new Group();
 	             Scene scene = new Scene(root);
-	           
-	            scene.getStylesheets().addAll(this.getClass().getResource("/com/fnz/styles/gui.css").toExternalForm()); 
-	         
+	            
+	             scene.getStylesheets().add("trap");
+	            // scene.setFill(Color.rgb(139,104,139));
 	      
 	             BorderPane borderPane = new BorderPane();
 	             borderPane.setPadding(new Insets(5,5,5,5));
@@ -238,42 +243,49 @@ public class ModalDialog {
 			Text msg=new Text("troll");
 			Text Successmsg=new Text("troll");
 			grid = new GridPane();
-			grid.setHgap(1);
-          grid.setVgap(8);
-          grid.setPadding(new Insets(30));
+			
+			grid.setHgap(6);
+			grid.setVgap(8);
+			grid.setPadding(new Insets(20));
           
 			/*Label message = new Label("Please Enter Details");
 			grid.add(message,1,1);*/
 			
-			Label selectCompanyName = new Label("Company Name");
+			Label selectCompanyName = new Label("Name");
 			grid.add(selectCompanyName,1,2);
 			
 			final TextField companyName = new TextField();
 			grid.add(companyName,2,2);
 			
-			Label lCompanyAdd = new Label("Your Address");
-			grid.add(lCompanyAdd,1,3);
-			final TextField companyAdd = new TextField();
-			grid.add(companyAdd,2,3);
+			Label lCompanyAdd1 = new Label("Address 1");
+			grid.add(lCompanyAdd1,1,3);
+			final TextField companyAdd1 = new TextField();
+			grid.add(companyAdd1,2,3);
 			
-			Label lCompanyPin = new Label("Your Pin");
-			grid.add(lCompanyPin,1,4);
+			Label lCompanyAdd2 = new Label("Address 2");
+			grid.add(lCompanyAdd2,1,4);
+			final TextField companyAdd2 = new TextField();
+			grid.add(companyAdd2,2,4);
+			
+			
+			Label lCompanyCity = new Label("City");
+			grid.add(lCompanyCity,1,5);
+			final TextField companyCity = new TextField();
+			grid.add(companyCity,2,5);
+			
+			Label lCompanyPin = new Label("Pin");
+			grid.add(lCompanyPin,1,6);
 			final TextField companyPin = new TextField();
-			grid.add(companyPin,2,4);
-			
-			Label lCompanyPhone = new Label("Your Phone");
-			grid.add(lCompanyPhone,1,5);
-			final TextField companyPhone = new TextField();
-			grid.add(companyPhone,2,5);
+			grid.add(companyPin,2,6);
 			
 			Label lCompanyTin = new Label("Your Tin");
-			grid.add(lCompanyTin,1,6);
+			grid.add(lCompanyTin,1,7);
 			final TextField companyTin = new TextField();
-			grid.add(companyTin,2,6);
+			grid.add(companyTin,2,7);
 			
 			
 			Button submit = new Button("Configure");
-			grid.add(submit, 2, 8);
+			grid.add(submit, 2, 9);
 			
 			
 
@@ -292,7 +304,9 @@ public class ModalDialog {
 		
 		    return grid;
 		}
-	  
+	  public void ModalDialogChekDB(final Stage stg,String title, String message) { 
+		  
+	  }
 	  
 	  
 }

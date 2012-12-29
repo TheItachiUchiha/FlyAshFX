@@ -9,12 +9,17 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+
+import com.fnz.UI.MainWindow;
  
 /**
  * This class is used to upload a file to a FTP server.
  *
- * @author Muthu
+ * @author Pragati
  */
+
+	
+
 public class FileUploadDownload
 {
  
@@ -73,6 +78,10 @@ public class FileUploadDownload
             {
                bos.write( i );
             }
+          }
+         catch(Exception e)
+         {
+        	 return "Error! \nDatabase NOT found";
          }
          finally
          {
@@ -120,6 +129,7 @@ public class FileUploadDownload
          String fileName, File destination ) throws MalformedURLException,
          IOException
    {
+	   boolean flag=true;
       if (ftpServer != null || fileName != null || destination != null)
       {
          StringBuffer sb = new StringBuffer( "ftp://" );
@@ -145,7 +155,7 @@ public class FileUploadDownload
          {
             URL url = new URL( sb.toString() );
             URLConnection urlc = url.openConnection();
- 
+           
             bis = new BufferedInputStream( urlc.getInputStream() );
             bos = new BufferedOutputStream( new FileOutputStream(
                   destination.getName() ) );
@@ -155,27 +165,23 @@ public class FileUploadDownload
             {
                bos.write( i );
             }
+            	
+            	
+         }
+         catch(Exception e)
+         {
+        	 return "Error! \nNo Database found";
          }
          finally
          {
             if (bis != null)
-               try
-               {
+            {
                   bis.close();
-               }
-               catch (IOException ioe)
-               {
-                  ioe.printStackTrace();
-               }
+            }
             if (bos != null)
-               try
-               {
+            {
                   bos.close();
-               }
-               catch (IOException ioe)
-               {
-                  ioe.printStackTrace();
-               }
+            }
          }
          return "Download Successful";
       }
@@ -184,4 +190,44 @@ public class FileUploadDownload
          return "Input not available";
       }
    }
+   
+   
+   
+   /************************* Check File Exists *****************************/
+   public boolean exists( String ftpServer, String user, String password,
+	         String fileName) throws MalformedURLException,
+	         IOException
+	   {
+	      if (ftpServer != null || fileName != null )
+	      {
+	         StringBuffer sb = new StringBuffer( "ftp://" );
+	         // check for authentication else assume its anonymous access.
+	         if (user != null || password != null)
+	         {
+	            sb.append( user );
+	            sb.append( ':' );
+	            sb.append( password );
+	            sb.append( '@' );
+	         }
+	         sb.append( ftpServer );
+	         sb.append( '/' );
+	         sb.append( fileName );
+	         /*
+	          * type ==&gt; a=ASCII mode, i=image (binary) mode, d= file directory
+	          * listing
+	          */
+	         sb.append( ";type=i" );
+	         BufferedInputStream bis = null;
+	         BufferedOutputStream bos = null;
+	        
+	            URL url = new URL( sb.toString() );
+	            URLConnection urlc = url.openConnection();
+	            bis = new BufferedInputStream( urlc.getInputStream() );
+	            //System.out.println(urlc);	
+	            System.out.println(bis);
+	            return true;
+	   }
+	      return false;
+	   }
+	            
 }

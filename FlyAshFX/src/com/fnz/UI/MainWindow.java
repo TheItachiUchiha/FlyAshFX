@@ -6,6 +6,7 @@ import np.com.ngopal.control.AutoFillTextBox;
 
 import com.fnz.dao.DBInteraction;
 import com.fnz.dao.InventoryDAO;
+import com.fnz.utilities.FileUploadDownload;
 import com.fnz.utilities.ModalDialog;
 import com.sai.javafx.calendar.demo.FXCalendarDemo;
 
@@ -70,7 +71,9 @@ public class MainWindow extends Application
     	try{
 
 // Use a border pane as the root for scene
+    		
     	new DBInteraction().createDB();
+    		
         border = new BorderPane();
         border.setTop(upperPart());
         border.setLeft(addVBox());
@@ -292,7 +295,8 @@ public class MainWindow extends Application
 			{
 				
 				ModalDialog m = new ModalDialog();
-				   m.ModalDialogConfigure(stage, "Configure", "Software Configuration: ");  
+				 m.ModalDialogConfigure(stage, "Configure", "Software Configuration: ");  
+			        
 			        
 					//System.out.println(new InventoryDAO().fetchProduction().get(1));
 			
