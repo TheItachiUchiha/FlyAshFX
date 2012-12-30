@@ -3,6 +3,8 @@ package com.fnz.utilities;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+
+import com.fnz.UI.Orders;
 import com.fnz.dao.DBInteraction;
 import com.sai.javafx.calendar.demo.FXCalendarDemo;
 
@@ -13,18 +15,25 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBase;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Light;
+import javafx.scene.effect.Lighting;
+import javafx.scene.effect.Reflection;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -56,11 +65,40 @@ public class ModalDialog {
 	            //Set the owner of the Stage 
 	            stage.initOwner(stg);
 	            stage.setTitle(title);
-	            
-	            Group root = new Group();
+	           // stage.initStyle(StageStyle.UNDECORATED);
+	          
+	             Group root = new Group();
 	             Scene scene = new Scene(root);
-	            //scene.setFill(Color.rgb(139,104,139));
+	             HBox TitleHBox= new HBox();
+	             
+	             root.setId("pane");
+	            
+	             
+	             DropShadow dropShadow = new DropShadow();
+	             dropShadow.setOffsetX(5);
+	             dropShadow.setOffsetY(5);
+	             Text x=new Text("X");
+	            x.setFont(Font.font("Arial", 28));
+	            x.setEffect(dropShadow);
+	            
+	          
+	             x.setEffect(new DropShadow());
+	            
+	            
+	            x.setFill(Color.DARKRED);  
+	          
+	             final Light.Distant light = new Light.Distant();  
+	             light.setAzimuth(-135.0);  
+	             final Lighting lighting = new Lighting();  
+	             lighting.setLight(light);  
+	             lighting.setSurfaceScale(9.0);  
+	             x.setEffect(lighting); 
+	             
+	            TitleHBox.setAlignment(Pos.TOP_RIGHT);
+	            
 	           
+	        
+	          
 	            scene.getStylesheets().addAll(this.getClass().getResource("/com/fnz/styles/gui.css").toExternalForm()); 
 	            
 	          //  DropShadow dropShadow = new DropShadow();
@@ -71,10 +109,10 @@ public class ModalDialog {
 	           //  text.setEffect(dropShadow);
 	             text.setX(600); 
 	             
-	            
+	          
 	             
 	             BorderPane borderPane = new BorderPane();
-	             borderPane.setPadding(new Insets(25,20,20,20));
+	             borderPane.setPadding(new Insets(20,20,20,20));
 	             
 	             final HBox btnHBox = new HBox(15);
 	             btnHBox.setPadding(new Insets(20,5,20,5));
@@ -89,6 +127,7 @@ public class ModalDialog {
 	            	  UploadButton.setPrefSize(50, 50);
 	            	  final Tooltip tooltipupload = new Tooltip();
 	                  tooltipupload.setText("Backup your database\n");
+	              //    UploadButton.setStyle("-fx-background-color: #090a0c,linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%), linear-gradient(#20262b, #191d22),radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));");
 	                  UploadButton.setOpacity(0.8);
 	                
 	                  UploadButton.setTooltip(tooltipupload);
@@ -110,7 +149,7 @@ public class ModalDialog {
 	         
 	            
 	     		//borderPane.setTop(topAnchorPane);
-	            	 
+	          borderPane.setTop(TitleHBox);
 	     		borderPane.setCenter(text);
 	     		borderPane.setBottom(btnHBox);
 	     		final FileUploadDownload fileUpload=new FileUploadDownload();
@@ -188,7 +227,7 @@ public class ModalDialog {
 	     
 	        
 	        }
-	  
+	
 	  
 	  
 	  public void ModalDialogConfigure(final Stage stg,String title, String message) {

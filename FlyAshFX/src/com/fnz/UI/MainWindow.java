@@ -270,10 +270,11 @@ public class MainWindow extends Application
         centerHbox.getChildren().addAll(text);
         upperBorder.setCenter(centerHbox);
         
-        MenuButton setting = new MenuButton();
-        Image settingImage = new Image("setting.png",30,30,false,false);
+        MenuButton setting = new MenuButton("Settings");
+        setting.setId("Settings");
+        Image settingImage = new Image("setting3.png",20,20,false,false);
         setting.setGraphic(new ImageView(settingImage));
-        setting.setPrefSize(50, 50);
+        setting.setPrefSize(120, 15);
         MenuItem Backup = new MenuItem("Backup/Restore");
         MenuItem Configure = new MenuItem("Configure");
         Backup.setOnAction(new EventHandler<ActionEvent>() {
