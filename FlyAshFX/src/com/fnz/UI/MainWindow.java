@@ -6,6 +6,7 @@ import np.com.ngopal.control.AutoFillTextBox;
 
 import com.fnz.dao.DBInteraction;
 import com.fnz.dao.InventoryDAO;
+import com.fnz.utilities.FileUploadDownload;
 import com.fnz.utilities.ModalDialog;
 import com.sai.javafx.calendar.demo.FXCalendarDemo;
 
@@ -70,7 +71,9 @@ public class MainWindow extends Application
     	try{
 
 // Use a border pane as the root for scene
+    		
     	new DBInteraction().createDB();
+    		
         border = new BorderPane();
         border.setTop(upperPart());
         border.setLeft(addVBox());
@@ -267,10 +270,11 @@ public class MainWindow extends Application
         centerHbox.getChildren().addAll(text);
         upperBorder.setCenter(centerHbox);
         
-        MenuButton setting = new MenuButton();
-        Image settingImage = new Image("setting.png",30,30,false,false);
+        MenuButton setting = new MenuButton("Settings");
+        setting.setId("Settings");
+        Image settingImage = new Image("setting3.png",20,20,false,false);
         setting.setGraphic(new ImageView(settingImage));
-        setting.setPrefSize(50, 50);
+        setting.setPrefSize(120, 15);
         MenuItem Backup = new MenuItem("Backup/Restore");
         MenuItem Configure = new MenuItem("Configure");
         Backup.setOnAction(new EventHandler<ActionEvent>() {
@@ -292,7 +296,8 @@ public class MainWindow extends Application
 			{
 				
 				ModalDialog m = new ModalDialog();
-				   m.ModalDialogConfigure(stage, "Configure", "Software Configuration: ");  
+				 m.ModalDialogConfigure(stage, "Configure", "Software Configuration: ");  
+			        
 			        
 					//System.out.println(new InventoryDAO().fetchProduction().get(1));
 			

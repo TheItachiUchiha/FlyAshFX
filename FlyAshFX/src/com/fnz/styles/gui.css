@@ -2,17 +2,81 @@
 	-fx-background-color: red,linear-gradient(to bottom, derive(red,60%) 5%,derive(red,90%) 40%);
 }
 .styleBg{
--fx-background-color:
-    linear-gradient(
-    to bottom right,
- 	 rgb(0,0,0) 0%,
-    rgb(87,206,248) 200% );
-    
-    
-    /*  rgb(9,59,122) 0%,
-    rgb(87,206,248) 100%*/
+	-fx-background-image: url("bg4.jpg");
+ /*-fx-background-image: url("bg1.jpg");
+    -fx-background-repeat: stretch;   
+   -fx-background-size: 1350 506;
+     -fx-background-position: center center;*/
+    /*-fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0); */
     
 }
+.menu-item .label {
+    -fx-text-fill: black;
+}
+
+.menu-item:focused {
+     -fx-background-color: black;
+}
+
+.menu-item:focused .label {
+    -fx-text-fill: orange;
+}
+
+.context-menu {
+    -fx-skin: "com.sun.javafx.scene.control.skin.ContextMenuSkin";
+    -fx-background-color: darkgray;
+    -fx-background-insets: 0, 1, 2;
+    -fx-background-radius: 0 6 6 6, 0 5 5 5, 0 4 4 4;
+/*    -fx-padding: 0.666667em 0.083333em 0.666667em 0.083333em;  8 1 8 1 */
+    -fx-padding: 0.333333em 0.083333em 0.666667em 0.083333em; /* 4 1 8 1 */
+}
+
+
+   /*#pane{
+        -fx-background-image: url("bg4.jpg");
+        -fx-background-repeat: stretch;   
+        -fx-background-size: 900 506;
+       
+    }*/
+
+
+
+#Settings {
+    -fx-background-color: 
+        #090a0c,
+        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
+        linear-gradient(#20262b, #191d22),
+        radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
+    -fx-background-radius: 5,4,3,5;
+    -fx-background-insets: 0,1,2,0;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-font-family: "Arial";
+    -fx-text-fill: linear-gradient(white, #d0d0d0);
+ /*   -fx-font-size: 12px;
+    -fx-padding: 10 20 10 20;*/
+}
+#Settings:hover {
+    -fx-background-color: 
+        #090a0c,
+        linear-gradient(#20262b 0%, #1f2429 20%, #191d22 100%),
+        linear-gradient(#38424b, #191d22),
+        radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
+    -fx-background-radius: 5,4,3,5;
+    -fx-background-insets: 0,1,2,0;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-font-family: "Arial";
+    -fx-text-fill: linear-gradient(white, #d0d0d0);
+    -fx-fill: white;
+  
+}
+#Settings-Text {
+    -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.9) , 1, 0.0 , 0 , 1 );
+}
+
+   
+   
 .tree-view {
     -fx-padding: 1;
   /*  -fx-background-color: rgb(87,206,248);*/ /*null it if you want to remove border, don't forget to null view:focussed also */
@@ -49,6 +113,8 @@ Label{
 }
 
 
+
+
 /*#uploaddownload {
   
   -fx-background-color: transparent;
@@ -60,6 +126,8 @@ Label{
 	   -fx-font-size: 14px;
 	   -fx-padding: 10 20 10 20;
 }*/
+
+
 
 #inventoryButton{
   -fx-background-color: transparent;
