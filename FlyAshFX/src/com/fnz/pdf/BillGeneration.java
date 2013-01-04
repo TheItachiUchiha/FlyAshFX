@@ -63,9 +63,19 @@ public class BillGeneration
 			Double total = 0.0;
 			Double taxAmount = 0.0;
 			Double grandTotal = 0.0;
+			String taxName = "";
+			Double taxValue = 0.0;
 			
-			String taxName = CommonConstants.TAX_NAME;
-			Double taxValue = Double.parseDouble(taxService.fetchTaxDetails().get(taxName).toString());
+			try
+			{
+				taxName = CommonConstants.TAX_NAME;
+				taxValue = Double.parseDouble(taxService.fetchTaxDetails().get(taxName).toString());
+			}
+			catch(Exception e)
+			{
+				taxName = "TAX";
+				taxValue = 0.0;
+			}
 			
 			Integer serial = 1;
 			Boolean tax = true;
