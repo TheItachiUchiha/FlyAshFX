@@ -65,6 +65,7 @@ public class DBInteraction
 				stmt.execute(SQLConstants.CREATE_CLIENT_ORDER);
 				stmt.execute(SQLConstants.CREATE_VENDOR);
 				stmt.execute(SQLConstants.CREATE_VENDOR_ORDER);
+				stmt.execute(SQLConstants.CREATE_TAX_TABLE);
 		}
 		catch (Exception e) 
 		{

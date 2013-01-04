@@ -30,7 +30,7 @@ public class CommonConstants
 	
 	public static final String STATUS_PARTIALLY_DELIVERED = "Partially Delivered";
 	
-	
+	public static final String TAX_NAME = "VAT";
 	
 	public static final String DB_LOCATION="C:\\FlyAsh\\";
 }

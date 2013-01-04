@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 
 import com.fnz.UI.Orders;
 import com.fnz.dao.DBInteraction;
+import com.fnz.service.TaxService;
 import com.sai.javafx.calendar.demo.FXCalendarDemo;
 
 import javafx.event.ActionEvent;
@@ -18,6 +19,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBase;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.effect.BlendMode;
@@ -244,31 +247,57 @@ public class ModalDialog {
 	            stage.setTitle(title);
 	            
 	            Group root = new Group();
-	             Scene scene = new Scene(root);
+	            Scene scene = new Scene(root);
 	            
-	             scene.getStylesheets().add("trap");
-	            // scene.setFill(Color.rgb(139,104,139));
-	      
-	             BorderPane borderPane = new BorderPane();
-	             borderPane.setPadding(new Insets(5,5,5,5));
 	             
-	           
-	                 
-	            	
-	            	
-	         
+	             TabPane tabPane = new TabPane();
+	             BorderPane mainPane = new BorderPane();
 	            
-	     		try {
-					borderPane.setCenter(AddGridConfig());
+	             //Create Tabs
+	             Tab tabA = new Tab();
+	             tabA.setText("Company Details");
+	             BorderPane borderPane1 = new BorderPane();
+	             borderPane1.setPadding(new Insets(5,5,5,5));
+	             try {
+					borderPane1.setCenter(AddGridConfig());
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+	             tabA.setContent(borderPane1);
+	             tabPane.getTabs().add(tabA);
+	            
+	             Tab tabB = new Tab();
+	             tabB.setText("Tax Details");
+	             BorderPane borderPane2 = new BorderPane();
+	             borderPane2.setPadding(new Insets(5,5,5,5));
+	             try {
+					borderPane2.setCenter(AddTaxDetails());
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	             tabB.setContent(borderPane2);
+	             tabPane.getTabs().add(tabB);
+	         
+	            
+	             mainPane.setCenter(tabPane);
+	            
+	             mainPane.prefHeightProperty().bind(scene.heightProperty());
+	             mainPane.prefWidthProperty().bind(scene.widthProperty());
+	            
+	            
+	             
+	             
+	             scene.getStylesheets().add("trap");
+	            // scene.setFill(Color.rgb(139,104,139));
+	      
+	             
 	            	 
 	     		
 	     		
 	     		
-	            root.getChildren().add(borderPane);   
+	             root.getChildren().add(mainPane);  
 	            stage.setScene(scene);        
 	            stage.show();
 	     
@@ -343,9 +372,84 @@ public class ModalDialog {
 		
 		    return grid;
 		}
-	  public void ModalDialogChekDB(final Stage stg,String title, String message) { 
+	  public void ModalDialogChekDB(final Stage stg,String title, String message) 
+	  { 
 		  
 	  }
 	  
-	  
+	  public GridPane AddTaxDetails() throws Exception
+		{
+		 try
+		 {
+			
+			final Text msg=new Text("");
+			final Text Successmsg=new Text("");
+			
+			grid = new GridPane();
+			
+			grid.setHgap(6);
+			grid.setVgap(8);
+			grid.setPadding(new Insets(20));
+        
+			/*Label message = new Label("Please Enter Details");
+			grid.add(message,1,1);*/
+			
+			Label labelTaxName = new Label("Tax Name");
+			grid.add(labelTaxName,1,2);
+			
+			final TextField taxName = new TextField();
+			grid.add(taxName,2,2);
+			
+			Label labelTaxAmount = new Label("Tax Amount (in %)");
+			grid.add(labelTaxAmount,1,3);
+			
+			final TextField taxAmount = new TextField();
+			grid.add(taxAmount,2,3);
+			
+			
+			Button submit = new Button("Add");
+			grid.add(submit, 2, 5);
+			
+			grid.add(msg,2,7);
+			grid.add(Successmsg,2,7);
+			
+			submit.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent arg0) 
+				{
+					
+					TaxService taxService = new TaxService();
+					try 
+					{
+						taxService.insertTaxDetails(taxName.getText(), Double.parseDouble(taxAmount.getText()));
+						Successmsg.setText("Tax Added Successfully");
+					}
+					catch (NumberFormatException e) 
+					{
+						e.printStackTrace();
+						msg.setText("Please Enter a valid Number");
+					} catch (Exception e) 
+					{
+						e.printStackTrace();
+						msg.setText("Error Occured");
+					}
+				        
+				
+				}
+			});
+
+			
+		    
+		    
+		    grid.setAlignment(Pos.CENTER);
+		   
+		    
+		 }
+		 catch(Exception e)
+		 {
+			 e.printStackTrace();
+		 }
+		
+		    return grid;
+		}
 }

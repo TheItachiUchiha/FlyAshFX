@@ -16,6 +16,9 @@ public class SQLConstants
 	public static final String CREATE_DB_RAW_MATERIALS_INVENTORY = "CREATE TABLE if not exists RAW_MATERIALS_INVENTORY (id INTEGER PRIMARY KEY AUTOINCREMENT,NAME text," +
 			"FOREIGN KEY (NAME) REFERENCES RAW_MATERIALS(RAW_MATERIALS_NAME))";
 	
+	public static final String CREATE_TAX_TABLE = "CREATE TABLE if not exists TAX_TABLE (TAX_ID INTEGER PRIMARY KEY AUTOINCREMENT, TAX_NAME text UNIQUE NOT NULL," +
+			"TAX_AMOUNT text)";
+	
 	public static final String INSERT_DB_RAW_MATERIALS = "INSERT INTO RAW_MATERIALS values (?,?)";
 	
 	public static final String FETCH_DB_RAW_MATERIALS = "SELECT RAW_MATERIALS_NAME FROM RAW_MATERIALS";
@@ -89,4 +92,8 @@ public class SQLConstants
 	public static final String FETCH_CLIENT_DETAILS = "SELECT * FROM CUSTOMER";
 	
 	public static final String FETCH_VENDOR_DETAILS = "SELECT * FROM VENDOR";
+	
+	public static final String INSERT_TAX_TABLE = "INSERT into TAX_TABLE values (NULL,?,?)";
+	
+	public static final String FETCH_TAX_TABLE = "SELECT * FROM TAX_TABLE";
 }

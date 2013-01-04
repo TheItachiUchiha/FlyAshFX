@@ -10,6 +10,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.fnz.VO.CustomerVO;
+import com.fnz.common.CommonConstants;
+import com.fnz.service.TaxService;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -46,7 +48,7 @@ public class BillGeneration
 	 */
 	public static void main(String[] args) {
 		try {
-			
+			TaxService taxService =new TaxService();
 			DecimalFormat df = new DecimalFormat("#.##");
 			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");  
 			OutputStream file = new FileOutputStream(new File(
@@ -61,6 +63,10 @@ public class BillGeneration
 			Double total = 0.0;
 			Double taxAmount = 0.0;
 			Double grandTotal = 0.0;
+			
+			String taxName = CommonConstants.TAX_NAME;
+			Double taxValue = Double.parseDouble(taxService.fetchTaxDetails().get(taxName).toString());
+			
 			Integer serial = 1;
 			Boolean tax = true;
 			LineSeparator objectName = new LineSeparator();
@@ -288,7 +294,7 @@ public class BillGeneration
 				}
 			}
 			
-			taxAmount = ((Double)(total*0.125));
+			taxAmount = ((Double)(total*taxValue/100));
 			grandTotal = Double.parseDouble(df.format(total)) + Double.parseDouble(df.format(taxAmount)); 
 			
 			cell = new PdfPCell(new Phrase("Total", fontItalic));
@@ -312,7 +318,7 @@ public class BillGeneration
 			
 			if (tax)
 			{
-				cell = new PdfPCell(new Phrase("Tax(12.5%)", fontItalic));
+				cell = new PdfPCell(new Phrase(taxName+" ("+ taxValue+"%)", fontItalic));
 				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 				cell.setBorder(PdfPCell.BOTTOM);
 				cell.setBorderWidth(1f);
