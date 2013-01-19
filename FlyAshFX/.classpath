@@ -7,7 +7,8 @@
 	<classpathentry kind="lib" path="lib/sqlite-jdbc-3.7.2.jar"/>
 	<classpathentry kind="lib" path="lib/FxCalendar.jar"/>
 	<classpathentry kind="lib" path="lib/jfxrt.jar"/>
-	<classpathentry kind="lib" path="lib/AutoFill.jar"/>
 	<classpathentry kind="lib" path="lib/itextpdf-5.3.5.jar"/>
+	<classpathentry kind="lib" path="/TestFX/lib/jfx-autocomplete-textfield-0.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/AutoFillTextBox.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

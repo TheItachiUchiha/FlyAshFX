@@ -6,6 +6,8 @@ package com.fnz.Validation;
 
 import java.util.regex.*;
 
+import com.mytdev.javafx.scene.control.AutoCompleteTextField;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TextField;
@@ -111,6 +113,8 @@ public void allowCharacters(final TextField fieldName){
 		
 	});
 }
+
+
 public void allowAsPhoneNumber(final TextField fieldName){
 	
 	fieldName.lengthProperty().addListener(new ChangeListener<Number>(){

@@ -13,6 +13,7 @@ import com.fnz.VO.VendorVO;
 import com.fnz.common.CommonConstants;
 import com.fnz.service.InventoryService;
 import com.fnz.service.OrderService;
+import com.mytdev.javafx.scene.control.AutoCompleteTextField;
 import com.sai.javafx.calendar.FXCalendar;
 import com.sun.javafx.scene.layout.region.Border;
 
@@ -234,10 +235,17 @@ public class Orders
 		     grid.add(nameLabel, 1, 2); 
 		     
 		    
-		    final AutoFillTextBox nameText = new AutoFillTextBox(clientList);
-		nameText.textbox.setPrefWidth(145);
-		tempvalidator.allowCharacters(nameText.textbox);
-		    //System.out.println(nameText.textbox.getPrefColumnCount());
+		    //final AutoFillTextBox nameText = new AutoFillTextBox(clientList);
+		     final AutoCompleteTextField<String> nameText = new AutoCompleteTextField<String>();
+		     nameText.setItems(clientList);
+		 
+		   
+		    // need to create a method for autoCompleteTextField
+		     
+		     // tempvalidator.allowCharacters((TextField)nameText));
+		    
+		     
+		     //System.out.println(nameText.textbox.getPrefColumnCount());
 		    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 		    grid.add(nameText, 2, 2);
 		    
@@ -277,7 +285,7 @@ public class Orders
 		    
 		    
 		    
-		    nameText.getTextbox().textProperty().addListener(new ChangeListener<String>() {
+		    nameText.textProperty().addListener(new ChangeListener<String>() {
 		        @Override
 		        public void changed(final ObservableValue<? extends String> observableValue, final String oldValue, final String newValue) {
 		            
@@ -285,7 +293,7 @@ public class Orders
 			        {
 			        	if(customerList.get(i).getCustomerName().equalsIgnoreCase(newValue))
 			        	{
-			            	nameText.getTextbox().setText(newValue);
+			            	nameText.setText(newValue);
 			            	addText.setText(customerList.get(i).getCustomerAddress());
 			            	phoneText.setText(customerList.get(i).getCustomerPhone());
 			            	emailText.setText(customerList.get(i).getCustomerEmail());
@@ -391,13 +399,13 @@ public class Orders
 					try
 					{
 						
-						tempCssValidator.removeCssErrorStyle(nameText.getTextbox(),quantityText,advText);
+						//tempCssValidator.removeCssErrorStyle(nameText.getTextbox(),quantityText,advText);
 						
 						msg.setVisible(false);
 						
 						if (tempvalidator.isEmpty(nameText.getText())){
 						msg.setVisible(true);
-						nameText.textbox.getStyleClass().add("error");
+						//nameText.textbox.getStyleClass().add("error");
 						}	
 						else if(tempvalidator.isEmpty(quantityText.getText())){
 							msg.setVisible(true);
@@ -660,8 +668,8 @@ public class Orders
 	
 		    
 		    final AutoFillTextBox<String> nameText = new AutoFillTextBox<String>(vendorList);
-		    nameText.textbox.setPrefWidth(145);
-		    tempvalidator.allowCharacters(nameText.textbox);
+		    //nameText.textbox.setPrefWidth(145);
+		    tempvalidator.allowCharacters(nameText.getTextbox());
 		    //nameText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 		    grid.add(nameText, 2, 2);
 		    //tempvalidator.allowCharacters(nameText);
@@ -802,7 +810,7 @@ public class Orders
 						
 						if (tempvalidator.isEmpty(nameText.getText())){
 						msg.setVisible(true);
-						nameText.textbox.getStyleClass().add("error");
+						nameText.getTextbox().getStyleClass().add("error");
 						}	
 						else if(tempvalidator.isEmpty(quantityText.getText())){
 							msg.setVisible(true);
